@@ -1,0 +1,15 @@
+pane	0	0	:misc	0	:	0	:/home/joenye	0	vim	:vim Desktop/TODO
+pane	0	0	:misc	0	:	1	:/home/joenye	1	vim	:vim Desktop/scripts.py
+pane	0	1	:app	0	:-	0	:/home/joenye/Plum/app	0	zsh	:
+pane	0	1	:app	0	:-	1	:/home/joenye/Plum	0	zsh	:
+pane	0	1	:app	0	:-	2	:/home/joenye	1	zsh	:
+pane	0	2	:~/Plum/app-web	1	:*	0	:/home/joenye/Plum/app-web	1	zsh	:
+pane	0	2	:~/Plum/app-web	1	:*	1	:/home/joenye	0	zsh	:
+pane	0	2	:~/Plum/app-web	1	:*	2	:/home/joenye	0	zsh	:
+pane	1	0	:~	1	:*	0	:/home/joenye	1	vim	:vim Desktop/TODO
+pane	1	0	:~	1	:*	1	:/home/joenye	0	zsh	:
+window	0	0	0	:	245b,282x75,0,0{141x75,0,0,8,140x75,142,0,9}
+window	0	1	0	:-	1888,282x75,0,0{142x75,0,0,0,139x75,143,0[139x40,143,0,1,139x34,143,41,2]}
+window	0	2	1	:*	d818,282x75,0,0{141x75,0,0,5,140x75,142,0[140x37,142,0,6,140x37,142,38,7]}
+window	1	0	1	:*	a453,282x75,0,0{141x75,0,0,3,140x75,142,0,4}
+state	0	

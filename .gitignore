@@ -1,0 +1,28 @@
+*.un~
+
+# Swap
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-v][a-z]
+[._]sw[a-p]
+
+# Session
+Session.vim
+
+# Temporary
+.netrwhist
+*~
+# Auto-generated tag files
+tags
+
+vim/.vim/bundle/*
+aws/.aws/*
+
+config/.config/*
+!config/.config/htop
+!config/.config/i3blocks
+!config/.config/mako
+!config/.config/qutebrowser
+!config/.config/sway
+!config/.config/termite
+!config/.config/yarn

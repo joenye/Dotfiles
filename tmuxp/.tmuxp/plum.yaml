@@ -1,0 +1,50 @@
+session_name: plum
+windows:
+- window_name: vim
+  focus: true
+  shell_command_before:
+    - cd ~/Plum/app
+    - clear
+  panes:
+    - shell_command:
+        - vim -S Session.vim
+- window_name: bizzle
+  layout: main-vertical
+  shell_command_before:
+    - cd ~/Plum/app
+    - clear
+  panes:
+    - shell_command:
+        - docker-compose kill
+        - docker-compose up
+    - shell_command:
+        - ngrok start plum
+        - pkill ngrok
+        - ngrok start just-plum plum plum-client plum-facebook plum-intercom
+    - null
+- window_name: front-end
+  layout: main-vertical
+  shell_command_before:
+    - cd ~/Plum/app-web
+    - clear
+  panes:
+    - shell_command:
+        - make start
+    - null
+- window_name: support
+  layout: main-vertical
+  panes:
+    - shell_command:
+        - vim ~/Plum/guides/support-tasks/script.py
+    - shell_command:
+        - cd ~/Plum/app
+        - clear
+        - heroku run python --app=plum-app-production
+- window_name: misc
+  layout: main-vertical
+  shell_command_before:
+    - cd ~/Plum/app-web
+    - clear
+  panes:
+    - null
+    - null

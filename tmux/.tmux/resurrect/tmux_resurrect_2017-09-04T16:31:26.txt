@@ -1,0 +1,8 @@
+pane	0	0	:exit	1	:*	0	:/home/joenye	1	zsh	:
+pane	0	0	:exit	1	:*	1	:/home/joenye/.ngrok2	0	vim	:vim ngrok.yml
+pane	0	0	:exit	1	:*	2	:/home/joenye/Plum/app	0	vim	:vim .env
+pane	0	0	:exit	1	:*	3	:/home/joenye/Plum/app	0	vim	:vim README.md
+pane	2	0	:~	1	:*	0	:/home/joenye	1	zsh	:
+window	0	0	1	:*	7809,255x71,0,0{122x71,0,0[122x36,0,0,1,122x34,0,37,2],132x71,123,0[132x36,123,0,4,132x34,123,37,5]}
+window	2	0	1	:*	ae63,80x23,0,0,6
+state	0	2

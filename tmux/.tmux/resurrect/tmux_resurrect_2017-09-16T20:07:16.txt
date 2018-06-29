@@ -1,0 +1,26 @@
+pane	1	0	:~	1	:*	0	:/home/joenye	1	vim	:vim Desktop/TODO
+pane	1	0	:~	1	:*	1	:/home/joenye	0	zsh	:
+pane	15	0	:zsh	1	:*	0	:/home/joenye	0	zsh	:
+pane	15	0	:zsh	1	:*	1	:/home/joenye	1	zsh	:
+pane	15	0	:zsh	1	:*	2	:/home/joenye	0	zsh	:
+pane	2	0	:~	1	:*	0	:/home/joenye	1	zsh	:
+pane	21	0	:zsh	1	:*	0	:/home/joenye	1	zsh	:
+pane	22	0	:misc	1	:*	0	:/home/joenye	0	zsh	:
+pane	22	0	:misc	1	:*	1	:/home/joenye	0	zsh	:
+pane	22	0	:misc	1	:*	2	:/home/joenye	1	vim	:vim Desktop/TODO
+pane	22	1	:app	0	:M	0	:/home/joenye/Plum/app	1	docker-compose	:docker-compose up
+pane	22	1	:app	0	:M	1	:/home/joenye/Plum/app	0	vim	:vim /home/joenye/.ngrok2/ngrok.yml
+pane	22	1	:app	0	:M	2	:/home/joenye/Plum/app	0	ngrok	:ngrok start plum plum-client
+pane	22	2	:app-web	0	:-	0	:/home/joenye/Plum/app-web	1	make	:make start
+pane	22	2	:app-web	0	:-	1	:/home/joenye/Plum/app-web	0	zsh	:
+pane	22	2	:app-web	0	:-	2	:/home/joenye/Plum/app-web	0	zsh	:
+pane	3	0	:~	1	:*	0	:/home/joenye	1	zsh	:
+window	1	0	1	:*	31d5,282x78,0,0{141x78,0,0,3,140x78,142,0,4}
+window	15	0	1	:*	2330,282x75,0,0{141x75,0,0,36,140x75,142,0[140x39,142,0,37,140x35,142,40,38]}
+window	2	0	1	:*	6a01,282x78,0,0,12
+window	21	0	1	:*	ea05,282x78,0,0,45
+window	22	0	1	:*	a448,284x78,0,0{142x78,0,0[142x39,0,0,46,142x38,0,40,49],141x78,143,0,47}
+window	22	1	0	:M	252e,284x78,0,0{142x78,0,0,50,141x78,143,0[141x39,143,0,51,141x38,143,40,52]}
+window	22	2	0	:-	3b06,284x78,0,0{141x78,0,0,53,142x78,142,0[142x39,142,0,54,142x38,142,40,55]}
+window	3	0	1	:*	5762,80x23,0,0,13
+state	22	

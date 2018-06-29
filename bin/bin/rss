@@ -1,0 +1,17 @@
+#!/bin/sh
+cd /usr/lib/systemd/system/
+while true
+do
+  service=$(stest -fl . \
+    | sort  \
+    | sed '1i[ list services ]\n[ list-unit-files ]' \
+    | $(dwrapper) -p 'Restart Service') || break
+ 
+  case $service in
+    '[ list services ]')    systemctl -t service -a ;;
+    '[ list-unit-files ]')  systemctl list-unit-files ;;
+    *)                      sudo systemctl restart $service
+                            break
+                            ;;
+  esac
+done

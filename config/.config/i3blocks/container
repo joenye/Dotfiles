@@ -1,0 +1,7 @@
+#! /bin/bash
+
+if [[ `docker ps 2>&1` = *"Cannot connect to the Docker daemon"* ]]; then
+   echo "-"
+else
+   echo `docker ps | grep -v "CONTAINER" | awk '{print "["$2"]"}' | tr '\n' ' '`
+fi

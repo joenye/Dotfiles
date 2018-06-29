@@ -1,0 +1,15 @@
+#!/bin/sh
+vars=( $(echo {a..z}) )
+count=-1
+ribbon='Solve'
+while eqn=$(echo | $(dwrapper) -p "$ribbon")
+do
+  [[ $eqn ]] || exit
+  if ans=$(calc -pd "$(eval echo $(echo $eqn | sed 's/\([a-z]\)/$\1/g'))"); then
+    echo -n "$ans" | xsel -i
+    count=$(( $count + 1 ))
+    [[ $count -gt 25 ]] && count=0
+    eval ${vars[$count]}=$ans
+    ribbon="$ribbon    $(eval echo ${vars[$count]}=$ans)"
+  fi
+done

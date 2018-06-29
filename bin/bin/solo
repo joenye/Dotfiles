@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Toggles Swaybar font size and Termite font sie
+# One should manually reload the config in each Termite instance (ctrl-shift-r)
+# and set the Chrome page zoom level
+if grep -q 'Font Mono 11' ~/.config/termite/config
+then 
+	sed -i -e 's/Font Mono 11/Font Mono 16/g' ~/.config/termite/config
+   	sed -i -e 's/Font Mono 11/Font Mono 14/g' ~/.config/sway/config
+else
+	sed -i -e 's/Font Mono 16/Font Mono 11/g' ~/.config/termite/config
+   	sed -i -e 's/Font Mono 14/Font Mono 11/g' ~/.config/sway/config
+fi
+swaymsg reload

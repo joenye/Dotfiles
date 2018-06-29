@@ -1,0 +1,26 @@
+#!/bin/zsh
+
+# exit on failure
+set -eu
+
+echo "> docker-compose exec app alembic heads"
+HEADS=`docker-compose exec app alembic heads | grep head | cut -d ' ' -f 1 | tr '\n' ' ' `
+
+echo $HEADS
+
+if [ `echo $HEADS | tr ' ' '\n' | wc -l | grep .` -eq 1 ]
+then
+ echo "Looks fine"
+ exit 0
+else
+ echo "Hydra detected\n"
+fi
+
+TMP=`tempfile`
+foreach var (`echo $HEADS`)
+    echo $var | awk '{print "find -type f -name \""$1"*.py\" "}' | sh >> $TMP
+end
+
+foreach var (`cat $TMP`)
+    echo $var
+end

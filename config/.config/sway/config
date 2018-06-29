@@ -1,0 +1,125 @@
+### Variables
+set $mod Mod4
+set $left h
+set $down j
+set $up k
+set $right l
+set $term termite
+set $menu dmenu_run
+
+### Font
+font MesloLGSDZ Nerd Font Mono 12
+
+### Inputs
+input "2:7:SynPS/2_Synaptics_TouchPad" {
+    tap enabled
+    dwt enabled
+    natural_scroll enabled
+}
+input "6940:6921:Corsair_Corsair_K70R_Gaming_Keyboard" {
+   repeat_delay 160
+   repeat_rate 70
+}
+input "9456:320:Metadot_-_Das_Keyboard_Das_Keyboard" {
+   repeat_delay 160
+   repeat_rate 70
+}
+input "1:1:AT_Translated_Set_2_keyboard" {
+   repeat_delay 160
+   repeat_rate 70
+}
+
+### Outputs
+output eDP-1 position 0,0 scale 1
+output HDMI-A-2 position 2560,0 scale 1
+output DP-1 position 2560,0 scale 1
+output * bg /home/joenye/Wallpapers/cool2.jpg fill
+
+### Key bindings
+bindsym $mod+Return exec $term
+bindsym $mod+Shift+q kill
+bindsym $mod+d exec $menu
+bindsym $mod+Shift+c reload
+bindsym $mod+Ctrl+Shift+e exit
+bindsym $mod+Ctrl+Shift+s shutdown now
+bindsym $mod+q exec swaylock -i /home/joenye/Wallpapers/cool.png
+
+bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+1 i3blocks 
+bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+1 i3blocks
+
+bindsym XF86MonBrightnessUp exec brightnessctl s +5%
+bindsym XF86MonBrightnessDown exec brightnessctl s 5%-
+
+bindsym $mod+$left focus left
+bindsym $mod+$down focus down
+bindsym $mod+$up focus up
+bindsym $mod+$right focus right
+
+bindsym $mod+Shift+$left move left
+bindsym $mod+Shift+$down move down
+bindsym $mod+Shift+$up move up
+bindsym $mod+Shift+$right move right
+
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+0 move container to workspace 10
+
+bindsym $mod+b splitv
+bindsym $mod+v splith
+
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+bindsym $mod+f fullscreen
+bindsym $mod+Shift+space floating toggle
+
+bindsym $mod+a focus parent
+
+### Resize mode
+mode "resize" {
+    bindsym $left resize shrink width 20px
+    bindsym $down resize grow height 20px
+    bindsym $up resize shrink height 20px
+    bindsym $right resize grow width 20px
+    bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+# Status bar
+bar {
+    position top
+    status_command sleep 0.5; i3blocks
+    font MesloLGSDZ Nerd Font Mono 14
+    colors {
+        statusline #ffffff
+        background #323232
+    }
+}
+
+# Miscellaneous
+default_border pixel
+hide_edge_borders smart
+workspace_auto_back_and_forth yes
+
+# Run at startup
+exec mako
