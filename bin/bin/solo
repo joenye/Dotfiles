@@ -5,10 +5,14 @@
 # and set the Chrome page zoom level
 if grep -q 'Font Mono 11' ~/.config/termite/config
 then 
+	# Not solo
 	sed -i -e 's/Font Mono 11/Font Mono 16/g' ~/.config/termite/config
    	sed -i -e 's/Font Mono 11/Font Mono 14/g' ~/.config/sway/config
+	sed -i -e 's/scale-factor=1.4/scale-factor=1/g' ~/bin/google-chrome-stable
 else
+	# Solo
 	sed -i -e 's/Font Mono 16/Font Mono 11/g' ~/.config/termite/config
    	sed -i -e 's/Font Mono 14/Font Mono 11/g' ~/.config/sway/config
+	sed -i -e 's/scale-factor=1/scale-factor=1.4/g' ~/bin/google-chrome-stable
 fi
 swaymsg reload

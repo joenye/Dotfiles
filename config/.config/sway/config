@@ -42,7 +42,7 @@ bindsym $mod+d exec $menu
 bindsym $mod+Shift+c reload
 bindsym $mod+Ctrl+Shift+e exit
 bindsym $mod+Ctrl+Shift+s shutdown now
-bindsym $mod+q exec swaylock -i /home/joenye/Wallpapers/cool.png
+bindsym $mod+q exec swaylock -i /home/joenye/Wallpapers/cool.png --daemonize
 
 bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+1 i3blocks 
 bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+1 i3blocks
@@ -109,7 +109,7 @@ bindsym $mod+r mode "resize"
 bar {
     position top
     status_command sleep 0.5; i3blocks
-    font MesloLGSDZ Nerd Font Mono 14
+    font MesloLGSDZ Nerd Font Mono 11
     colors {
         statusline #ffffff
         background #323232

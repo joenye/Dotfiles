@@ -5,36 +5,31 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
-Plug 'junegunn/gv.vim'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-unimpaired'
+Plug 'junegunn/gv.vim'
 Plug 'scrooloose/nerdtree'
+Plug 'ryanoasis/vim-devicons'
+Plug 'dhruvasagar/vim-vinegar'
 Plug 'mhinz/vim-startify'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'junegunn/goyo.vim'
+Plug 'itchyny/lightline.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'airblade/vim-rooter'
-Plug 'itchyny/lightline.vim'
 Plug 'w0rp/ale'
 Plug 'farmergreg/vim-lastplace'
 Plug 'junegunn/fzf.vim'
-Plug 'suan/vim-instant-markdown'
 Plug 'mbbill/undotree'
-Plug 'dhruvasagar/vim-vinegar'
 Plug 'janko-m/vim-test'
+Plug 'christoomey/vim-tmux-navigator'
 Plug 'tommcdo/vim-exchange' " cxiw and .
 Plug 'kassio/neoterm'
-Plug 'justinmk/vim-sneak'
 Plug 'simeji/winresizer'
-Plug 'xolox/vim-misc'
-Plug 'xolox/vim-notes'
+Plug 'mtth/scratch.vim'
 Plug 'chriskempson/base16-vim'
-Plug 'ryanoasis/vim-devicons'
 Plug 'hdima/python-syntax'
-Plug 'kshenoy/vim-signature'
 
 " Front-end
 Plug 'pangloss/vim-javascript'
@@ -93,6 +88,9 @@ let g:mta_filetypes = {
 \ 'javascript.jsx' : 0,
 \}
 
+" Scratch
+let g:scratch_persistence_file = '~/.vim/scratch.vim'
+
 map <space> <leader>
 " Try and use <c-[> when jj is not possible
 inoremap jj <esc>
@@ -121,8 +119,8 @@ nnoremap <expr> n  'Nn'[v:searchforward]
 nnoremap <expr> N  'nN'[v:searchforward]
 
 " Disable ex-mode and recording mode
-map Q <nop>
-map q <nop>
+" map Q <nop>
+" map q <nop>
 
 autocmd InsertLeave,WinEnter * set cursorline
 autocmd InsertEnter,WinLeave * set nocursorline
@@ -173,7 +171,6 @@ nnoremap <silent> <leader>gi :Git add -p %<cr>
 nnoremap <silent> <leader>ge :Gedit :0<cr>
 
 " Deoplete
-let g:tmuxcomplete#trigger = ''
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_smart_case = 1
 set completeopt=longest,menuone,preview
@@ -221,7 +218,7 @@ let g:startify_custom_header = []
 
 " Sneak
 let g:sneak#s_next = 1
-hi! link Sneak Search
+" hi! link Sneak Search
 
 " Concealing
 let g:vim_json_syntax_conceal = 0
@@ -249,9 +246,6 @@ let g:gitgutter_sign_added = '∙'
 let g:gitgutter_sign_modified = '∙'
 let g:gitgutter_sign_removed = '∙'
 let g:gitgutter_sign_modified_removed = '∙'
-
-" Instant Markdown (use :InstantMarkdownPreview to preview)
-let g:instant_markdown_autostart=0
 
 " Ale
 let g:ale_lint_on_save = 1
@@ -345,7 +339,6 @@ set showcmd
 set hidden
 set cursorline
 set undofile
-set ignorecase
 set smartcase
 set showmatch
 set hlsearch
