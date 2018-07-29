@@ -70,8 +70,9 @@ print "$short_text\n";
 
 # consider color and urgent flag only on discharge
 if ($status eq 'Discharging') {
-
-	if ($percent < 20) {
+	if ($percent < 5 && `date +"%S"` % 10 eq 0) {
+		`notify-send -u critical "Low battery: $percent%!"`
+	} elsif ($percent < 20) {
 		print "#FF0000\n";
 	} elsif ($percent < 40) {
 		print "#FFAE00\n";

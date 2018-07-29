@@ -17,6 +17,14 @@ separator_block_width=12
 #full_text=
 #interval=5
 
+#[pomo]
+#label=🍅
+#command=/home/joenye/Projects/pomodoro/pomo_state.py
+#color=#FFFFFF
+#interval=1
+#
+#[separator]
+
 [memory]
 label=🐏
 color=#FFFFFF

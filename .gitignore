@@ -25,4 +25,5 @@ config/.config/*
 !config/.config/qutebrowser
 !config/.config/sway
 !config/.config/termite
+!config/.config/rofi
 !config/.config/yarn

@@ -2,3 +2,7 @@ font=MesloLGSDZ Nerd Font Mono 14
 width=400
 height=200
 default-timeout=8000
+
+[urgency=high]
+border-color=#FF0000
+background-color=#660000

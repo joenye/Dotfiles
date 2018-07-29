@@ -5,7 +5,7 @@ set $down j
 set $up k
 set $right l
 set $term termite
-set $menu dmenu_run
+set $menu rofi -show run
 
 ### Font
 font MesloLGSDZ Nerd Font Mono 12
@@ -16,7 +16,7 @@ input "2:7:SynPS/2_Synaptics_TouchPad" {
     dwt enabled
     natural_scroll enabled
 }
-input "6940:6921:Corsair_Corsair_K70R_Gaming_Keyboard" {
+input "1:1:AT_Translated_Set_2_keyboard" {
    repeat_delay 160
    repeat_rate 70
 }
@@ -24,7 +24,7 @@ input "9456:320:Metadot_-_Das_Keyboard_Das_Keyboard" {
    repeat_delay 160
    repeat_rate 70
 }
-input "1:1:AT_Translated_Set_2_keyboard" {
+input "6940:6921:Corsair_Corsair_K70R_Gaming_Keyboard" {
    repeat_delay 160
    repeat_rate 70
 }
@@ -42,7 +42,7 @@ bindsym $mod+d exec $menu
 bindsym $mod+Shift+c reload
 bindsym $mod+Ctrl+Shift+e exit
 bindsym $mod+Ctrl+Shift+s shutdown now
-bindsym $mod+q exec swaylock -i /home/joenye/Wallpapers/cool.png --daemonize
+bindsym $mod+q exec swaylock -i /home/joenye/Wallpapers/cool.png
 
 bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+1 i3blocks 
 bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+1 i3blocks
@@ -109,7 +109,7 @@ bindsym $mod+r mode "resize"
 bar {
     position top
     status_command sleep 0.5; i3blocks
-    font MesloLGSDZ Nerd Font Mono 11
+    font MesloLGSDZ Nerd Font Mono 14
     colors {
         statusline #ffffff
         background #323232
@@ -123,3 +123,4 @@ workspace_auto_back_and_forth yes
 
 # Run at startup
 exec mako
+exec start_pomo
