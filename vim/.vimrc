@@ -6,7 +6,7 @@ Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
-Plug 'tpope/vim-surround'
+Plug 'tpope/vim-surround' 
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-unimpaired'
@@ -27,7 +27,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'tommcdo/vim-exchange' " cxiw and .
 Plug 'kassio/neoterm'
 Plug 'simeji/winresizer'
-Plug 'mtth/scratch.vim'
+Plug 'mtth/scratch.vim'  " gs
 Plug 'chriskempson/base16-vim'
 Plug 'hdima/python-syntax'
 
@@ -47,6 +47,7 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'carlitux/deoplete-ternjs', { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'othree/jspc.vim', { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'zchee/deoplete-jedi'
+Plug 'zchee/deoplete-clang'
 
 " Snippets
 Plug 'SirVer/ultisnips'
@@ -90,6 +91,8 @@ let g:mta_filetypes = {
 
 " Scratch
 let g:scratch_persistence_file = '~/.vim/scratch.vim'
+let g:scratch_insert_autohide = 0
+let g:scratch_height = 14
 
 map <space> <leader>
 " Try and use <c-[> when jj is not possible
@@ -175,7 +178,8 @@ let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_smart_case = 1
 set completeopt=longest,menuone,preview
 let g:deoplete#sources = {}
-let g:deoplete#sources._=['omni', 'member', 'tag', 'file']
+" let g:deoplete#sources._ = ['omni', 'member', 'tag', 'file']
+let g:deoplete#sources._ = ['file']
 let g:SuperTabDefaultCompletionType = "<c-n>"
 let g:SuperTabClosePreviewOnPopupClose = 1
 let g:echodoc#enable_at_startup = 1
@@ -250,17 +254,18 @@ let g:gitgutter_sign_modified_removed = '∙'
 " Ale
 let g:ale_lint_on_save = 1
 let g:ale_lint_on_enter = 1
+let g:ale_lint_on_text_changed = 1
 let g:ale_lint_delay = 500
 let g:ale_sign_error = '>>'
 let g:ale_sign_warning = '--'
 let g:ale_sign_column_always = 1
-let g:ale_lint_on_text_changed = 'always'
 let g:ale_python_mypy_options = '--ignore-missing-imports --follow-imports=silent'
 let g:ale_linters = {
 \   'python': ['flake8'],
 \   'javascript': ['eslint'],
-\   'c': ['clangtidy']
+\   'c': ['clang']
 \}
+" \   'c': ['clang', 'clangtidy']
 " \   'python': ['flake8', 'mypy', 'pylint', 'yapf'],
 let g:ale_fixers = {
 \  'javascript': ['prettier'],

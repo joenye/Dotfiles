@@ -14,7 +14,7 @@ let g:ycm_python_binary_path = '/usr/bin/python'
 let test#python#pytest#executable = 'docker-compose exec app py.test'
 
 " Deoplete
-let g:deoplete#sources['python'] = g:deoplete#sources._ + ['ultisnips', 'jedi']
+let g:deoplete#sources['python'] = ['jedi', 'ultisnips'] + g:deoplete#sources._
 
 " Deoplete-jedi (https://github.com/zchee/deoplete-jedi)
 let g:deoplete#sources#jedi#show_docstring = 1
