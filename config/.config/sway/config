@@ -51,7 +51,7 @@ bindsym $mod+Ctrl+Shift+e exec swaynag -t warning -m 'Quit for real? ☠️' -b 
 bindsym $mod+Ctrl+Shift+s shutdown now
 
 # Lock screen
-bindsym $mod+q exec swaylock
+bindsym $mod+q exec $swaylock
 # Suspend (will lock screen anyway)
 bindsym $mod+z exec systemctl suspend
 
@@ -129,7 +129,7 @@ bindsym $mod+r mode "resize"
 bar {
     position top
     status_command sleep 0.5; i3blocks
-    font MesloLGSDZ Nerd Font Mono 14
+    font MesloLGSDZ Nerd Font Mono 11
     colors {
         statusline #ffffff
         background #323232
