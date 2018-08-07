@@ -52,7 +52,7 @@ Plug 'zchee/deoplete-clang'
 
 " Snippets
 Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+Plug 'joenye/vim-snippets'
 
 call plug#end()
 
