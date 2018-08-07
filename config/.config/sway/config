@@ -6,6 +6,7 @@ set $up k
 set $right l
 set $term termite
 set $menu rofi -show run
+set $swaylock swaylock -i /home/joenye/Pictures/Wallpapers/cool.png
 
 ### Font
 font MesloLGSDZ Nerd Font Mono 12
@@ -46,10 +47,13 @@ bindsym $mod+Shift+q kill
 bindsym $mod+d exec $menu
 bindsym $mod+Shift+c reload
 bindsym $mod+Ctrl+Shift+e exit
+bindsym $mod+Ctrl+Shift+e exec swaynag -t warning -m 'Quit for real? ☠️' -b 'Yes, exit sway' 'swaymsg exit'
 bindsym $mod+Ctrl+Shift+s shutdown now
 
 # Lock screen
-bindsym $mod+q exec swaylock -i /home/joenye/Pictures/Wallpapers/cool.png
+bindsym $mod+q exec swaylock
+# Suspend (will lock screen anyway)
+bindsym $mod+z exec systemctl suspend
 
 bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+1 i3blocks 
 bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+1 i3blocks
@@ -99,6 +103,9 @@ bindsym $mod+e layout toggle split
 
 bindsym $mod+f fullscreen
 bindsym $mod+Shift+space floating toggle
+# Drag floating windows by holding down $mod + left mouse
+# Resize them with $mod + right mouse button
+floating_modifier $mod normal
 
 bindsym $mod+a focus parent
 
@@ -136,4 +143,8 @@ workspace_auto_back_and_forth yes
 
 # Run at startup
 exec mako
-exec start_pomo
+exec swayidle \
+timeout 300 'exec $swaylock' \
+timeout 600 'swaymsg "output * dpms off"' \
+resume 'swaymsg "output * dpms on"' \
+before-sleep 'exec $swaylock'
