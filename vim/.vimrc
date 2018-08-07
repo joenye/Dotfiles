@@ -344,6 +344,7 @@ set showcmd
 set hidden
 set cursorline
 set undofile
+set ignorecase
 set smartcase
 set showmatch
 set hlsearch
