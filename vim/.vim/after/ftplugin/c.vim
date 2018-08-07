@@ -1,6 +1,5 @@
-set expandtab
-set tabstop=4
-set shiftwidth=4
+set tabstop=8
+set shiftwidth=8
 
 " Deoplete
 let g:deoplete#sources['c'] = ['clang', 'ultisnips'] + g:deoplete#sources._
