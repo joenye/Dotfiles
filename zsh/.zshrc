@@ -2,16 +2,6 @@ export PATH=$HOME/bin:/usr/local/bin:/home/joenye/.npm-global/bin:/home/joenye/p
 export NODE_PATH=/home/joenye/.npm-global/lib/node_modules
 export ZSH=/home/joenye/.oh-my-zsh
 
-# Keyboard layout
-export XKB_DEFAULT_LAYOUT=gb                                        
-export XKB_DEFAULT_OPTIONS=caps:none
-
-# Keyboard repeat delay                                             
-export WLC_REPEAT_DELAY=200                                        
-
-# Keyboard repeat rate
-export WLC_REPEAT_RATE=70                                         
-
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
@@ -107,8 +97,8 @@ fi
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias python3="/usr/bin/python3.6"
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3.6
+alias python3="/usr/bin/python3.7"
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3.7
 source /usr/bin/virtualenvwrapper.sh
 
 export NVM_DIR="$HOME/.nvm"
@@ -126,7 +116,7 @@ autoload bashcompinit
 bashcompinit
 eval "$(_TMUXP_COMPLETE=source tmuxp)"
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.key-bindings.zsh ] && source ~/.key-bindings.zsh
 
 # Do not be disturbed by ctrl-s or ctrl-q.
 stty -ixon

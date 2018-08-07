@@ -19,21 +19,26 @@ input "2:7:SynPS/2_Synaptics_TouchPad" {
 input "1:1:AT_Translated_Set_2_keyboard" {
    repeat_delay 160
    repeat_rate 70
+   xkb_numlock disabled
 }
 input "9456:320:Metadot_-_Das_Keyboard_Das_Keyboard" {
    repeat_delay 160
    repeat_rate 70
+   xkb_numlock disabled
 }
 input "6940:6921:Corsair_Corsair_K70R_Gaming_Keyboard" {
    repeat_delay 160
    repeat_rate 70
+   xkb_numlock disabled
 }
 
 ### Outputs
 output eDP-1 position 0,0 scale 1
 output HDMI-A-2 position 2560,0 scale 1
 output DP-1 position 2560,0 scale 1
-output * bg /home/joenye/Wallpapers/cool2.jpg fill
+
+# Wallpaper
+output * bg /home/joenye/Pictures/Wallpapers/wolf.png fill
 
 ### Key bindings
 bindsym $mod+Return exec $term
@@ -42,7 +47,9 @@ bindsym $mod+d exec $menu
 bindsym $mod+Shift+c reload
 bindsym $mod+Ctrl+Shift+e exit
 bindsym $mod+Ctrl+Shift+s shutdown now
-bindsym $mod+q exec swaylock -i /home/joenye/Wallpapers/cool.png
+
+# Lock screen
+bindsym $mod+q exec swaylock -i /home/joenye/Pictures/Wallpapers/cool.png
 
 bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+1 i3blocks 
 bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+1 i3blocks
@@ -94,6 +101,12 @@ bindsym $mod+f fullscreen
 bindsym $mod+Shift+space floating toggle
 
 bindsym $mod+a focus parent
+
+# Cycle through border styles
+bindsym $mod+m border toggle
+
+# Screenshots
+bindsym Print exec swaygrab ~/Pictures/Screenshots/$(date +"%Y-%m-%d_%H:%M:%S.png")
 
 ### Resize mode
 mode "resize" {
