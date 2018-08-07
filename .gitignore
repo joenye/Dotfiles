@@ -27,3 +27,4 @@ config/.config/*
 !config/.config/termite
 !config/.config/rofi
 !config/.config/yarn
+!config/.config/htop
