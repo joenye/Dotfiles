@@ -1,2 +1,0 @@
-#!/bin/sh
-$(dwrapper) $(echo "$@" | grep -q '[-]p ' || echo '-p Run') $@

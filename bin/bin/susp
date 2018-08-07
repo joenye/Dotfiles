@@ -1,3 +1,0 @@
-#!/bin/zsh
-echo hello
-systemctl suspend && swaylock -i /home/joenye/Wallpapers/cool.png

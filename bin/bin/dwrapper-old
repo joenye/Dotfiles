@@ -1,4 +1,0 @@
-#!/bin/sh
-echo /usr/bin/dmenu -i -sb '#4E9258' -sf '#fff' -nb "#255" -h 50 -o 0.8 -fn 'Tamsyn-15' -h 60 -w 1600 -x 500 -y 600
-
-
