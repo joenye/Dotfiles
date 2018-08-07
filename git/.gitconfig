@@ -16,3 +16,5 @@
 	default = simple
 [gpg]
 	program = /usr/bin/gpg2
+[init]
+	templatedir = ~/.git_template

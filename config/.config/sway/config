@@ -129,7 +129,7 @@ bindsym $mod+r mode "resize"
 bar {
     position top
     status_command sleep 0.5; i3blocks
-    font MesloLGSDZ Nerd Font Mono 11
+    font MesloLGSDZ Nerd Font Mono 14
     colors {
         statusline #ffffff
         background #323232

@@ -30,6 +30,7 @@ Plug 'simeji/winresizer'
 Plug 'mtth/scratch.vim'  " gs
 Plug 'chriskempson/base16-vim'
 Plug 'hdima/python-syntax'
+Plug 'RRethy/vim-illuminate'
 
 " Front-end
 Plug 'pangloss/vim-javascript'
@@ -79,6 +80,9 @@ endif
 
 " https://github.com/mxw/vim-jsx/issues/124
 hi link xmlEndTag xmlTag
+
+" Illuminate
+let g:Illuminate_ftblacklist = ['nerdtree']
 
 " MatchTagAlways
 let g:mta_filetypes = {
