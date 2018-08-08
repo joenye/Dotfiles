@@ -113,7 +113,7 @@ bindsym $mod+a focus parent
 bindsym $mod+m border toggle
 
 # Screenshots
-bindsym Print exec swaygrab ~/Pictures/Screenshots/$(date +"%Y-%m-%d_%H:%M:%S.png")
+bindsym Print exec slurp | grim -g - ~/Pictures/Screenshots/$(date +'%d-%m-%Y-%H%M%S.png')
 
 ### Resize mode
 mode "resize" {
@@ -129,7 +129,7 @@ bindsym $mod+r mode "resize"
 bar {
     position top
     status_command sleep 0.5; i3blocks
-    font MesloLGSDZ Nerd Font Mono 14
+    font MesloLGSDZ Nerd Font Mono 11
     colors {
         statusline #ffffff
         background #323232
