@@ -113,7 +113,7 @@ bindsym $mod+a focus parent
 bindsym $mod+m border toggle
 
 # Screenshots
-bindsym Print exec slurp | grim -g - ~/Pictures/Screenshots/$(date +'%d-%m-%Y-%H%M%S.png')
+bindsym Print exec file=~/Pictures/Screenshots/$(date +'%Y-%m-%d-%H%M%S_grim.png') && slurp | grim -g - $file && eog $file
 
 ### Resize mode
 mode "resize" {
