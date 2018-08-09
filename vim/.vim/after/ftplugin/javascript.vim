@@ -1,6 +1,7 @@
 set expandtab
 set tabstop=2
 set shiftwidth=2
+set colorcolumn=
 
 let g:deoplete#omni#functions = {}
 let g:deoplete#omni#functions['javascript'] = [

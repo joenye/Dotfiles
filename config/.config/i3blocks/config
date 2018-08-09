@@ -53,7 +53,7 @@ interval=5
 label=🔖
 color=#FFFFFF
 full_text=h
-interval=50
+interval=10
 
 [separator]
 

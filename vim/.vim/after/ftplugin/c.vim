@@ -1,5 +1,6 @@
 set tabstop=8
 set shiftwidth=8
+set colorcolumn=81
 
 " Deoplete
 let g:deoplete#sources['c'] = ['clang', 'ultisnips'] + g:deoplete#sources._
