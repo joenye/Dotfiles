@@ -13,8 +13,8 @@ font MesloLGSDZ Nerd Font Mono 12
 
 ### Inputs
 input "2:7:SynPS/2_Synaptics_TouchPad" {
-    tap enabled
     dwt enabled
+    tap enabled
     natural_scroll enabled
 }
 input "1:1:AT_Translated_Set_2_keyboard" {
@@ -129,7 +129,7 @@ bindsym $mod+r mode "resize"
 bar {
     position top
     status_command sleep 0.5; i3blocks
-    font MesloLGSDZ Nerd Font Mono 11
+    font MesloLGSDZ Nerd Font Mono 14
     colors {
         statusline #ffffff
         background #323232
