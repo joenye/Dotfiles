@@ -16,6 +16,7 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'dhruvasagar/vim-vinegar'
 Plug 'mhinz/vim-startify'
 Plug 'itchyny/lightline.vim'
+Plug 'maximbaz/lightline-ale'
 Plug 'airblade/vim-gitgutter'
 Plug 'airblade/vim-rooter'
 Plug 'w0rp/ale'
@@ -85,13 +86,14 @@ hi link xmlEndTag xmlTag
 let g:Illuminate_ftblacklist = ['nerdtree']
 
 " MatchTagAlways
-let g:mta_filetypes = {
-\ 'html' : 1,
-\ 'xhtml' : 1,
-\ 'xml' : 1,
-\ 'jinja' : 1,
-\ 'javascript.jsx' : 0,
-\}
+let g:mta_filetypes = {}
+" let g:mta_filetypes = {
+" \ 'html' : 1,
+" \ 'xhtml' : 1,
+" \ 'xml' : 1,
+" \ 'jinja' : 1,
+" \ 'javascript.jsx' : 0,
+" \}
 
 " Scratch
 let g:scratch_persistence_file = '~/.vim/scratch.vim'
@@ -124,10 +126,6 @@ nnoremap gj j
 " Always search forward with n and backward with N
 nnoremap <expr> n  'Nn'[v:searchforward]
 nnoremap <expr> N  'nN'[v:searchforward]
-
-" Disable ex-mode and recording mode
-" map Q <nop>
-" map q <nop>
 
 autocmd InsertLeave,WinEnter * set cursorline
 autocmd InsertEnter,WinLeave * set nocursorline
@@ -210,7 +208,9 @@ let g:netrw_menu=0
 let g:netrw_winsize=10
 
 " Rooter
-let g:rooter_patterns = ['.git', '.git/']
+set autochdir
+let g:rooter_patterns = ['node_modules/', '.git', '.git/']
+let g:rooter_manual_only = 1 " Commands that care about dir should invoke rooter
 
 " NERDTree
 let NERDTreeIgnore = ['\.pyc$', '^__pycache__$', '\.sw.$', '\.un\~']
@@ -224,10 +224,6 @@ map <C-n> :NERDTreeToggle<CR>
 " Startify
 let g:startify_custom_header = []
 
-" Sneak
-let g:sneak#s_next = 1
-" hi! link Sneak Search
-
 " Concealing
 let g:vim_json_syntax_conceal = 0
 
@@ -235,13 +231,11 @@ let g:vim_json_syntax_conceal = 0
 set rtp+=~/.fzf
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 nmap ; :Buffers<cr>
-nmap <leader>e :Tags<cr>
-nmap <leader>r :Files<cr>
-command! -bang -nargs=? -complete=dir HFiles
-  \ call fzf#vim#files(<q-args>, {'source': 'ag --hidden --ignore .git -g ""'}, <bang>0)
-nmap <leader>i :HFiles<cr>
+nmap <leader>e :Rooter<cr><bar>:Tags<cr>
+nmap <leader>r :Rooter<cr><bar>:GFiles<cr>
+nmap <leader>i :Rooter<cr><bar>:HFiles<cr>
 nmap <leader>l :Lines<cr>
-nmap <leader>a :Ag<cr>
+nmap <leader>a :Rooter<cr><bar>:Ag<cr>
 nmap <leader>h :History<cr>
 command! CmdHist call fzf#vim#command_history({'right': '40'})
 command! QHist call fzf#vim#search_history({'right': '40'})
@@ -266,18 +260,23 @@ let g:ale_sign_column_always = 1
 let g:ale_python_mypy_options = '--ignore-missing-imports --follow-imports=silent'
 let g:ale_linters = {
 \   'python': ['flake8'],
-\   'javascript': ['eslint'],
+\   'javascript': ['standard'],
 \   'c': ['clang']
 \}
+" \   'javascript': ['eslint'],
 " \   'c': ['clang', 'clangtidy']
 " \   'python': ['flake8', 'mypy', 'pylint', 'yapf'],
 let g:ale_fixers = {
-\  'javascript': ['prettier'],
+\  'javascript': ['standard'],
 \  'c': ['clang-format']
 \}
+" \  'javascript': ['prettier'],
 nmap <leader>f <plug>(ale_fix)
 nmap <silent> <leader>j :ALENext<cr>
 nmap <silent> <leader>k :ALEPrevious<cr>
+
+" Treat all header files as C files
+autocmd BufRead,BufNewFile *.h,*.c set filetype=c
 
 " Emmet
 nmap <expr> <leader>, emmet#expandAbbrIntelligent('\<space>')
@@ -292,28 +291,24 @@ augroup YourGroup
     autocmd!
     autocmd User ALELint call lightline#update()
 augroup END
-
 function! LightlineLinterWarnings() abort
   let l:counts = ale#statusline#Count(bufnr(''))
   let l:all_errors = l:counts.error + l:counts.style_error
   let l:all_non_errors = l:counts.total - l:all_errors
   return l:all_non_errors == 0 ? '' : printf('%d ◆', all_non_errors)
 endfunction
-
 function! LightlineLinterErrors() abort
   let l:counts = ale#statusline#Count(bufnr(''))
   let l:all_errors = l:counts.error + l:counts.style_error
   let l:all_non_errors = l:counts.total - l:all_errors
   return l:counts.total == 0 ? '' : printf('%d ✗', all_errors)
 endfunction
-
 function! LightlineLinterOK() abort
   let l:counts = ale#statusline#Count(bufnr(''))
   let l:all_errors = l:counts.error + l:counts.style_error
   let l:all_non_errors = l:counts.total - l:all_errors
   return l:counts.total == 0 ? '✓' : ''
 endfunction
-
 let g:lightline = {
       \ 'colorscheme': 'Tomorrow_Night',
       \ 'active': {

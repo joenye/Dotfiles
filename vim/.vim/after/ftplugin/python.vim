@@ -18,4 +18,3 @@ let g:deoplete#sources['python'] = ['jedi', 'ultisnips'] + g:deoplete#sources._
 
 " Deoplete-jedi (https://github.com/zchee/deoplete-jedi)
 let g:deoplete#sources#jedi#show_docstring = 1
-let g:deoplete#sources#jedi#python_path = '/usr/bin/python'
