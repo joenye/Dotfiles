@@ -97,10 +97,6 @@ fi
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias python3="/usr/bin/python3.7"
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3.7
-source /usr/bin/virtualenvwrapper.sh
-
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
@@ -137,4 +133,9 @@ gpg-connect-agent updatestartuptty /bye > /dev/null; pkill curses
 # Alaister's lengendary scripts
 listify () {
     cat $1 | cut -d ',' -f 1  | awk '{print "\""$1"\","}' | tr '\n' ' ' | awk '{print "["$0"]"}'
+}
+lesspdf () {
+    TF='/tmp/lesspdf'
+    pdftotext $1 $TF && less $TF
+    rm $TF
 }
