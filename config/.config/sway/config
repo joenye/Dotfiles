@@ -6,7 +6,7 @@ set $up k
 set $right l
 set $term termite
 set $menu rofi -show run
-set $swaylock swaylock -i /home/joenye/Pictures/Wallpapers/cool.png
+set $swaylock swaylock -i /home/joenye/Pictures/Wallpapers/cool.png -u
 
 ### Font
 font MesloLGSDZ Nerd Font Mono 12
@@ -17,6 +17,13 @@ input "2:7:SynPS/2_Synaptics_TouchPad" {
     tap enabled
     natural_scroll enabled
 }
+
+# input * {
+#    repeat_delay 160
+#    repeat_rate 70
+#    xkb_numlock disabled
+# }
+
 input "1:1:AT_Translated_Set_2_keyboard" {
    repeat_delay 160
    repeat_rate 70
@@ -50,17 +57,18 @@ bindsym $mod+Ctrl+Shift+e exit
 bindsym $mod+Ctrl+Shift+e exec swaynag -t warning -m 'Quit for real? ☠️' -b 'Yes, exit sway' 'swaymsg exit'
 bindsym $mod+Ctrl+Shift+s shutdown now
 
+
 # Lock screen
 bindsym $mod+q exec $swaylock
 # Suspend (will lock screen anyway)
 bindsym $mod+z exec systemctl suspend
 
-bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+1 i3blocks 
-bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+1 i3blocks
-bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+1 i3blocks
+bindsym --locked XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+1 i3blocks 
+bindsym --locked XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+1 i3blocks
+bindsym --locked XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+1 i3blocks
 
-bindsym XF86MonBrightnessUp exec brightnessctl s +5%
-bindsym XF86MonBrightnessDown exec brightnessctl s 5%-
+bindsym --locked XF86MonBrightnessUp exec brightnessctl s +5%
+bindsym --locked XF86MonBrightnessDown exec brightnessctl s 5%-
 
 bindsym $mod+$left focus left
 bindsym $mod+$down focus down
@@ -113,7 +121,7 @@ bindsym $mod+a focus parent
 bindsym $mod+m border toggle
 
 # Screenshots
-bindsym Print exec file=~/Pictures/Screenshots/$(date +'%Y-%m-%d-%H%M%S_grim.png') && slurp | grim -g - $file && eog $file
+bindsym Print exec file=~/Pictures/Screenshots/$(date +'%Y-%m-%d-%H%M%S_grim.png') && slurp | grim -g -c - $file && eog $file
 
 ### Resize mode
 mode "resize" {
@@ -128,7 +136,7 @@ bindsym $mod+r mode "resize"
 # Status bar
 bar {
     position top
-    status_command sleep 0.5; i3blocks
+    status_command i3blocks
     font MesloLGSDZ Nerd Font Mono 14
     colors {
         statusline #ffffff

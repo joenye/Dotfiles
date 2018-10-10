@@ -9,19 +9,19 @@ separator_block_width=12
 #label=🐳
 #color=#FFFFFF
 #full_text=
-#interval=2
+#interval=3
 
 #[spotify.py]
 #label=🎧
 #color=#FFFFFF
 #full_text=
-#interval=5
+#interval=3
 
 [memory]
 label=🐏
 color=#FFFFFF
 full_text=
-interval=5
+interval=3
 
 [separator]
 
@@ -29,7 +29,7 @@ interval=5
 label=🧠
 color=#FFFFFF
 full_text=
-interval=2
+interval=3
 
 [separator]
 
@@ -37,7 +37,7 @@ interval=2
 label=🌡️
 color=#FFFFFF
 full_text=
-interval=5
+interval=3
 
 [separator]
 
@@ -45,7 +45,7 @@ interval=5
 label=💨
 color=#FFFFFF
 full_text=
-interval=5 
+interval=3 
 
 [separator]
 
@@ -53,7 +53,7 @@ interval=5
 label=🔖
 color=#FFFFFF
 full_text=h
-interval=10
+interval=3
 
 [separator]
 
@@ -65,32 +65,55 @@ interval=10
 #
 #[separator]
 
+[ping]
+label=
+color=#FFFFFF
+full_text=
+interval=3
+command=if ping -w 1 -c 1 8.8.8.8 >/dev/null 2>&1; then echo ""; else echo "🔴"; fi
+
 [network]
 label=📡
 instance=wlp4s0
 color=#FFFFFF
 full_text=
-interval=10
+interval=3
+
+[ssid]
+label=
+color=#FFFFFF
+full_text=
+interval=3
+
+[separator]
+
+[brightness]
+label=🔆
+#label=🌞
+command=brightnessctl -m | tr ',' '\n' | sed -n 4p
+interval=3
+color=#ffffff
+full_text=
 
 [separator]
 
 [battery]
 label=⚡0:
-interval=1
+interval=3
 color=#FFFFFF
 full_text=
 instance=0
 
 [battery]
 label= ⚡1:
-interval=1
-color=#FFFFFF
+interval=3
+color=#ffffff
 full_text=
 instance=1
 
 [battery]
 label= ⚡2:
-interval=1
+interval=3
 color=#FFFFFF
 full_text=
 instance=2
@@ -109,7 +132,7 @@ signal=1
 
 [datetime]
 label=📅
-interval=5
+interval=3
 color=#FFFFFF
 full_text=
 instance=%a %d %b %Y  🕒 %H:%M 
