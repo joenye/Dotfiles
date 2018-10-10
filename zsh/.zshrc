@@ -108,9 +108,9 @@ if [[ $TERM == xterm-termite ]]; then
 fi
 
 # Tmuxp completion
-autoload bashcompinit
-bashcompinit
-eval "$(_TMUXP_COMPLETE=source tmuxp)"
+# autoload bashcompinit
+# bashcompinit
+# eval "$(_TMUXP_COMPLETE=source tmuxp)"
 
 [ -f ~/.key-bindings.zsh ] && source ~/.key-bindings.zsh
 
@@ -124,6 +124,8 @@ fi
 
 # Wego
 alias weather='wego'
+
+alias open='nautilus . &'
 
 # SSH
 export GPG_TTY="$(tty)"
