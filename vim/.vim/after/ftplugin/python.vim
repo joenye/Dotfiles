@@ -18,3 +18,7 @@ let g:deoplete#sources['python'] = ['jedi', 'ultisnips'] + g:deoplete#sources._
 
 " Deoplete-jedi (https://github.com/zchee/deoplete-jedi)
 let g:deoplete#sources#jedi#show_docstring = 1
+
+" UltiSnips
+let g:ultisnips_python_style = 'google'
+let g:ultisnips_python_quoting_style = 'single'

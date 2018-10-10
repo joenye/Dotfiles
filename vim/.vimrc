@@ -28,7 +28,6 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'tommcdo/vim-exchange' " cxiw and .
 Plug 'kassio/neoterm'
 Plug 'simeji/winresizer'
-Plug 'mtth/scratch.vim'  " gs
 Plug 'chriskempson/base16-vim'
 Plug 'hdima/python-syntax'
 Plug 'RRethy/vim-illuminate'
@@ -152,6 +151,7 @@ map <c-a> <esc>ggVG<cr>
 " Testing
 let test#strategy = 'neoterm'
 let g:neoterm_size = '15'
+let g:neoterm_autoscroll = 1
 let g:neoterm_autoinsert = 1
 let g:neoterm_default_mod = ':botright'
 let g:test#preserve_screen = 1
@@ -343,11 +343,11 @@ set showcmd
 set hidden
 set cursorline
 set undofile
-set ignorecase
-set smartcase
 set showmatch
 set hlsearch
 set lazyredraw
+set ignorecase
+set smartcase
 
 " Don't litter swp files everywhere
 set backupdir=~/.cache
