@@ -286,6 +286,9 @@ sudo echo "START=yes" > /etc/default/thinkfan
 sudo sensors-detect --auto
 sudo systemctl enable thinkfan
 sudo systemctl enable lm_sensors
+# ExecStartPre=/sbin/modprobe thinkpad_acpi
+# https://www.reddit.com/r/debian/comments/77d2br/thinkfan_fails_to_load_at_boot_but_works_fine/
+sudo vim /usr/lib/systemd/system/thinkfan.service
 
 # Configure vim
 TODO
