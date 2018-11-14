@@ -19,6 +19,7 @@ device-mapper
 dhcpcd
 dialog
 diffutils
+dosfstools
 e2fsprogs
 eog
 evince
@@ -66,6 +67,7 @@ nerd-fonts-complete
 netctl
 noto-fonts
 noto-fonts-emoji
+ntfsprogs
 oh-my-zsh-git
 openssh
 pacman

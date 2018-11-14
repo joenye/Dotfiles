@@ -4,13 +4,13 @@ export NODE_PATH=/home/joenye/.npm-global/lib/node_modules
 export GPG_TTY="$(tty)"
 export SSH_AUTH_SOCK="/run/user/$UID/gnupg/S.gpg-agent.ssh"
 gpg-connect-agent updatestartuptty /bye > /dev/null; pkill curses
+export ZSH=/usr/share/oh-my-zsh
 
 ZSH_THEME="robbyrussell"
 COMPLETION_WAITING_DOTS="true"
 
 plugins=(git)
 
-# Termite
 if [[ $TERM == xterm-termite ]]; then
   . /etc/profile.d/vte.sh
   __vte_osc7
@@ -29,11 +29,11 @@ if type nvim > /dev/null 2>&1; then
 fi
 alias weather='wego'
 alias open='nautilus . &'
-alias reboot='sudo systemctl reboot'
-alias shutdown='sudo systemctl poweroff'
-alias suspend='sudo systemctl suspend'
+alias reboot='reboot'
+alias shutdown='shutdown now'
+alias suspend='systemctl suspend'
 
-source /usr/share/oh-my-zsh/oh-my-zsh.sh
+source $ZSH/oh-my-zsh.sh
 source /usr/share/nvm/init-nvm.sh
 source /usr/share/fzf/key-bindings.zsh
 source /usr/share/fzf/completion.zsh
