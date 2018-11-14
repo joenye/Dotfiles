@@ -15,7 +15,7 @@ Session.vim
 # Auto-generated tag files
 tags
 
-vim/.vim/bundle/*
+vim/.vim/*
 aws/.aws/*
 
 config/.config/*
