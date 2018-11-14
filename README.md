@@ -226,7 +226,7 @@ sudo vim /etc/maklepkg.conf
 yay termite sway
 
 # Install all other packages
-TODO
+pacman -Rsu $(comm -23 <(pacman -Qq | sort) <(sort pkglist-clean.txt))
 
 # Configure fonts
 # https://www.reddit.com/r/archlinux/comments/5r5ep8/make_your_arch_fonts_beautiful_easily/
