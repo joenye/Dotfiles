@@ -301,6 +301,20 @@ sudo vim /etc/bluetooth/main.conf
 sudo systemctl enable bluetooth.service
 sudo systemctl start bluetooth.service
 
+# Prevent opening lid resuming sleep
+sudo cat <<EOT > /etc/systemd/system/disable-lid.service
+[Unit]
+Description=Prevent opening the lid waking from sleep
+
+[Service]
+ExecStart=/bin/sh -c '/bin/echo LID > /proc/acpi/wakeup'
+
+[Install]
+WantedBy=multi-user.target
+EOT
+sudo systemctl start disable-lid.service
+sudo systemctl enable disable-lid.service
+
 # systemd-boot pacman hook
 yay systemd-boot-pacman-hook
 
