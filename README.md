@@ -290,8 +290,7 @@ sudo systemctl enable lm_sensors
 # https://www.reddit.com/r/debian/comments/77d2br/thinkfan_fails_to_load_at_boot_but_works_fine/
 sudo vim /usr/lib/systemd/system/thinkfan.service
 
-# Configure vim
-TODO
+# Configure vim: enter (neo)vim and run :PlugInstall
 
 # Configure bluetooth
 sudo usermod -a -G lp joenye
@@ -324,6 +323,7 @@ yay systemd-boot-pacman-hook
 
 sudo systemctl enable snapper-cleanup.timer
 sudo systemctl enable snapper-timeline.timer
+
 sudo umount /.snapshots
 sudo rm -r /.snapshots
 sudo snapper -c root create-config /
@@ -331,7 +331,10 @@ sudo snapper -c root create-config /
 sudo mount -a
 sudo chmod 750 /.snapshots
 
+sudo umount /home/.snapshots
+sudo rm -r /home/.snapshots
 sudo snapper -c home create-config /home
+# Remove auto-created subvolume
 sudo rm -r /home/.snapshots
 # Re-mount @snapshots to /.snapshots as per fstab
 sudo mount -a
