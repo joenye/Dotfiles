@@ -47,23 +47,15 @@ color=#FFFFFF
 full_text=
 interval=3 
 
-[separator]
-
-[ip-address]
-label=🔖
-color=#FFFFFF
-full_text=h
-interval=3
-
-[separator]
-
-#[bluetooth]
-#label=🔄
-#color=#FFFFFF
-#full_text=
-#interval=10
-#
 #[separator]
+
+#[ip-address]
+#label=🔖
+#color=#FFFFFF
+#full_text=h
+#interval=3
+
+[separator]
 
 [ping]
 label=
@@ -94,6 +86,7 @@ command=brightnessctl -m | tr ',' '\n' | sed -n 4p
 interval=3
 color=#ffffff
 full_text=
+signal=2
 
 [separator]
 

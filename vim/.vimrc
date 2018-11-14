@@ -14,7 +14,6 @@ Plug 'junegunn/gv.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 Plug 'dhruvasagar/vim-vinegar'
-Plug 'mhinz/vim-startify'
 Plug 'itchyny/lightline.vim'
 Plug 'maximbaz/lightline-ale'
 Plug 'airblade/vim-gitgutter'
@@ -220,9 +219,6 @@ let g:NERDTreeMapQuit = 'qq'
 let NERDTreeChDirMode=2
 " Only use toggle for directory
 map <C-n> :NERDTreeToggle<CR>
-
-" Startify
-let g:startify_custom_header = []
 
 " Concealing
 let g:vim_json_syntax_conceal = 0

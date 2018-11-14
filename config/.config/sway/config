@@ -6,38 +6,25 @@ set $up k
 set $right l
 set $term termite
 set $menu rofi -show run
-set $swaylock swaylock -i /home/joenye/Pictures/Wallpapers/cool.png -u
+set $swaylock swaylock -i /home/joenye/Pictures/Wallpapers/cool.png
 
 ### Font
 font MesloLGSDZ Nerd Font Mono 12
 
 ### Inputs
+
+input * {
+   xkb_layout gb
+   xkb_numlock disabled
+   xkb_options caps:none
+   repeat_delay 160
+   repeat_rate 70
+}
+
 input "2:7:SynPS/2_Synaptics_TouchPad" {
     dwt enabled
     tap enabled
     natural_scroll enabled
-}
-
-# input * {
-#    repeat_delay 160
-#    repeat_rate 70
-#    xkb_numlock disabled
-# }
-
-input "1:1:AT_Translated_Set_2_keyboard" {
-   repeat_delay 160
-   repeat_rate 70
-   xkb_numlock disabled
-}
-input "9456:320:Metadot_-_Das_Keyboard_Das_Keyboard" {
-   repeat_delay 160
-   repeat_rate 70
-   xkb_numlock disabled
-}
-input "6940:6921:Corsair_Corsair_K70R_Gaming_Keyboard" {
-   repeat_delay 160
-   repeat_rate 70
-   xkb_numlock disabled
 }
 
 ### Outputs
@@ -46,7 +33,7 @@ output HDMI-A-2 position 2560,0 scale 1
 output DP-1 position 2560,0 scale 1
 
 # Wallpaper
-output * bg /home/joenye/Pictures/Wallpapers/wolf.png fill
+output * bg /home/joenye/Pictures/Wallpapers/cool.png fill
 
 ### Key bindings
 bindsym $mod+Return exec $term
@@ -57,7 +44,6 @@ bindsym $mod+Ctrl+Shift+e exit
 bindsym $mod+Ctrl+Shift+e exec swaynag -t warning -m 'Quit for real? ☠️' -b 'Yes, exit sway' 'swaymsg exit'
 bindsym $mod+Ctrl+Shift+s shutdown now
 
-
 # Lock screen
 bindsym $mod+q exec $swaylock
 # Suspend (will lock screen anyway)
@@ -67,8 +53,8 @@ bindsym --locked XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ &&
 bindsym --locked XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+1 i3blocks
 bindsym --locked XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+1 i3blocks
 
-bindsym --locked XF86MonBrightnessUp exec brightnessctl s +5%
-bindsym --locked XF86MonBrightnessDown exec brightnessctl s 5%-
+bindsym --locked XF86MonBrightnessUp exec brightnessctl s +5% && pkill -RTMIN+2 i3blocks
+bindsym --locked XF86MonBrightnessDown exec brightnessctl s 5%- && pkill -RTMIN+2 i3blocks
 
 bindsym $mod+$left focus left
 bindsym $mod+$down focus down
@@ -121,7 +107,7 @@ bindsym $mod+a focus parent
 bindsym $mod+m border toggle
 
 # Screenshots
-bindsym Print exec file=~/Pictures/Screenshots/$(date +'%Y-%m-%d-%H%M%S_grim.png') && slurp | grim -g -c - $file && eog $file
+bindsym Print exec file=~/Pictures/Screenshots/$(date +'%Y-%m-%d-%H%M%S_grim.png') && slurp | grim -c -g - $file && eog $file
 
 ### Resize mode
 mode "resize" {
@@ -156,3 +142,5 @@ timeout 300 'exec $swaylock' \
 timeout 600 'swaymsg "output * dpms off"' \
 resume 'swaymsg "output * dpms on"' \
 before-sleep 'exec $swaylock'
+
+exec systemd-notify --ready || true
