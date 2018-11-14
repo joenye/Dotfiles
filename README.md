@@ -290,6 +290,14 @@ sudo systemctl enable lm_sensors
 # Configure vim
 TODO
 
+# Configure bluetooth
+sudo usermod -a -G lp joenye
+# ControllerMode=bredr
+# AutoEnable=true
+sudo vim /etc/bluetooth/main.conf
+sudo systemctl enable bluetooth.service
+sudo systemctl start bluetooth.service
+
 # systemd-boot pacman hook
 yay systemd-boot-pacman-hook
 
