@@ -19,7 +19,6 @@ vim/.vim/*
 aws/.aws/*
 
 config/.config/*
-!config/.config/htop
 !config/.config/i3blocks
 !config/.config/mako
 !config/.config/qutebrowser
