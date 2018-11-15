@@ -6,7 +6,7 @@ set $up k
 set $right l
 set $term termite
 set $menu rofi -show run
-set $swaylock swaylock -i /home/joenye/Pictures/Wallpapers/cool.png
+set $swaylock swaylock --image=/home/joenye/Pictures/Wallpapers/lockscreen.png --scaling=fill
 
 ### Font
 font MesloLGSDZ Nerd Font Mono 12
@@ -33,7 +33,7 @@ output HDMI-A-2 position 2560,0 scale 1
 output DP-1 position 2560,0 scale 1
 
 # Wallpaper
-output * bg /home/joenye/Pictures/Wallpapers/cool.png fill
+output * bg /home/joenye/Pictures/Wallpapers/desktop.png fill
 
 ### Key bindings
 bindsym $mod+Return exec $term
