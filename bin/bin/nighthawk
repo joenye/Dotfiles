@@ -1,0 +1,31 @@
+#!/bin/sh
+if [ $# -eq 0 ] || ! [ $1 = 'on' -o $1 = 'off' ] ; then
+    echo "Must specify 'on' or 'off'"
+    exit 0
+fi
+
+power_off_if_required() {
+    BT_STATE=`bluetooth | awk '{print $3}'`
+    if [ $BT_STATE == 'on' ]; then
+        sudo bluetooth off
+    fi
+}
+
+power_on_if_required() {
+    BT_STATE=`bluetooth | awk '{print $3}'`
+    if [ $BT_STATE == 'off' ]; then
+        echo 'Powering on device...'
+        sudo bluetooth on
+        sleep 4
+    fi
+}
+
+if [ $1 = 'on' ] ; then
+    power_on_if_required
+    echo -e 'power on\nconnect 04:52:C7:0D:AB:EB' | bluetoothctl
+    sleep 1
+    echo -e 'connect 04:52:C7:0D:AB:EB' | bluetoothctl
+else
+    echo -e 'disconnect\npower off' | bluetoothctl
+    power_off_if_required
+fi
