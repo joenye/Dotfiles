@@ -80,6 +80,21 @@ endif
 " https://github.com/mxw/vim-jsx/issues/124
 hi link xmlEndTag xmlTag
 
+" TODO: Replace when wl-protocols stabilise and are actually used:
+" https://github.com/neovim/neovim/issues/9213
+let g:clipboard = {
+\   'name': 'wl-clipboard',
+\   'copy': {
+\      '+': 'wl-copy',
+\      '*': 'wl-copy',
+\    },
+\   'paste': {
+\      '+': 'wl-paste',
+\      '*': 'wl-paste',
+\   },
+\   'cache_enabled': 1,
+\ }
+
 " Illuminate
 let g:Illuminate_ftblacklist = ['nerdtree']
 
