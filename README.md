@@ -195,10 +195,11 @@ scan
 scan_results
 add_network
 set_network 0 ssid "<ssid>"
-set_network 0 psk "<psk>"
+set_network 0 psk "<psk>"  (if no psk, must do set_network 0 key_mgmt NONE)
 enable_network 0
 save_config
 exit
+# Or add manually to /etc/wpa_supplicant/wpa_supplicant-wlp4s0.conf
 
 # -----------------------------------
 # Packages
@@ -236,27 +237,6 @@ sudo ln -s /etc/fonts/conf.avail/10-sub-pixel-rgb.conf /etc/fonts/conf.d
 sudo ln -s /etc/fonts/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d
 # Uncomment last line
 sudo vim /etc/profile.d/freetype2.sh  
-sudo cat <<EOT > /etc/fonts/local.conf
-<?xml version="1.0"?>
-<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
-<fontconfig>
-    <match>
-        <edit mode="prepend" name="family"><string>Noto Sans</string></edit>
-    </match>
-    <match target="pattern">
-        <test qual="any" name="family"><string>serif</string></test>
-        <edit name="family" mode="assign" binding="same"><string>Noto Serif</string></edit>
-    </match>
-    <match target="pattern">
-        <test qual="any" name="family"><string>sans-serif</string></test>
-        <edit name="family" mode="assign" binding="same"><string>Noto Sans</string></edit>
-    </match>
-    <match target="pattern">
-        <test qual="any" name="family"><string>monospace</string></test>
-        <edit name="family" mode="assign" binding="same"><string>Noto Mono</string></edit>
-    </match>
-</fontconfig>
-EOT
 
 cd ~
 mkdir Projects
@@ -299,6 +279,33 @@ sudo usermod -a -G lp joenye
 sudo vim /etc/bluetooth/main.conf
 sudo systemctl enable bluetooth.service
 sudo systemctl start bluetooth.service
+
+# Optional: configure CUPS for Brother HL-L2365DW printer
+yay brother-cups-wrapper-laser
+yay brother-hll2360d
+yay nss-mdns
+# Change hosts line to include before resolve:
+# mdns_minimal [NOTFOUND=return]
+sudo sytemctl enable avahi-daemon.service
+sudo systemctl start avahi-daemon.service
+sudo vim /etc/nsswitch.conf
+# Add wheel to SystemGroup line
+sudo vim /etc/cups/cups-files.conf
+sudo systemctl start org.cups.cupsd.service
+sudo systemctl enable org.cups.cupsd.service
+# We use IP address rather than hostname:
+# https://wiki.archlinux.org/index.php/CUPS/Printer-specific_problems#Network_printers
+# 1. Ensure printer is 192.168.0.12 and static DHCP address. Also printer is very
+# unreliable is 5Ghz connection is on the router simultaneously with a 2.4Ghz connection
+# 2. Add printer: http://localhost:631/ -> Add Printer
+# 3. Other Network Printers -> Internet Printing Protocol (ipp)
+# 4. Connection ipp://192.168.0.12/ipp/port1
+# 5. Select Brother-HLL2360D Series PPD
+# 6. Set default options (e.g. DuplexTumble) and set as server default
+# For printing out code with syntax highlighting:
+yay enscript
+# enscript -2rB --line-numbers --font=Courier8 -p out.ps --highlight=python -c <file.py>
+# lpr output.ps
 
 # Prevent opening lid resuming sleep
 sudo cat <<EOT > /etc/systemd/system/disable-lid.service

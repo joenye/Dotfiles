@@ -15,6 +15,7 @@ btrfs-progs
 bzip2
 coreutils
 cryptsetup
+cups
 device-mapper
 dhcpcd
 dialog
@@ -109,7 +110,6 @@ thinkfan-git
 tlp
 ttf-dejavu
 ttf-liberation
-ttf-twemoji-color
 usbutils
 util-linux
 vi
