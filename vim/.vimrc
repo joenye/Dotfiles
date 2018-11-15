@@ -30,6 +30,7 @@ Plug 'simeji/winresizer'
 Plug 'chriskempson/base16-vim'
 Plug 'hdima/python-syntax'
 Plug 'RRethy/vim-illuminate'
+Plug 'junegunn/goyo.vim'
 
 " Front-end
 Plug 'pangloss/vim-javascript'
