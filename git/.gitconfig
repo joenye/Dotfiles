@@ -1,6 +1,7 @@
 [user]
 	name = Joe Nye
 	email = prokonye@gmail.com
+	signingkey = A68E33EC96896322
 [alias]
         lol = log --graph --decorate --pretty=oneline --abbrev-commit
         lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
