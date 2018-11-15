@@ -85,12 +85,12 @@ hi link xmlEndTag xmlTag
 let g:clipboard = {
 \   'name': 'wl-clipboard',
 \   'copy': {
-\      '+': 'wl-copy',
-\      '*': 'wl-copy',
+\      '+': 'wl-copy --foreground',
+\      '*': 'wl-copy --foreground --primary',
 \    },
 \   'paste': {
-\      '+': 'wl-paste',
-\      '*': 'wl-paste',
+\      '+': 'wl-paste --no-newline',
+\      '*': 'wl-paste --no-newline --primary',
 \   },
 \   'cache_enabled': 1,
 \ }
