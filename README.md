@@ -1,15 +1,6 @@
-**Install Dotfiles**
+**Installation**
 
-Change directory to dotfiles and install using `GNU Stow`:
+Requires GNU Stow to be installed (e.g. `pacman -S stow` on Arch).
 
 - `stow x` will sym link the files in the x/ directory to the correct place in $HOME.
-- Use install.sh to stow all.
-
-**Install Arch Linux on Lenovo Thinkpad T460s**
-
-Features:
-- Encrypted BTRFS filesystem
-- systemd-boot and systemd-networkd
-- My packages and dotfiles
-
-[View install script](arch-install.sh)
+- Use install.sh to stow all directories that are not prefixed with an underscore.
