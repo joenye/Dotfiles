@@ -93,7 +93,6 @@ sed
 shadow
 slurp-git
 snapper
-snapper-gui-git
 spotify
 stow
 stress
@@ -116,6 +115,7 @@ vi
 vim
 vim-plug
 which
+wl-clipboard-git
 wpa_supplicant
 xf86-input-synaptics
 xfsprogs
