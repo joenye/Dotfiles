@@ -19,3 +19,5 @@
 	program = /usr/bin/gpg2
 [init]
 	templatedir = ~/.git_template
+[commit]
+	gpgSign = true
