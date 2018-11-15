@@ -1,5 +1,4 @@
-#!/usr/bin/env bash 
- 
-for d in `ls -1d */`; do 
+#!/bin/bash
+for d in `ls -1d */ | grep -v '^\_.*'`; do
   ( stow -D $d ) 
 done
