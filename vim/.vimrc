@@ -246,11 +246,10 @@ nmap <leader>e :Rooter<cr><bar>:Tags<cr>
 nmap <leader>r :Rooter<cr><bar>:GFiles<cr>
 nmap <leader>i :Rooter<cr><bar>:HFiles<cr>
 nmap <leader>l :Lines<cr>
-nmap <leader>a :Rooter<cr><bar>:Ag<cr>
+nmap <leader>a :Rooter<cr><bar>:Rg<cr>
 nmap <leader>h :History<cr>
 command! CmdHist call fzf#vim#command_history({'right': '40'})
 command! QHist call fzf#vim#search_history({'right': '40'})
-" nmap <c-[> <c-[>:redraw!<cr>
 
 " Git Gutter
 set updatetime=500
