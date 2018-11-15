@@ -1,9 +1,8 @@
 export PATH=$HOME/bin:/usr/local/bin:/home/joenye/.npm-global/bin:/home/joenye/platform-tools:/usr/local/go/bin:/usr/local/cuda-9.0/bin:/home/joenye/.nvm/versions/node/v9.4.0/bin:$PATH
 export NODE_PATH=/home/joenye/.npm-global/lib/node_modules
-# SSH / GPG over Yubikey
 export GPG_TTY="$(tty)"
 export SSH_AUTH_SOCK="/run/user/$UID/gnupg/S.gpg-agent.ssh"
-gpg-connect-agent updatestartuptty /bye > /dev/null; pkill curses
+# gpg-connect-agent updatestartuptty /bye > /dev/null; pkill curses
 export ZSH=/usr/share/oh-my-zsh
 
 ZSH_THEME="robbyrussell"

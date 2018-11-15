@@ -200,13 +200,15 @@ enable_network 0
 save_config
 exit
 # Or add manually to /etc/wpa_supplicant/wpa_supplicant-wlp4s0.conf
+# Or use wpa_gui
 
 # -----------------------------------
 # Packages
 # -----------------------------------
 
 # Configure git
-TODO
+# Create new SSH key for device: https://help.github.com/articles/connecting-to-github-with-ssh/
+# Add GPG key from backup: https://gist.github.com/chrisroos/1205934
 
 # Select all
 sudo pacman -S base-devel
@@ -228,15 +230,6 @@ yay termite sway
 
 # Install all other packages
 pacman -Rsu $(comm -23 <(pacman -Qq | sort) <(sort pkglist-clean.txt))
-
-# Configure fonts
-# https://www.reddit.com/r/archlinux/comments/5r5ep8/make_your_arch_fonts_beautiful_easily/
-sudo pacman -S ttf-dejavu ttf-liberation noto-fonts
-sudo ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d
-sudo ln -s /etc/fonts/conf.avail/10-sub-pixel-rgb.conf /etc/fonts/conf.d
-sudo ln -s /etc/fonts/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d
-# Uncomment last line
-sudo vim /etc/profile.d/freetype2.sh  
 
 cd ~
 mkdir Projects
