@@ -3,6 +3,7 @@ export NODE_PATH=/home/joenye/.npm-global/lib/node_modules
 export GPG_TTY="$(tty)"
 export SSH_AUTH_SOCK="/run/user/$UID/gnupg/S.gpg-agent.ssh"
 # gpg-connect-agent updatestartuptty /bye > /dev/null; pkill curses
+export HISTFILE=/home/joenye/_Dotfiles/zsh_history/.zsh_history
 export ZSH=/usr/share/oh-my-zsh
 
 ZSH_THEME="robbyrussell"
