@@ -16,7 +16,6 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'dhruvasagar/vim-vinegar'
 Plug 'itchyny/lightline.vim'
 Plug 'maximbaz/lightline-ale'
-Plug 'airblade/vim-gitgutter'
 Plug 'airblade/vim-rooter'
 Plug 'w0rp/ale'
 Plug 'farmergreg/vim-lastplace'
@@ -251,14 +250,6 @@ nmap <leader>a :Rooter<cr><bar>:Rg<cr>
 nmap <leader>h :History<cr>
 command! CmdHist call fzf#vim#command_history({'right': '40'})
 command! QHist call fzf#vim#search_history({'right': '40'})
-
-" Git Gutter
-set updatetime=500
-set signcolumn=yes
-let g:gitgutter_sign_added = '∙'
-let g:gitgutter_sign_modified = '∙'
-let g:gitgutter_sign_removed = '∙'
-let g:gitgutter_sign_modified_removed = '∙'
 
 " Ale
 let g:ale_lint_on_save = 1
