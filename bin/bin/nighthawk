@@ -16,7 +16,7 @@ power_on_if_required() {
     if [ $BT_STATE == 'off' ]; then
         echo 'Powering on device...'
         sudo bluetooth on
-        sleep 4
+        sleep 5
     fi
 }
 
