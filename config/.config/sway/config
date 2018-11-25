@@ -6,7 +6,7 @@ set $up k
 set $right l
 set $term termite
 set $menu rofi -show run
-set $swaylock swaylock --image=/home/joenye/Pictures/Wallpapers/lockscreen.png --scaling=fill
+set $swaylock swaylock --image=/home/joenye/Pictures/Wallpapers/lockscreen.jpg --indicator-radius=190 --indicator-thickness=10 --text-color=00000000 --text-clear-color=00000000 --text-ver-color=00000000 --inside-color=00000000 --ring-color=59E1ED --key-hl-color=ff304f --inside-ver-color=00000000 --inside-clear-color=00000000 --line-ver-color=00000000 --line-wrong-color=00000000 --ring-clear-color=00000000 --ring-ver-color=00000000
 
 ### Font
 font MesloLGSDZ Nerd Font Mono 12
