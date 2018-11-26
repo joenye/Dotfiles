@@ -47,7 +47,7 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'carlitux/deoplete-ternjs', { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'othree/jspc.vim', { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'zchee/deoplete-jedi'
-Plug 'zchee/deoplete-clang'
+Plug 'tweekmonster/deoplete-clang2'
 
 " Snippets
 Plug 'SirVer/ultisnips'
