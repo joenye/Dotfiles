@@ -104,6 +104,11 @@ floating_modifier $mod normal
 
 bindsym $mod+a focus parent
 
+# Toggle play/pause on media player
+bindsym $mod+p exec playerctl play-pause
+bindsym $mod+bracketLeft exec playerctl previous  # [
+bindsym $mod+bracketRight exec playerctl next  # ]
+
 # Cycle through border styles
 bindsym $mod+m border toggle
 
