@@ -52,7 +52,7 @@ interval=3
 [ip-address]
 label=🔖
 color=#FFFFFF
-full_text=h
+full_text=ip
 interval=3
 
 [separator]
@@ -67,12 +67,6 @@ command=if ping -w 1 -c 1 8.8.8.8 >/dev/null 2>&1; then echo ""; else echo "🔴
 [network]
 label=📡
 instance=wlp4s0
-color=#FFFFFF
-full_text=
-interval=3
-
-[ssid]
-label=
 color=#FFFFFF
 full_text=
 interval=3

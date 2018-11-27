@@ -1,23 +1,21 @@
 #!/bin/bash
 
 device="${BLOCK_INSTANCE:-wlan0}"
+ssid_name=$(iwgetid -r)
 status=$(cat /sys/class/net/${device}/operstate)
-
-URGENT_VALUE=20
 
 if [[ "${status}" == "up" ]]; then
   if [[ -d "/sys/class/net/${device}/wireless" ]]; then
     quality=$(grep ${device} /proc/net/wireless | awk '{ print int($3 * 100 / 70) }')
-    echo "${quality}%"
-    echo "${quality}%"
-    echo ""
-
-    if [[ "${quality}" -le "${URGENT_VALUE}" ]]; then
-      exit 33
-    fi
   else
-    echo "on"
-    echo "on"
-    echo ""
+    quality="off"
   fi
 fi
+
+# if [[ "${BLOCK_BUTTON}" == 1 ]]; then
+#     echo ${quality}% ${ssid_name}
+# else
+#     echo ${quality}%
+# fi
+
+echo ${quality}% ${ssid_name}

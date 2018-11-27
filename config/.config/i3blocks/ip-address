@@ -2,8 +2,8 @@
 
 IP_ADDRESS=$(ip route get 1 | awk '{print $(NF-2);exit}')
 
-if [[ "${IP_ADDRESS}" != "" ]]; then
-  echo "${IP_ADDRESS}"
-  echo "${IP_ADDRESS}"
-  echo ""
-fi
+# if [[ "${BLOCK_BUTTON}" == 1 ]]; then
+#     echo ${IP_ADDRESS}
+# fi
+
+echo ${IP_ADDRESS}
