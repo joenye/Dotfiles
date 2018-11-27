@@ -47,7 +47,7 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'carlitux/deoplete-ternjs', { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'othree/jspc.vim', { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'zchee/deoplete-jedi'
-Plug 'tweekmonster/deoplete-clang2'
+Plug 'Rip-Rip/clang_complete'
 
 " Snippets
 Plug 'SirVer/ultisnips'
@@ -68,7 +68,6 @@ else
   set ttymouse=xterm2
   set ttyfast
   filetype plugin indent on
-
   " Terminal colours
   if filereadable(expand('~/.vimrc_background'))
       let base16colorspace=256
@@ -77,105 +76,7 @@ else
   endif
 endif
 
-" https://github.com/mxw/vim-jsx/issues/124
-hi link xmlEndTag xmlTag
-
-" TODO: Replace when wl-protocols stabilise and are actually used:
-" https://github.com/neovim/neovim/issues/9213
-let g:clipboard = {
-\   'name': 'wl-clipboard',
-\   'copy': {
-\      '+': 'wl-copy --foreground',
-\      '*': 'wl-copy --foreground --primary',
-\    },
-\   'paste': {
-\      '+': 'wl-paste --no-newline',
-\      '*': 'wl-paste --no-newline --primary',
-\   },
-\   'cache_enabled': 1,
-\ }
-
-" Illuminate
-let g:Illuminate_ftblacklist = ['nerdtree']
-
-" MatchTagAlways
-let g:mta_filetypes = {}
-" let g:mta_filetypes = {
-" \ 'html' : 1,
-" \ 'xhtml' : 1,
-" \ 'xml' : 1,
-" \ 'jinja' : 1,
-" \ 'javascript.jsx' : 0,
-" \}
-
-" Scratch
-let g:scratch_persistence_file = '~/.vim/scratch.vim'
-let g:scratch_insert_autohide = 0
-let g:scratch_height = 14
-
-map <space> <leader>
-" Try and use <c-[> when jj is not possible
-inoremap jj <esc>
-
-nnoremap <up> <nop>
-nnoremap <down> <nop>
-nnoremap <left> <nop>
-nnoremap <right> <nop>
-inoremap <up> <nop>
-inoremap <down> <nop>
-inoremap <left> <nop>
-inoremap <right> <nop>
-
-" Prevent highlighting being funky
-autocmd BufEnter,InsertLeave * :syntax sync fromstart
-
-" Reverses default behaviour so that j and k move down/up by display lines,
-" while gj and gk move by real lines
-nnoremap k gk
-nnoremap gk k
-nnoremap j gj
-nnoremap gj j
-
-" Always search forward with n and backward with N
-nnoremap <expr> n  'Nn'[v:searchforward]
-nnoremap <expr> N  'nN'[v:searchforward]
-
-autocmd InsertLeave,WinEnter * set cursorline
-autocmd InsertEnter,WinLeave * set nocursorline
-
-" Unsets the 'last search pattern' register by hitting return
-nnoremap <cr> :noh<cr><cr>
-
-set pastetoggle=<F3>
-nnoremap <F4> :UndotreeToggle<cr>
-
-" Copy selection (or entire buffer if no selection) to xclip
-:map <silent> <leader>y :w !xclip<CR><CR>
-:map <silent> <leader>p !xclip -out<CR><CR>
-
-" Copy current file path
-nnoremap <silent> <leader>c :let @+=expand('%:p')<cr>
-
-" Easy expansion of the active file directory
-cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
-
-" Ctrl-A behaviour
-map <c-a> <esc>ggVG<cr>
-
-" Testing
-let test#strategy = 'neoterm'
-let g:neoterm_size = '15'
-let g:neoterm_autoscroll = 1
-let g:neoterm_autoinsert = 1
-let g:neoterm_default_mod = ':botright'
-let g:test#preserve_screen = 1
-let test#python#pytest#executable = 'docker-compose exec app py.test'
-nnoremap <silent> <leader>tn :TestNearest<cr>
-nnoremap <silent> <leader>tv :TestNearest -v<cr>
-nnoremap <silent> <leader>tl :TestLast<cr>
-nnoremap <silent> <leader>tf :TestFile<cr>
-
-" Fugitive
+" === Fugitive ===
 nnoremap <silent> <leader>gs :Gstatus<cr>
 " Note that :Gvdiff forces vertical split, else horizontal is used
 " if the window is not wide enough
@@ -189,44 +90,52 @@ nnoremap <silent> <leader>gp :Git push<cr>
 nnoremap <silent> <leader>gi :Git add -p %<cr>
 nnoremap <silent> <leader>ge :Gedit :0<cr>
 
-" Deoplete
+" === Deoplete ===
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#enable_smart_case = 1
-set completeopt=longest,menuone,preview
-let g:deoplete#sources = {}
-" let g:deoplete#sources._ = ['omni', 'member', 'tag', 'file']
-let g:deoplete#sources._ = ['file']
+" Use built-in vim to scan loaded buffers, current and included files
+set complete=.,w,b,u,i
+set completeopt=longest,menuone,preview,noinsert
+" Don't show typed word in completion menu
+call deoplete#custom#source('_', 'matchers', ['matcher_fuzzy', 'matcher_length'])
+
+" These can't live in ftplugins, since they need to be loaded when deoplete starts
+let default_sources = ['buffer', 'tag', 'file', 'ultisnips']
+call deoplete#custom#option('sources', {
+\ '_': default_sources,
+\ 'python': default_sources + ['jedi'],
+\ 'c': default_sources + ['clang_complete'],
+\ })
+
 let g:SuperTabDefaultCompletionType = "<c-n>"
 let g:SuperTabClosePreviewOnPopupClose = 1
 let g:echodoc#enable_at_startup = 1
-autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+autocmd CompleteDone * silent! pclose!
 set shortmess+=c
-inoremap <expr> <cr> pumvisible() ? "\<c-y>" : "\<c-g>u\<cr>"
+inoremap <expr><cr> pumvisible() ? "\<c-y>" : "\<c-g>u\<cr>"
 inoremap <expr><tab>  pumvisible() ? "\<c-n>" : "\<tab>"
-" <C-h>: close popup and delete backword char
-inoremap <expr><C-h> deoplete#smart_close_popup()."\<C-h>"
+" <C-x>: close popup and delete backword char
+inoremap <expr><C-x> deoplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS>  deoplete#smart_close_popup()."\<C-h>"
 inoremap <silent><expr> <c-space> deoplete#mappings#manual_complete()
 inoremap <silent><expr> <esc> pumvisible() ? "<c-e><esc>" : "<esc>"
 
-" UltiSnips
+" === UltiSnips ===
 let g:UltiSnipsExpandTrigger="<C-j>"
 let g:UltiSnipsJumpForwardTrigger="<C-j>"
 let g:UltiSnipsJumpBackwardTrigger="<C-k>"
-" let g:UltiSnipsUsePythonVersion = 3.6
 
-" Netrw
+" === Netrw ===
 let g:netrw_list_hide= '.*\.swp$,.*\.pyc,.*\.sw*,.*\.un~'
 let g:netrw_liststyle=3
 let g:netrw_menu=0
 let g:netrw_winsize=10
 
-" Rooter
+" === Rooter ===
 set autochdir
 let g:rooter_patterns = ['node_modules/', '.git', '.git/']
 let g:rooter_manual_only = 1 " Commands that care about dir should invoke rooter
 
-" NERDTree
+" === NERDTree ===
 let NERDTreeIgnore = ['\.pyc$', '^__pycache__$', '\.sw.$', '\.un\~']
 let NERDTreeShowHidden=1
 let NERDTreeMinimalUI=1
@@ -235,10 +144,7 @@ let NERDTreeChDirMode=2
 " Only use toggle for directory
 map <C-n> :NERDTreeToggle<CR>
 
-" Concealing
-let g:vim_json_syntax_conceal = 0
-
-" FZF 
+" === FZF ===
 set rtp+=~/.fzf
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 nmap ; :Buffers<cr>
@@ -251,7 +157,7 @@ nmap <leader>h :History<cr>
 command! CmdHist call fzf#vim#command_history({'right': '40'})
 command! QHist call fzf#vim#search_history({'right': '40'})
 
-" Ale
+" === ALE ===
 let g:ale_lint_on_save = 1
 let g:ale_lint_on_enter = 1
 let g:ale_lint_on_text_changed = 1
@@ -277,10 +183,7 @@ nmap <leader>f <plug>(ale_fix)
 nmap <silent> <leader>j :ALENext<cr>
 nmap <silent> <leader>k :ALEPrevious<cr>
 
-" Treat all header files as C files
-autocmd BufRead,BufNewFile *.h,*.c set filetype=c
-
-" Emmet
+" === Emmet ===
 nmap <expr> <leader>, emmet#expandAbbrIntelligent('\<space>')
 let g:user_emmet_settings = {
 \   'javascript.jsx' : {
@@ -288,7 +191,7 @@ let g:user_emmet_settings = {
 \    },
 \}
 
-" Lightline
+" === Lightline ===
 augroup YourGroup
     autocmd!
     autocmd User ALELint call lightline#update()
@@ -336,6 +239,99 @@ let g:lightline = {
       \ 'separator': { 'left': '', 'right': '' },
       \ 'subseparator': { 'left': '', 'right': '' }
       \ }
+
+" === Clipboard ===
+" TODO: Replace when wl-protocols stabilise and are actually used:
+" https://github.com/neovim/neovim/issues/9213
+let g:clipboard = {
+\   'name': 'wl-clipboard',
+\   'copy': {
+\      '+': 'wl-copy --foreground',
+\      '*': 'wl-copy --foreground --primary',
+\    },
+\   'paste': {
+\      '+': 'wl-paste --no-newline',
+\      '*': 'wl-paste --no-newline --primary',
+\   },
+\   'cache_enabled': 1,
+\ }
+
+" === MatchTagAlways ===
+let g:mta_filetypes = {}
+" let g:mta_filetypes = {
+" \ 'html' : 1,
+" \ 'xhtml' : 1,
+" \ 'xml' : 1,
+" \ 'jinja' : 1,
+" \ 'javascript.jsx' : 0,
+" \}
+
+" === Testing ===
+let test#strategy = 'neoterm'
+let g:neoterm_size = '15'
+let g:neoterm_autoscroll = 1
+let g:neoterm_autoinsert = 1
+let g:neoterm_default_mod = ':botright'
+let g:test#preserve_screen = 1
+nnoremap <silent> <leader>tn :TestNearest<cr>
+nnoremap <silent> <leader>tv :TestNearest -v<cr>
+nnoremap <silent> <leader>tl :TestLast<cr>
+nnoremap <silent> <leader>tf :TestFile<cr>
+
+" === Illuminate ===
+let g:Illuminate_ftblacklist = ['nerdtree']
+
+" === Miscellaneous ===
+map <space> <leader>
+" Try and use <c-[> when jj is not possible
+inoremap jj <esc>
+
+nnoremap <up> <nop>
+nnoremap <down> <nop>
+nnoremap <left> <nop>
+nnoremap <right> <nop>
+inoremap <up> <nop>
+inoremap <down> <nop>
+inoremap <left> <nop>
+inoremap <right> <nop>
+
+" Prevent highlighting being funky
+autocmd BufEnter,InsertLeave * :syntax sync fromstart
+
+" Reverses default behaviour so that j and k move down/up by display lines,
+" while gj and gk move by real lines
+nnoremap k gk
+nnoremap gk k
+nnoremap j gj
+nnoremap gj j
+
+" Always search forward with n and backward with N
+nnoremap <expr> n  'Nn'[v:searchforward]
+nnoremap <expr> N  'nN'[v:searchforward]
+
+autocmd InsertLeave,WinEnter * set cursorline
+autocmd InsertEnter,WinLeave * set nocursorline
+
+" Unsets the 'last search pattern' register by hitting return
+nnoremap <cr> :noh<cr><cr>
+
+" Ctrl-a behaviour
+map <c-a> <esc>ggVG<cr>
+
+set pastetoggle=<F3>
+nnoremap <F4> :UndotreeToggle<cr>
+
+" Copy current file path
+nnoremap <silent> <leader>c :let @+=expand('%:p')<cr>
+
+" Easy expansion of the active file directory
+cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
+
+" Treat all header files as C files
+autocmd BufRead,BufNewFile *.h,*.c set filetype=c
+
+" https://github.com/mxw/vim-jsx/issues/124
+hi link xmlEndTag xmlTag
 
 set mouse=a
 set noshowmode
