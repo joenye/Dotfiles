@@ -42,7 +42,6 @@ bindsym $mod+Shift+q kill
 bindsym $mod+d exec $menu
 bindsym $mod+Shift+c reload
 bindsym $mod+Ctrl+Shift+e exit
-bindsym $mod+Ctrl+Shift+e exec swaynag -t warning -m 'Quit for real? ☠️' -b 'Yes, exit sway' 'swaymsg exit'
 bindsym $mod+Ctrl+Shift+s shutdown now
 
 # Lock screen

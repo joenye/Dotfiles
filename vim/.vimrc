@@ -90,11 +90,11 @@ nnoremap <silent> <leader>gp :Git push<cr>
 nnoremap <silent> <leader>gi :Git add -p %<cr>
 nnoremap <silent> <leader>ge :Gedit :0<cr>
 
-" === Deoplete ===
+" === Deoplete (uses insert-mode completion) ===
 let g:deoplete#enable_at_startup = 1
-" Use built-in vim to scan loaded buffers, current and included files
+" Configure in-built insert-mode completion to scan loaded buffers, current and included files
 set complete=.,w,b,u,i
-set completeopt=longest,menuone,preview,noinsert
+set completeopt=longest,menuone,preview,noinsert,noselect
 " Don't show typed word in completion menu
 call deoplete#custom#source('_', 'matchers', ['matcher_fuzzy', 'matcher_length'])
 
@@ -107,12 +107,14 @@ call deoplete#custom#option('sources', {
 \ })
 
 let g:SuperTabDefaultCompletionType = "<c-n>"
-let g:SuperTabClosePreviewOnPopupClose = 1
 let g:echodoc#enable_at_startup = 1
 autocmd CompleteDone * silent! pclose!
 set shortmess+=c
 inoremap <expr><cr> pumvisible() ? "\<c-y>" : "\<c-g>u\<cr>"
-inoremap <expr><tab>  pumvisible() ? "\<c-n>" : "\<tab>"
+inoremap <silent><expr> <TAB>
+          \ pumvisible() ? "\<C-n>" :
+          \ "\<TAB>" :
+          \ deoplete#mappings#manual_complete()
 " <C-x>: close popup and delete backword char
 inoremap <expr><C-x> deoplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS>  deoplete#smart_close_popup()."\<C-h>"
