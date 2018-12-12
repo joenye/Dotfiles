@@ -1,6 +1,7 @@
 font=MesloLGSDZ Nerd Font Mono 14
 width=400
 height=200
+layer=overlay
 default-timeout=8000
 
 [urgency=high]
