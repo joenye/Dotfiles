@@ -8,7 +8,6 @@ let g:deoplete#omni#functions['javascript'] = [
   \ 'tern#Complete',
   \ 'jspc#omni'
 \]
-let g:deoplete#sources['javascript.jsx'] = g:deoplete#sources._ + ['ultisnips', 'ternjs']
 
 " Deoplete-ternjs (https://github.com/carlitux/deoplete-ternjs)
 let g:deoplete#sources#ternjs#filetypes = [

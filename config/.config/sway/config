@@ -5,8 +5,9 @@ set $down j
 set $up k
 set $right l
 set $term termite
-set $swaylock swaylock --image=/home/joenye/Pictures/Wallpapers/lockscreen.jpg --indicator-radius=190 --indicator-thickness=10 --text-color=00000000 --text-clear-color=00000000 --text-ver-color=00000000 --inside-color=00000000 --ring-color=59E1ED --key-hl-color=ff304f --inside-ver-color=00000000 --inside-clear-color=00000000 --line-ver-color=00000000 --line-wrong-color=00000000 --ring-clear-color=00000000 --ring-ver-color=00000000
-set $menu termite --name=launcher -e "bash -c 'compgen -c | sort -u | fzf --no-extended --print-query | tail -n1 | xargs -r swaymsg -t command exec'"
+set $swaylock swaylock --image=/home/joenye/Pictures/Wallpapers/lockscreen.jpg --indicator-caps-lock --indicator-radius=190 --indicator-thickness=10 --text-color=00000000 --text-clear-color=00000000 --text-ver-color=00000000 --inside-color=00000000 --ring-color=59E1ED --key-hl-color=ff304f --inside-ver-color=00000000 --inside-clear-color=00000000 --line-ver-color=00000000 --line-wrong-color=00000000 --ring-clear-color=00000000 --ring-ver-color=00000000
+# set $menu termite --name=launcher -e "bash -c 'compgen -c | sort -u | fzf --no-extended --print-query | tail -n1 | xargs -r swaymsg -t command exec'"
+set $menu termite --name=launcher -e "sway-launcher"
 for_window [app_id="^launcher$"] floating enable, border none, resize set width 800 px height 400 px
 
 ### Font
@@ -128,9 +129,8 @@ bindsym $mod+r mode "resize"
 bar {
     position top
     status_command i3blocks
-    font MesloLGSDZ Nerd Font Mono 14
+    font MesloLGSDZ Nerd Font Mono 13
     colors {
-        statusline #ffffff
         background #323232
     }
 }

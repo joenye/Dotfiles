@@ -104,6 +104,7 @@ call deoplete#custom#option('sources', {
 \ '_': default_sources,
 \ 'python': default_sources + ['jedi'],
 \ 'c': default_sources + ['clang_complete'],
+\ 'javascript.jsx': default_sources + ['ternjs'],
 \ })
 
 let g:SuperTabDefaultCompletionType = "<c-n>"

@@ -1,0 +1,102 @@
+#!/usr/bin/env python
+import os
+import sys
+import json
+import subprocess
+
+HIST_FILE = '{}/.cache/sway-launcher-history.json'.format(os.environ['HOME'])
+
+NEW_DICT = {"Command": "", "Count": 0}
+
+
+def list_unique(seq):
+    """Order preserved unique items from list"""
+    return list(dict.fromkeys(seq))
+
+
+def get_path_commands():
+    """gets commands available in PATH"""
+    # add any commands that aren't already there
+    compgen_list = subprocess.run(['bash', '-c', 'compgen -c'],
+                                  capture_output=True)
+    command_list = compgen_list.stdout.decode('utf-8').split('\n')
+    command_list.sort(key=lambda s: s.casefold())
+    return command_list
+
+
+class History:
+    """manages command history"""
+
+    def __init__(self):
+        """reads launcher history"""
+        try:
+            with open(HIST_FILE, 'r') as fid:
+                self.history = json.load(fid)
+        except FileNotFoundError:
+            self.history = []
+
+    def add(self, command_str):
+        """updates command history"""
+        for item in self.history:
+            if item["Command"] == command_str:
+                item["Count"] += 1
+                self.sort()
+                return
+        # if not found
+        entry = NEW_DICT
+        entry['Command'] = command_str
+        entry['Count'] += 1
+        self.history.append(entry)
+
+    def sort(self):
+        """sorts history by usage count"""
+        self.history.sort(key=lambda x: x['Count'], reverse=True)
+
+    def save(self):
+        """write history to cache file"""
+        with open(HIST_FILE, 'w') as fid:
+            json.dump(self.history, fid)
+
+    def to_list(self):
+        """compiles command history into list sorted by usage number"""
+        return [x['Command'] for x in self.history]
+
+
+def fzf_select(command_list):
+    """uses fzf to select command"""
+    command_list = '\n'.join(command_list)
+    # search command list
+    fzf_proc = subprocess.run(
+        ['fzf', '--no-extended', '--print-query', '--no-sort'],
+        input=command_list,
+        encoding='utf-8',
+        stdout=subprocess.PIPE)
+    try:
+        fzf_proc.check_returncode()
+    except subprocess.CalledProcessError as e:
+        if e.returncode == 130:  # cancelled
+            sys.exit(130)
+        elif not (e.returncode == 0 or e.returncode == 1):
+            raise e
+    return fzf_proc.stdout.split('\n')[-2]
+
+
+def main():
+    """main"""
+
+    # read existing command history
+    hist = History()
+    command_list = list_unique(hist.to_list() + get_path_commands())
+
+    command_str = fzf_select(command_list)
+
+    hist.add(command_str)
+    hist.save()
+
+    # execute command
+    print(command_str)
+    subprocess.run(['swaymsg', '-t', 'command', 'exec', command_str])
+
+
+if __name__ == '__main__':
+    main()
