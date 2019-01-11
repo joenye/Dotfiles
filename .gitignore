@@ -25,5 +25,4 @@ config/.config/*
 !config/.config/sway
 !config/.config/termite
 !config/.config/rofi
-!config/.config/yarn
 !config/.config/fontconfig
