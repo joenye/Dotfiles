@@ -6,6 +6,8 @@ export SSH_AUTH_SOCK='/run/user/$UID/gnupg/S.gpg-agent.ssh'
 export HISTFILE=/home/joenye/_Dotfiles/zsh_history/.zsh_history
 export ZSH=/usr/share/oh-my-zsh
 
+export TERM="xterm-256color"
+
 # https://wiki.archlinux.org/index.php/Python/Virtual_environment#virtualenv
 export WORKON_HOME=~/.virtualenvs
 source /usr/bin/virtualenvwrapper_lazy.sh
