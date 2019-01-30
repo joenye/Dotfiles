@@ -13,7 +13,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'junegunn/gv.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'ryanoasis/vim-devicons'
-Plug 'dhruvasagar/vim-vinegar'
+Plug 'tpope/vim-vinegar'
 Plug 'itchyny/lightline.vim'
 Plug 'maximbaz/lightline-ale'
 Plug 'airblade/vim-rooter'
@@ -145,20 +145,26 @@ let NERDTreeMinimalUI=1
 let g:NERDTreeMapQuit = 'qq'
 let NERDTreeChDirMode=2
 " Only use toggle for directory
-map <C-n> :NERDTreeToggle<CR>
+" map <C-l> :NERDTreeToggle<CR>
+map <C-n> :NERDTreeFind<CR>
+let g:NERDTreeDirArrowExpandable = '├'
+let g:NERDTreeDirArrowCollapsible = '└'
+let g:NERDTreeMapActivateNode = '<tab>'
+let g:NERDTreeQuitOnOpen=1
 
 " === FZF ===
 set rtp+=~/.fzf
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 nmap ; :Buffers<cr>
 nmap <leader>e :Rooter<cr><bar>:Tags<cr>
-nmap <leader>r :Rooter<cr><bar>:GFiles<cr>
-nmap <leader>i :Rooter<cr><bar>:HFiles<cr>
+nmap <leader>r :Rooter<cr><bar>:Files<cr>
+nmap <leader>i :Rooter<cr><bar>:Files<cr>
 nmap <leader>l :Lines<cr>
 nmap <leader>a :Rooter<cr><bar>:Rg<cr>
 nmap <leader>h :History<cr>
 command! CmdHist call fzf#vim#command_history({'right': '40'})
 command! QHist call fzf#vim#search_history({'right': '40'})
+let g:fzf_layout = { 'down': '~25%' }
 
 " === ALE ===
 let g:ale_lint_on_save = 1
