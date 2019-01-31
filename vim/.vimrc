@@ -27,6 +27,7 @@ Plug 'tommcdo/vim-exchange' " cxiw and .
 Plug 'kassio/neoterm'
 Plug 'simeji/winresizer'
 Plug 'chriskempson/base16-vim'
+Plug 'rafi/awesome-vim-colorschemes'
 Plug 'hdima/python-syntax'
 Plug 'RRethy/vim-illuminate'
 Plug 'junegunn/goyo.vim'
@@ -41,10 +42,10 @@ Plug 'othree/html5.vim'
 Plug 'Valloric/MatchTagAlways'
 
 " Autocomplete
+Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
 Plug 'ervandew/supertab'
 Plug 'Shougo/echodoc.vim'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'carlitux/deoplete-ternjs', { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'othree/jspc.vim', { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'zchee/deoplete-jedi'
 Plug 'Rip-Rip/clang_complete'
@@ -61,7 +62,7 @@ if has('nvim')
   endif
   tmap <c-o> <c-\><c-n>
   syntax on
-  colorscheme base16-tomorrow-night
+  colorscheme one
   " Transparent background
   hi normal guibg=none ctermbg=none 
 else
@@ -90,7 +91,7 @@ nnoremap <silent> <leader>gp :Git push<cr>
 nnoremap <silent> <leader>gi :Git add -p %<cr>
 nnoremap <silent> <leader>ge :Gedit :0<cr>
 
-" === Deoplete (uses insert-mode completion) ===
+" === Deoplete (uses insert-mode omnifunc completion) ===
 let g:deoplete#enable_at_startup = 1
 " Configure in-built insert-mode completion to scan loaded buffers, current and included files
 set complete=.,w,b,u,i
@@ -104,10 +105,12 @@ call deoplete#custom#option('sources', {
 \ '_': default_sources,
 \ 'python': default_sources + ['jedi'],
 \ 'c': default_sources + ['clang_complete'],
-\ 'javascript.jsx': default_sources + ['ternjs'],
+\ 'javascript': default_sources + ['LanguageClient-neovim'],
+\ 'javascript.jsx': default_sources + ['LanguageClient-neovim'],
 \ })
 
-let g:SuperTabDefaultCompletionType = "<c-n>"
+" let g:SuperTabDefaultCompletionType = "<c-n>"
+let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
 let g:echodoc#enable_at_startup = 1
 autocmd CompleteDone * silent! pclose!
 set shortmess+=c
@@ -121,6 +124,25 @@ inoremap <expr><C-x> deoplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS>  deoplete#smart_close_popup()."\<C-h>"
 inoremap <silent><expr> <c-space> deoplete#mappings#manual_complete()
 inoremap <silent><expr> <esc> pumvisible() ? "<c-e><esc>" : "<esc>"
+nmap <leader>d :call LanguageClient_textDocument_definition()<cr>
+nmap <leader>s :call LanguageClient_contextMenu()<cr>
+
+let g:LanguageClient_autoStart = 1
+let g:LanguageClient_serverCommands = {
+\ 'javascript': ['javascript-typescript-stdio'],
+\ 'javascript.jsx': ['javascript-typescript-stdio'],
+\ 'html': ['html-languageserver', '--stdio'],
+\ 'css': ['css-languageserver', '--stdio'],
+\ 'sass': ['css-languageserver', '--stdio'],
+\ 'scss': ['css-languageserver', '--stdio'],
+\ }
+let g:LanguageClient_rootMarkers = {
+\ 'javascript': ['package.json'],
+\ 'javascript.jsx': ['package.json'],
+\ }
+let g:LanguageClient_loggingLevel = 'DEBUG'
+" Disable fancy diagnostics and follow SRP (i.e. use ALE)
+let g:LanguageClient_diagnosticsEnable = 0
 
 " === UltiSnips ===
 let g:UltiSnipsExpandTrigger="<C-j>"
@@ -150,10 +172,11 @@ map <C-n> :NERDTreeFind<CR>
 let g:NERDTreeDirArrowExpandable = '├'
 let g:NERDTreeDirArrowCollapsible = '└'
 let g:NERDTreeMapActivateNode = '<tab>'
-let g:NERDTreeQuitOnOpen=1
+" let g:NERDTreeQuitOnOpen=1
 
 " === FZF ===
 set rtp+=~/.fzf
+set rtp+=/usr/local/opt/fzf " MacOS
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 nmap ; :Buffers<cr>
 nmap <leader>e :Rooter<cr><bar>:Tags<cr>
@@ -180,9 +203,11 @@ let g:ale_linters = {
 \   'javascript': ['standard'],
 \   'c': ['clang']
 \}
+" \   'javascript': ['standard'],
 " \   'javascript': ['eslint'],
 " \   'c': ['clang', 'clangtidy']
 " \   'python': ['flake8', 'mypy', 'pylint', 'yapf'],
+
 let g:ale_fixers = {
 \  'javascript': ['standard'],
 \  'c': ['clang-format']
@@ -252,18 +277,18 @@ let g:lightline = {
 " === Clipboard ===
 " TODO: Replace when wl-protocols stabilise and are actually used:
 " https://github.com/neovim/neovim/issues/9213
-let g:clipboard = {
-\   'name': 'wl-clipboard',
-\   'copy': {
-\      '+': 'wl-copy --foreground',
-\      '*': 'wl-copy --foreground --primary',
-\    },
-\   'paste': {
-\      '+': 'wl-paste --no-newline',
-\      '*': 'wl-paste --no-newline --primary',
-\   },
-\   'cache_enabled': 1,
-\ }
+" let g:clipboard = {
+" \   'name': 'wl-clipboard',
+" \   'copy': {
+" \      '+': 'wl-copy --foreground',
+" \      '*': 'wl-copy --foreground --primary',
+" \    },
+" \   'paste': {
+" \      '+': 'wl-paste --no-newline',
+" \      '*': 'wl-paste --no-newline --primary',
+" \   },
+" \   'cache_enabled': 1,
+" \ }
 
 " === MatchTagAlways ===
 let g:mta_filetypes = {}
