@@ -20,7 +20,7 @@ input * {
    xkb_numlock disabled
    xkb_options caps:none
    repeat_delay 160
-   repeat_rate 70
+   repeat_rate 60
 }
 
 input "2:7:SynPS/2_Synaptics_TouchPad" {
