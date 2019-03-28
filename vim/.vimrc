@@ -31,6 +31,7 @@ Plug 'rafi/awesome-vim-colorschemes'
 Plug 'hdima/python-syntax'
 Plug 'RRethy/vim-illuminate'
 Plug 'junegunn/goyo.vim'
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 
 " Front-end
 Plug 'pangloss/vim-javascript'
@@ -61,7 +62,6 @@ if has('nvim')
     set termguicolors
   endif
   tmap <c-o> <c-\><c-n>
-  syntax on
   colorscheme one
   " Transparent background
   hi normal guibg=none ctermbg=none 
@@ -76,6 +76,11 @@ else
   source ~/.vimrc_background
   endif
 endif
+
+" == DevIcons ===
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+" https://github.com/ryanoasis/vim-devicons/issues/215
+if !exists('g:syntax_on') | syntax enable | endif
 
 " === Fugitive ===
 nnoremap <silent> <leader>gs :Gstatus<cr>
@@ -198,10 +203,12 @@ let g:ale_sign_error = '>>'
 let g:ale_sign_warning = '--'
 let g:ale_sign_column_always = 1
 let g:ale_python_mypy_options = '--ignore-missing-imports --follow-imports=silent'
+let g:ale_javascript_standard_options = '--parser babel-eslint'
 let g:ale_linters = {
 \   'python': ['flake8'],
-\   'javascript': ['standard'],
-\   'c': ['clang']
+\   'javascript': ['eslint'],
+\   'c': ['clang'],
+\   'cloudformation': ['cloudformation']
 \}
 " \   'javascript': ['standard'],
 " \   'javascript': ['eslint'],
@@ -209,10 +216,12 @@ let g:ale_linters = {
 " \   'python': ['flake8', 'mypy', 'pylint', 'yapf'],
 
 let g:ale_fixers = {
-\  'javascript': ['standard'],
+\  'javascript': ['eslint'],
 \  'c': ['clang-format']
 \}
-" \  'javascript': ['prettier'],
+" \  'javascript': ['standard'],
+" \  'c': ['clang-format']
+" \}
 nmap <leader>f <plug>(ale_fix)
 nmap <silent> <leader>j :ALENext<cr>
 nmap <silent> <leader>k :ALEPrevious<cr>
@@ -249,7 +258,7 @@ function! LightlineLinterOK() abort
   return l:counts.total == 0 ? '✓' : ''
 endfunction
 let g:lightline = {
-      \ 'colorscheme': 'Tomorrow_Night',
+      \ 'colorscheme': 'one',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ], [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
       \   'right': [ [ 'lineinfo' ],
@@ -363,6 +372,14 @@ cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 
 " Treat all header files as C files
 autocmd BufRead,BufNewFile *.h,*.c set filetype=c
+
+" Detect CloudFormation templates
+function! SetCfn()
+  set ft=cloudformation
+  set syn=yaml
+endfunction
+autocmd BufRead,BufNewFile *.yaml if getline(1) =~ 'AWSTemplateFormatVersion' | :call SetCfn() | endif
+autocmd BufRead,BufNewFile *.yaml if getline(2) =~ 'AWSTemplateFormatVersion' | :call SetCfn() | endif
 
 " https://github.com/mxw/vim-jsx/issues/124
 hi link xmlEndTag xmlTag
