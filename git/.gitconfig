@@ -1,6 +1,6 @@
 [user]
 	name = Joe Nye
-	email = prokonye@gmail.com
+	email = joenye@amazon.com
 	signingkey = 95CC4CA55A79BFD4
 [alias]
         lol = log --graph --decorate --pretty=oneline --abbrev-commit
@@ -16,11 +16,11 @@
 [push]
 	default = simple
 [gpg]
-	program = /usr/bin/gpg2
+	program = /usr/local/bin/gpg2
 [init]
 	templatedir = ~/.git_template
-[commit]
-	gpgSign = true
+; [commit]
+; 	gpgSign = true
 [filter "lfs"]
 	required = true
 	clean = git-lfs clean -- %f

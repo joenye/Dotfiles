@@ -32,6 +32,7 @@ Plug 'hdima/python-syntax'
 Plug 'RRethy/vim-illuminate'
 Plug 'junegunn/goyo.vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+Plug 'gabrielelana/vim-markdown'
 
 " Front-end
 Plug 'pangloss/vim-javascript'
@@ -120,10 +121,7 @@ let g:echodoc#enable_at_startup = 1
 autocmd CompleteDone * silent! pclose!
 set shortmess+=c
 inoremap <expr><cr> pumvisible() ? "\<c-y>" : "\<c-g>u\<cr>"
-inoremap <silent><expr> <TAB>
-          \ pumvisible() ? "\<C-n>" :
-          \ "\<TAB>" :
-          \ deoplete#mappings#manual_complete()
+inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 " <C-x>: close popup and delete backword char
 inoremap <expr><C-x> deoplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS>  deoplete#smart_close_popup()."\<C-h>"
@@ -217,7 +215,9 @@ let g:ale_linters = {
 
 let g:ale_fixers = {
 \  'javascript': ['eslint'],
-\  'c': ['clang-format']
+\  'c': ['clang-format'],
+\  'python': ['black'],
+\  'xml': ['xmllint']
 \}
 " \  'javascript': ['standard'],
 " \  'c': ['clang-format']
@@ -341,6 +341,9 @@ inoremap <right> <nop>
 " Prevent highlighting being funky
 autocmd BufEnter,InsertLeave * :syntax sync fromstart
 
+" MarkDown syntax
+let g:markdown_enable_spell_checking = 0
+
 " Reverses default behaviour so that j and k move down/up by display lines,
 " while gj and gk move by real lines
 nnoremap k gk
@@ -380,6 +383,7 @@ function! SetCfn()
 endfunction
 autocmd BufRead,BufNewFile *.yaml if getline(1) =~ 'AWSTemplateFormatVersion' | :call SetCfn() | endif
 autocmd BufRead,BufNewFile *.yaml if getline(2) =~ 'AWSTemplateFormatVersion' | :call SetCfn() | endif
+autocmd BufRead,BufNewFile *.yaml if match(readfile(@%), 'AWS::') | :call SetCfn() | endif
 
 " https://github.com/mxw/vim-jsx/issues/124
 hi link xmlEndTag xmlTag
