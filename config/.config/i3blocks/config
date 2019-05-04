@@ -31,21 +31,21 @@ color=#FFFFFF
 full_text=
 interval=3
 
-[separator]
+#[separator]
 
-[temperature]
-label=🌡️
-color=#FFFFFF
-full_text=
-interval=3
+#[temperature]
+#label=🌡️
+#color=#FFFFFF
+#full_text=
+#interval=3
 
-[separator]
+#[separator]
 
-[ip-address]
-label=🔖
-color=#FFFFFF
-full_text=ip
-interval=3
+#[ip-address]
+#label=🔖
+#color=#FFFFFF
+#full_text=ip
+#interval=3
 
 [separator]
 
