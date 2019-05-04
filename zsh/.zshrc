@@ -19,7 +19,7 @@ fi
 alias vim='nvim'
 alias python='python3'
 alias pip='pip3'
-alias ctags="`brew --prefix`/bin/ctags"
+# alias ctags="`brew --prefix`/bin/ctags"
 
 source $ZSH/oh-my-zsh.sh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

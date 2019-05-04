@@ -4,7 +4,7 @@ bold_is_bright=true
 #audible_bell = false
 #clickable_url = true
 #dynamic_title = true
-font = MesloLGMDZNerd Font Mono 16
+font = MesloLGMDZNerd Font Mono 10
 # font = Monospace 11
 # font = Source Code Pro Semibold 12
 # font = RobotoMono Nerd Font 11
@@ -49,7 +49,7 @@ filter_unmatched_urls = true
 foreground      = #c5c8c6
 foreground_bold = #e0e0e0
 cursor          = #e0e0e0
-background      = rgba(29, 31, 33, 0.90)
+background      = rgba(29, 31, 33, 0.94)
 
 # 16 color space
 
