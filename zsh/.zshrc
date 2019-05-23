@@ -1,6 +1,6 @@
 export PATH=$HOME/bin:/usr/local/bin:$HOME/.npm-global/bin:/usr/local/go/bin:$HOME/.yarn/bin:$PATH
 export ZSH=~/.oh-my-zsh
-# export TERM="xterm-256color"
+[[ $TERM == xterm-termite ]] && export TERM=xterm
 
 ZSH_THEME='robbyrussell'
 COMPLETION_WAITING_DOTS='true'
@@ -25,10 +25,6 @@ source $ZSH/oh-my-zsh.sh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-
-
-
 
 # tabtab source for serverless package
 # uninstall by removing these lines or running `tabtab uninstall serverless`

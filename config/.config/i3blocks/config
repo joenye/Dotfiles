@@ -115,3 +115,10 @@ interval=3
 color=#FFFFFF
 full_text=
 instance=%a %d %b %Y  🕒 %H:%M 
+
+[datetime-dc]
+label=
+interval=3
+color=#FFFFFF
+full_text=
+instance=%H:%M 

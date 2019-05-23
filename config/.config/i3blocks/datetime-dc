@@ -1,0 +1,8 @@
+#!/bin/bash
+
+FORMAT="${BLOCK_INSTANCE:-%H:%M}"
+DATETIME=$(TZ='America/New_York' date "+${FORMAT}")
+
+echo "| ${DATETIME}"
+echo "| ${DATETIME}"
+echo ""

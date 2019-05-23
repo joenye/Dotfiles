@@ -2,9 +2,11 @@
 allow_bold = true
 bold_is_bright=true
 #audible_bell = false
-#clickable_url = true
+clickable_url = true
 #dynamic_title = true
+# font = SauceCodePro Nerd Font 11
 font = MesloLGMDZNerd Font Mono 10
+# font = FuraCode Nerd Font Mono Regular 11
 # font = Monospace 11
 # font = Source Code Pro Semibold 12
 # font = RobotoMono Nerd Font 11
