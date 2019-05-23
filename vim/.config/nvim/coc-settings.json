@@ -1,0 +1,10 @@
+{
+  "suggest.echodocSupport": true,
+
+  // coc-python
+  "python.pythonPath": "/usr/bin/python3",
+  "python.jediEnabled": false,  // Use Microsoft Python Language Server instead of Jedi
+  "python.analysis.disabled": ["unresolved-import", "undefined-variable"], // NB: https://github.com/Microsoft/python-language-server/issues/918
+  "python.linting.pylintEnabled": false,
+  "python.linting.flake8Enabled": true
+}

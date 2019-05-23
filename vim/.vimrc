@@ -1,232 +1,219 @@
+scriptencoding utf-8
 set nocompatible
+
+" ============================================================================ "
+" ===                               PLUGINS                                === "
+" ============================================================================ "
+
+" Check whether vim-plug is installed and install it if necessary
+let plugpath = expand('<sfile>:p:h'). '/autoload/plug.vim'
+if !filereadable(plugpath)
+    if executable('curl')
+        let plugurl = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+        call system('curl -fLo ' . shellescape(plugpath) . ' --create-dirs ' . plugurl)
+        if v:shell_error
+            echom "Error downloading vim-plug. Please install it manually.\n"
+            exit
+        endif
+    else
+        echom "vim-plug not installed. Please install it manually or install curl.\n"
+        exit
+    endif
+endif
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'tpope/vim-sensible'
+" === Editing === "
+
+" Legend
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
-Plug 'tpope/vim-surround' 
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-dispatch'
-Plug 'tpope/vim-unimpaired'
-Plug 'junegunn/gv.vim'
-Plug 'scrooloose/nerdtree'
-Plug 'ryanoasis/vim-devicons'
-Plug 'tpope/vim-vinegar'
-Plug 'itchyny/lightline.vim'
-Plug 'maximbaz/lightline-ale'
-Plug 'airblade/vim-rooter'
-Plug 'w0rp/ale'
-Plug 'farmergreg/vim-lastplace'
-Plug 'junegunn/fzf.vim'
-Plug 'mbbill/undotree'
-Plug 'janko-m/vim-test'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'tommcdo/vim-exchange' " cxiw and .
-Plug 'kassio/neoterm'
-Plug 'simeji/winresizer'
-Plug 'chriskempson/base16-vim'
-Plug 'rafi/awesome-vim-colorschemes'
-Plug 'hdima/python-syntax'
-Plug 'RRethy/vim-illuminate'
-Plug 'junegunn/goyo.vim'
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
-Plug 'gabrielelana/vim-markdown'
+Plug 'tpope/vim-surround'
 
-" Front-end
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
+" Intellisense (auto-completion, linting, fixing - combines Ale and Deoplete)
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+
+" Trailing whitespace highlighting & automatic fixing
+Plug 'ntpeters/vim-better-whitespace'
+
+" Auto-close brackets plugin
+Plug 'rstacruz/vim-closer'
+
+" Return to last place in file upon re-opening
+Plug 'farmergreg/vim-lastplace'
+
+" Print method signatures in echo area
+Plug 'Shougo/echodoc.vim'
+
+" Test running
+Plug 'janko-m/vim-test'
+
+" HTML Abbreviations expansion
 Plug 'mattn/emmet-vim'
-Plug 'elzr/vim-json'
-Plug 'HerringtonDarkholme/yats.vim'
-Plug 'othree/html5.vim'
+
+" Switch into tmux easily
+Plug 'christoomey/vim-tmux-navigator'
+
+" cxiw and .
+Plug 'tommcdo/vim-exchange'
+
+" nvim terminal wrapper
+Plug 'kassio/neoterm'
+
+" Zen mode
+Plug 'junegunn/goyo.vim'
+
+" Highlight matching characters
+Plug 'RRethy/vim-illuminate'
+
+" Always highlight XML/HTML tags
 Plug 'Valloric/MatchTagAlways'
 
-" Autocomplete
-Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
-Plug 'ervandew/supertab'
-Plug 'Shougo/echodoc.vim'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'othree/jspc.vim', { 'for': ['javascript', 'javascript.jsx'] }
-Plug 'zchee/deoplete-jedi'
-Plug 'Rip-Rip/clang_complete'
+" Nice undo tree
+Plug 'mbbill/undotree'
+
+" :GV git browser
+Plug 'junegunn/gv.vim'
+
+" Markdown syntax
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 
 " Snippets
 Plug 'SirVer/ultisnips'
 Plug 'joenye/vim-snippets'
 
+" === Syntax Highlighting === "
+
+" Python
+Plug 'hdima/python-syntax'
+
+" Markdown
+Plug 'gabrielelana/vim-markdown'
+
+" nginx
+Plug 'chr4/nginx.vim'
+
+" Javascript
+Plug 'othree/javascript-libraries-syntax.vim'
+" Plug 'pangloss/vim-javascript'
+Plug 'othree/yajs.vim'
+
+" React JSX
+Plug 'mxw/vim-jsx'
+
+" Typescript
+Plug 'HerringtonDarkholme/yats.vim'
+
+" HTML5
+Plug 'othree/html5.vim'
+
+" JSON
+Plug 'elzr/vim-json'
+
+" === UI/Menus === "
+
+" Fuzzy-finding, buffer management
+Plug 'Shougo/denite.nvim'
+
+" NERDTree
+Plug 'scrooloose/nerdtree'
+Plug 'tpope/vim-vinegar'
+
+" Theme
+Plug 'ryanoasis/vim-devicons'
+Plug 'rafi/awesome-vim-colorschemes'
+
+" Status bar
+Plug 'itchyny/lightline.vim'
+
+" <C-e>
+Plug 'simeji/winresizer'
+
 call plug#end()
 
+" ============================================================================ "
+" ===                           MAPPINGS                                   === "
+" ============================================================================ "
+
+" Remap leader key to <space>
+map <space> <leader>
+
+" Search
+map <leader>h :%s///<left><left>
+nmap <silent> <leader>/ :nohlsearch<CR>
+" Unsets the 'last search pattern' register by hitting return
+nnoremap <cr> :noh<cr><cr>
+" Always search forward with n and backward with N
+nnoremap <expr> n  'Nn'[v:searchforward]
+nnoremap <expr> N  'nN'[v:searchforward]
+
+" Reverses default behaviour so that j and k move down/up by display lines, while gj and gk move by real lines
+nnoremap k gk
+nnoremap gk k
+nnoremap j gj
+nnoremap gj j
+
+" Copy current file path
+nnoremap <silent> <leader>c :let @+=expand('%:p')<cr>
+
+" Easy expansion of the active file directory
+cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
+
 if has('nvim')
-  if (has('termguicolors'))
-    set termguicolors
-  endif
+  " Escape nvim terminal
   tmap <c-o> <c-\><c-n>
-  colorscheme one
-  " Transparent background
-  hi normal guibg=none ctermbg=none 
-else
-  set ttymouse=xterm2
-  set ttyfast
-  filetype plugin indent on
-  " Terminal colours
-  if filereadable(expand('~/.vimrc_background'))
-      let base16colorspace=256
-  colorscheme base16-default-dark
-  source ~/.vimrc_background
-  endif
 endif
 
-" == DevIcons ===
-let g:WebDevIconsUnicodeDecorateFolderNodes = 1
-" https://github.com/ryanoasis/vim-devicons/issues/215
-if !exists('g:syntax_on') | syntax enable | endif
+" Delete current visual selection and dump in black hole buffer before pasting
+" Used when you want to paste over something without it getting copied to Vim's default buffer
+vnoremap <leader>p "_dP
 
-" === Fugitive ===
+" Use w!! to write file as root
+cmap w!! w !sudo tee %
+
+set pastetoggle=<F3>
+
+" Note: use <c-[> when jj is not possible
+inoremap jj <esc>
+
+" Disable arrow keys
+nnoremap <up> <nop>
+nnoremap <down> <nop>
+nnoremap <left> <nop>
+nnoremap <right> <nop>
+inoremap <up> <nop>
+inoremap <down> <nop>
+inoremap <left> <nop>
+inoremap <right> <nop>
+
+" Ctrl-a behaviour
+map <c-a> <esc>ggVG<cr>
+
+" === nerdtree ===
+map <C-n> :NERDTreeFind<CR>
+
+" === undotree ===
+nnoremap <F4> :UndotreeToggle<cr>
+
+" === vim-fugitive ===
 nnoremap <silent> <leader>gs :Gstatus<cr>
-" Note that :Gvdiff forces vertical split, else horizontal is used
-" if the window is not wide enough
+" Note :Gvdiff forces vertical split, else horizontal is used if the window is not wide enough
 nnoremap <silent> <leader>gd :Gvdiff<cr>
 nnoremap <silent> <leader>gc :Gcommit<cr>
 nnoremap <silent> <leader>gb :Gblame<cr>
 nnoremap <silent> <leader>gl :GV<cr>
 nnoremap <silent> <leader>gp :Git push<cr>
-" nnoremap <silent> <leader>gw :Gwrite<cr>
-" nnoremap <silent> <leader>gr :Gread<cr>
 nnoremap <silent> <leader>gi :Git add -p %<cr>
 nnoremap <silent> <leader>ge :Gedit :0<cr>
 
-" === Deoplete (uses insert-mode omnifunc completion) ===
-let g:deoplete#enable_at_startup = 1
-" Configure in-built insert-mode completion to scan loaded buffers, current and included files
-set complete=.,w,b,u,i
-set completeopt=longest,menuone,preview,noinsert,noselect
-" Don't show typed word in completion menu
-call deoplete#custom#source('_', 'matchers', ['matcher_fuzzy', 'matcher_length'])
+" === vim-test ===
+nnoremap <silent> <leader>tn :TestNearest<cr>
+nnoremap <silent> <leader>tv :TestNearest -v<cr>
+nnoremap <silent> <leader>tl :TestLast<cr>
+nnoremap <silent> <leader>tf :TestFile<cr>
 
-" These can't live in ftplugins, since they need to be loaded when deoplete starts
-let default_sources = ['buffer', 'tag', 'file', 'ultisnips']
-call deoplete#custom#option('sources', {
-\ '_': default_sources,
-\ 'python': default_sources + ['jedi'],
-\ 'c': default_sources + ['clang_complete'],
-\ 'javascript': default_sources + ['LanguageClient-neovim'],
-\ 'javascript.jsx': default_sources + ['LanguageClient-neovim'],
-\ })
-
-" let g:SuperTabDefaultCompletionType = "<c-n>"
-let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
-let g:echodoc#enable_at_startup = 1
-autocmd CompleteDone * silent! pclose!
-set shortmess+=c
-inoremap <expr><cr> pumvisible() ? "\<c-y>" : "\<c-g>u\<cr>"
-inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-" <C-x>: close popup and delete backword char
-inoremap <expr><C-x> deoplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS>  deoplete#smart_close_popup()."\<C-h>"
-inoremap <silent><expr> <c-space> deoplete#mappings#manual_complete()
-inoremap <silent><expr> <esc> pumvisible() ? "<c-e><esc>" : "<esc>"
-nmap <leader>d :call LanguageClient_textDocument_definition()<cr>
-nmap <leader>s :call LanguageClient_contextMenu()<cr>
-
-let g:LanguageClient_autoStart = 1
-let g:LanguageClient_serverCommands = {
-\ 'javascript': ['javascript-typescript-stdio'],
-\ 'javascript.jsx': ['javascript-typescript-stdio'],
-\ 'html': ['html-languageserver', '--stdio'],
-\ 'css': ['css-languageserver', '--stdio'],
-\ 'sass': ['css-languageserver', '--stdio'],
-\ 'scss': ['css-languageserver', '--stdio'],
-\ }
-let g:LanguageClient_rootMarkers = {
-\ 'javascript': ['package.json'],
-\ 'javascript.jsx': ['package.json'],
-\ }
-let g:LanguageClient_loggingLevel = 'DEBUG'
-" Disable fancy diagnostics and follow SRP (i.e. use ALE)
-let g:LanguageClient_diagnosticsEnable = 0
-
-" === UltiSnips ===
-let g:UltiSnipsExpandTrigger="<C-j>"
-let g:UltiSnipsJumpForwardTrigger="<C-j>"
-let g:UltiSnipsJumpBackwardTrigger="<C-k>"
-
-" === Netrw ===
-let g:netrw_list_hide= '.*\.swp$,.*\.pyc,.*\.sw*,.*\.un~'
-let g:netrw_liststyle=3
-let g:netrw_menu=0
-let g:netrw_winsize=10
-
-" === Rooter ===
-set autochdir
-let g:rooter_patterns = ['node_modules/', '.git', '.git/']
-let g:rooter_manual_only = 1 " Commands that care about dir should invoke rooter
-
-" === NERDTree ===
-let NERDTreeIgnore = ['\.pyc$', '^__pycache__$', '\.sw.$', '\.un\~']
-let NERDTreeShowHidden=1
-let NERDTreeMinimalUI=1
-let g:NERDTreeMapQuit = 'qq'
-let NERDTreeChDirMode=2
-" Only use toggle for directory
-" map <C-l> :NERDTreeToggle<CR>
-map <C-n> :NERDTreeFind<CR>
-let g:NERDTreeDirArrowExpandable = '├'
-let g:NERDTreeDirArrowCollapsible = '└'
-let g:NERDTreeMapActivateNode = '<tab>'
-" let g:NERDTreeQuitOnOpen=1
-
-" === FZF ===
-set rtp+=~/.fzf
-set rtp+=/usr/local/opt/fzf " MacOS
-let g:fzf_history_dir = '~/.local/share/fzf-history'
-nmap ; :Buffers<cr>
-nmap <leader>e :Rooter<cr><bar>:Tags<cr>
-nmap <leader>r :Rooter<cr><bar>:Files<cr>
-nmap <leader>i :Rooter<cr><bar>:Files<cr>
-nmap <leader>l :Lines<cr>
-nmap <leader>a :Rooter<cr><bar>:Rg<cr>
-nmap <leader>h :History<cr>
-command! CmdHist call fzf#vim#command_history({'right': '40'})
-command! QHist call fzf#vim#search_history({'right': '40'})
-let g:fzf_layout = { 'down': '~25%' }
-
-" === ALE ===
-let g:ale_lint_on_save = 1
-let g:ale_lint_on_enter = 1
-let g:ale_lint_on_text_changed = 1
-let g:ale_lint_delay = 500
-let g:ale_sign_error = '>>'
-let g:ale_sign_warning = '--'
-let g:ale_sign_column_always = 1
-let g:ale_python_mypy_options = '--ignore-missing-imports --follow-imports=silent'
-let g:ale_javascript_standard_options = '--parser babel-eslint'
-let g:ale_linters = {
-\   'python': ['flake8'],
-\   'javascript': ['eslint'],
-\   'c': ['clang'],
-\   'cloudformation': ['cloudformation']
-\}
-" \   'javascript': ['standard'],
-" \   'javascript': ['eslint'],
-" \   'c': ['clang', 'clangtidy']
-" \   'python': ['flake8', 'mypy', 'pylint', 'yapf'],
-
-let g:ale_fixers = {
-\  'javascript': ['eslint'],
-\  'c': ['clang-format'],
-\  'python': ['black'],
-\  'xml': ['xmllint']
-\}
-" \  'javascript': ['standard'],
-" \  'c': ['clang-format']
-" \}
-nmap <leader>f <plug>(ale_fix)
-nmap <silent> <leader>j :ALENext<cr>
-nmap <silent> <leader>k :ALEPrevious<cr>
-
-" === Emmet ===
+" === emmet-vim ===
 nmap <expr> <leader>, emmet#expandAbbrIntelligent('\<space>')
 let g:user_emmet_settings = {
 \   'javascript.jsx' : {
@@ -234,56 +221,412 @@ let g:user_emmet_settings = {
 \    },
 \}
 
-" === Lightline ===
-augroup YourGroup
-    autocmd!
-    autocmd User ALELint call lightline#update()
-augroup END
-function! LightlineLinterWarnings() abort
-  let l:counts = ale#statusline#Count(bufnr(''))
-  let l:all_errors = l:counts.error + l:counts.style_error
-  let l:all_non_errors = l:counts.total - l:all_errors
-  return l:all_non_errors == 0 ? '' : printf('%d ◆', all_non_errors)
-endfunction
-function! LightlineLinterErrors() abort
-  let l:counts = ale#statusline#Count(bufnr(''))
-  let l:all_errors = l:counts.error + l:counts.style_error
-  let l:all_non_errors = l:counts.total - l:all_errors
-  return l:counts.total == 0 ? '' : printf('%d ✗', all_errors)
-endfunction
-function! LightlineLinterOK() abort
-  let l:counts = ale#statusline#Count(bufnr(''))
-  let l:all_errors = l:counts.error + l:counts.style_error
-  let l:all_non_errors = l:counts.total - l:all_errors
-  return l:counts.total == 0 ? '✓' : ''
-endfunction
-let g:lightline = {
-      \ 'colorscheme': 'one',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ], [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
-      \   'right': [ [ 'lineinfo' ],
-      \          [ 'percent' ],
-      \              [ 'linter_warnings', 'linter_errors', 'linter_ok' ],
-      \          [ 'filetype', 'fileencoding', 'fileformat' ] ]
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'fugitive#head'
-      \ },
-      \ 'component_expand': {
-      \   'linter_warnings': 'LightlineLinterWarnings',
-      \   'linter_errors': 'LightlineLinterErrors',
-      \   'linter_ok': 'LightlineLinterOK'
-      \ },
-      \ 'component_type': {
-      \   'linter_warnings': 'warning',
-      \   'linter_errors': 'error',
-      \   'linter_ok': 'ok'
-      \ },
-      \ 'separator': { 'left': '', 'right': '' },
-      \ 'subseparator': { 'left': '', 'right': '' }
-      \ }
+" === vim-better-whitespace === "
+"   <leader>y - Automatically remove trailing whitespace
+nmap <leader>y :StripWhitespace<CR>
 
-" === Clipboard ===
+" === coc.nvim ===
+nmap <silent> <leader>dd <Plug>(coc-definition)
+nmap <silent> <leader>dr <Plug>(coc-references)
+nmap <silent> <leader>dj <Plug>(coc-implementation)
+nmap <silent> <leader>j <Plug>(coc-diagnostic-next)
+nmap <silent> <leader>k <Plug>(coc-diagnostic-prev)
+
+" Use <tab> for trigger completion and navigate to next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+
+" === denite.nvim ===
+"   ;         - Browser currently open buffers
+"   <leader>r - Browse list of files in current directory
+"   <leader>g - Search current directory for occurences of given term and close window if no results
+"   <leader>t - Search current directory for occurences of word under cursor
+nmap ; :Denite buffer -winrow=1<CR>
+nmap <leader>r :Denite file/rec<CR>
+nnoremap <leader>g :<C-u>Denite grep:. -no-empty -mode=normal<CR>
+nnoremap <leader>t :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
+
+" ============================================================================ "
+" ===                           EDITING OPTIONS                            === "
+" ============================================================================ "
+
+" Smart search
+set ignorecase
+set smartcase
+
+" Disable line numbers
+set nonumber
+
+" Don't show last command
+set noshowcmd
+
+" Yank and paste with the system clipboard
+set clipboard=unnamed
+
+" Hides buffers instead of closing them
+set hidden
+
+" Highlight current cursor line, except on entering
+set cursorline
+
+" Close vim if NERDTree is only thing open
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" Close preview window when completion is done
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+" Disable line/column number in status line (still appears in airline preview window)
+set noruler
+
+" Only one line for command line
+set cmdheight=1
+
+" Enable mouse
+set mouse=a
+
+" Allow per-directory .vimrc overrides
+set exrc
+set secure
+
+" Automatically re-read file if external change detected
+set autoread
+
+" Don't litter swp files everywhere
+set backup
+set backupdir=~/.cache/vim/backup
+set swapfile
+set directory=~/.cache/vim/swap
+set undofile
+set undodir=~/.cache/vim/undo
+
+" ============================================================================ "
+" ===                           UI/MENU OPTIONS                            === "
+" ============================================================================ "
+
+" Enable true color support
+set termguicolors
+
+try
+  colorscheme one
+catch
+  colorscheme slate
+endtry
+
+" Transparent background
+hi Normal ctermbg=NONE guibg=NONE
+hi NonText ctermbg=NONE guibg=NONE
+hi LineNr ctermfg=NONE guibg=NONE
+hi SignColumn ctermfg=NONE guibg=NONE
+hi StatusLine guifg=#16252b guibg=#6699CC
+hi StatusLineNC guifg=#16252b guibg=#16252b
+
+" Add custom highlights in method that is executed every time a colorscheme is sourced
+" See https://gist.github.com/romainl/379904f91fa40533175dfaec4c833f2f
+function! MyHighlights() abort
+  " Hightlight trailing whitespace
+  highlight Trail ctermbg=red guibg=red
+  call matchadd('Trail', '\s\+$', 100)
+endfunction
+
+augroup MyColors
+  autocmd!
+  autocmd ColorScheme * call MyHighlights()
+augroup END
+
+" Don't give completion messages like 'match 1 of 2' or 'The only match'
+set shortmess+=c
+
+" Preview window appears at bottom
+set splitbelow
+
+" Don't display mode in command line (lightline already shows)
+set noshowmode
+
+" coc.nvim color changes
+hi! link CocErrorSign WarningMsg
+hi! link CocWarningSign Number
+hi! link CocInfoSign Type
+
+" Customize NERDTree directory
+hi! NERDTreeCWD guifg=#99c794
+
+" https://github.com/mxw/vim-jsx/issues/124
+hi link xmlEndTag xmlTag
+
+" Prevent highlighting being funky
+" TODO: Remove?
+autocmd BufEnter,InsertLeave * :syntax sync fromstart
+
+" Call method on window enter
+augroup WindowManagement
+  autocmd!
+  autocmd WinEnter * call Handle_Win_Enter()
+augroup END
+
+" Change highlight group of preview window when open
+function! Handle_Win_Enter()
+  if &previewwindow
+    setlocal winhighlight=Normal:MarkdownError
+  endif
+endfunction
+
+" ============================================================================ "
+" ===                           PLUGIN OPTIONS                             === "
+" ============================================================================ "
+
+" == vim-markdown ===
+let g:markdown_enable_spell_checking = 0
+
+" == vim-devicons ===
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+
+" === echodoc.vim ===
+let g:echodoc#enable_at_startup = 1
+
+" === ultisnips ===
+let g:UltiSnipsExpandTrigger="<C-j>"
+let g:UltiSnipsJumpForwardTrigger="<C-j>"
+let g:UltiSnipsJumpBackwardTrigger="<C-k>"
+
+" === MatchTagAlways ===
+let g:mta_filetypes = {}
+" let g:mta_filetypes = {
+" \ 'html' : 1,
+" \ 'xhtml' : 1,
+" \ 'xml' : 1,
+" \ 'jinja' : 1,
+" \ 'javascript.jsx' : 0,
+" \}
+
+" === vim-markdown ===
+let g:markdown_enable_spell_checking = 0
+
+" === nerdtree ===
+let NERDTreeShowHidden=1
+let NERDTreeMinimalUI=1
+let NERDTreeIgnore = ['\.pyc$', '^__pycache__$', '\.sw.$', '\.un\~', '^\.DS_Store$', '^tags$', '\.git$[[dir]]', '\.idea$[[dir]]', '\.sass-cache$']
+let g:NERDTreeMapQuit = 'qq'
+let g:NERDTreeStatusline = ''
+let NERDTreeChDirMode=2
+let g:NERDTreeDirArrowExpandable = '├'
+let g:NERDTreeDirArrowCollapsible = '└'
+
+" === vim-illuminate ===
+let g:Illuminate_ftblacklist = ['nerdtree']
+
+" === vim-test ===
+let test#strategy = 'neoterm'
+let g:neoterm_size = '15'
+let g:neoterm_autoscroll = 1
+let g:neoterm_autoinsert = 1
+let g:neoterm_default_mod = ':botright'
+let g:test#preserve_screen = 1
+
+" === lightline ===
+try
+
+  " Purely for lightline to read
+  let g:lightline_symbol_map = {
+    \ 'error': '✗',
+    \ 'warning': '◆',
+    \ 'info': '∙',
+    \ 'hint': '∙'
+    \ }
+
+  function! s:lightline_coc_diagnostic(kind, sign) abort
+    let info = get(b:, 'coc_diagnostic_info', 0)
+    if empty(info) || get(info, a:kind, 0) == 0
+      return ''
+    endif
+    try
+      let s = g:lightline_symbol_map[a:sign]
+    catch
+      let s = ''
+    endtry
+    return printf('%s %d', s, info[a:kind])
+  endfunction
+  function! LightlineCocErrors() abort
+    return s:lightline_coc_diagnostic('error', 'error')
+  endfunction
+  function! LightlineCocWarnings() abort
+    return s:lightline_coc_diagnostic('warning', 'warning')
+  endfunction
+  function! LightlineCocInfo() abort
+    return s:lightline_coc_diagnostic('information', 'info')
+  endfunction
+  function! LightlineCocHints() abort
+    return s:lightline_coc_diagnostic('hints', 'hint')
+  endfunction
+
+  autocmd User CocDiagnosticChange call lightline#update()
+
+  let g:lightline = {
+        \ 'colorscheme': 'one',
+        \ 'active': {
+        \   'left': [ [ 'mode', 'paste' ], [ 'gitbranch', 'readonly', 'filename', 'modified' ], [ 'coc_error', 'coc_warning', 'coc_hint', 'coc_info' ] ],
+        \   'right': [ [ 'lineinfo' ], [ 'percent' ], [ 'filetype', 'fileencoding', 'fileformat' ] ]
+        \ },
+        \ 'component_expand': {
+        \ 'coc_error': 'LightlineCocErrors',
+        \ 'coc_warning': 'LightlineCocWarnings',
+        \ 'coc_info': 'LightlineCocInfo',
+        \ 'coc_hint': 'LightlineCocHints',
+        \ 'coc_fix': 'LightlineCocFixes'
+        \ },
+        \ 'component_type': {
+        \   'coc_error': 'error',
+        \   'coc_warning': 'warning',
+        \   'coc_info': 'tabsel',
+        \   'coc_hint': 'middle',
+        \   'coc_fix': 'middle',
+        \ },
+        \ 'component_function': {
+        \   'gitbranch': 'fugitive#head',
+        \ },
+        \ 'separator': { 'left': '', 'right': '' },
+        \ 'subseparator': { 'left': '', 'right': '' }
+        \ }
+catch
+  echo 'lightline not installed. Run :PlugInstall'
+endtry
+
+" === denite.nvim ===
+try
+  " Uses ripgrep for searching current directory for files
+  " By default, ripgrep will respect rules in .gitignore
+  "   --files: Print each file that would be searched (but don't search)
+  "   --glob:  Include or exclues files for searching that match the given glob
+  "            (aka ignore .git files)
+  "
+  call denite#custom#var('file/rec', 'command', ['rg', '--files', '--glob', '!.git'])
+
+  " Custom options for ripgrep (mostly defaults according to Denite docs)
+  "   --vimgrep:  Show results with every match on it's own line
+  "   --hidden:   Search hidden directories and files
+  "   --heading:  Show the file name above clusters of matches from each file
+  "   --S:        Search case insensitively if the pattern is all lowercase
+  call denite#custom#var('grep', 'command', ['rg'])
+  call denite#custom#var('grep', 'default_opts', ['--hidden', '--vimgrep', '--heading', '-S'])
+
+  " Recommended defaults according to Denite docs
+  call denite#custom#var('grep', 'recursive_opts', [])
+  call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
+  call denite#custom#var('grep', 'separator', ['--'])
+  call denite#custom#var('grep', 'final_opts', [])
+
+  " Remove date from buffer list
+  call denite#custom#var('buffer', 'date_format', '')
+
+  call denite#custom#map('insert', '<C-j>', '<denite:move_to_next_line>', 'noremap')
+  call denite#custom#map('insert', '<C-n>', '<denite:move_to_next_line>', 'noremap')
+  call denite#custom#map('insert', '<C-k>', '<denite:move_to_previous_line>', 'noremap')
+  call denite#custom#map('insert', '<C-p>', '<denite:move_to_previous_line>', 'noremap')
+
+  " Custom options for Denite
+  "   auto_resize             - Auto resize the Denite window height automatically.
+  "   prompt                  - Customize denite prompt
+  "   direction               - Specify Denite window direction as directly below current pane
+  "   winminheight            - Specify min height for Denite window
+  "   highlight_mode_insert   - Specify h1-CursorLine in insert mode
+  "   prompt_highlight        - Specify color of prompt
+  "   highlight_matched_char  - Matched characters highlight
+  "   highlight_matched_range - matched range highlight
+  let s:denite_options = {'default' : {
+  \ 'auto_resize': 1,
+  \ 'prompt': 'λ:',
+  \ 'direction': 'rightbelow',
+  \ 'winminheight': '10',
+  \ 'highlight_mode_insert': 'Visual',
+  \ 'highlight_mode_normal': 'Visual',
+  \ 'prompt_highlight': 'Function',
+  \ 'highlight_matched_char': 'Function',
+  \ 'highlight_matched_range': 'Normal'
+  \ }}
+
+  " Loop through denite options and enable them
+  function! s:profile(opts) abort
+    for l:fname in keys(a:opts)
+      for l:dopt in keys(a:opts[l:fname])
+        call denite#custom#option(l:fname, l:dopt, a:opts[l:fname][l:dopt])
+      endfor
+    endfor
+  endfunction
+
+  call s:profile(s:denite_options)
+catch
+  echo 'denite.nvim not installed. Run :PlugInstall'
+endtry
+
+" === FZF ===
+" nmap ; :Buffers<cr>
+" nmap <leader>e :Rooter<cr><bar>:Tags<cr>
+" nmap <leader>r :Rooter<cr><bar>:Files<cr>
+" nmap <leader>i :Rooter<cr><bar>:Files<cr>
+" nmap <leader>l :Lines<cr>
+" nmap <leader>a :Rooter<cr><bar>:Rg<cr>
+" nmap <leader>h :History<cr>
+" command! CmdHist call fzf#vim#command_history({'right': '40'})
+" command! QHist call fzf#vim#search_history({'right': '40'})
+" let g:fzf_layout = { 'down': '~25%' }
+
+" === ALE ===
+" let g:ale_lint_on_save = 1
+" let g:ale_lint_on_enter = 1
+" let g:ale_lint_on_text_changed = 1
+" let g:ale_lint_delay = 500
+" let g:ale_sign_error = '>>'
+" let g:ale_sign_warning = '--'
+" let g:ale_sign_column_always = 1
+" let g:ale_python_mypy_options = '--ignore-missing-imports --follow-imports=silent'
+" let g:ale_javascript_standard_options = '--parser babel-eslint'
+" let g:ale_linters = {
+" \   'python': ['flake8'],
+" \   'javascript': ['eslint'],
+" \   'c': ['clang'],
+" \   'cloudformation': ['cloudformation']
+" \}
+" let g:ale_fixers = {
+" \  'javascript': ['eslint'],
+" \  'c': ['clang-format'],
+" \  'python': ['black'],
+" \  'xml': ['xmllint']
+" \}
+" " \  'javascript': ['standard'],
+" " \  'c': ['clang-format']
+" " \}
+" nmap <leader>f <plug>(ale_fix)
+" nmap <silent> <leader>j :ALENext<cr>
+" nmap <silent> <leader>k :ALEPrevious<cr>
+"
+" === Deoplete (uses insert-mode omnifunc completion) ===
+" let g:deoplete#enable_at_startup = 1
+" " Configure in-built insert-mode completion to scan loaded buffers, current and included files
+" set complete=.,w,b,u,i
+" set completeopt=longest,menuone,preview,noinsert,noselect
+" " Don't show typed word in completion menu
+" call deoplete#custom#source('_', 'matchers', ['matcher_fuzzy', 'matcher_length'])
+
+" " These can't live in ftplugins, since they need to be loaded when deoplete starts
+" let default_sources = ['buffer', 'tag', 'file', 'ultisnips']
+" call deoplete#custom#option('sources', {
+" \ '_': default_sources,
+" \ 'python': default_sources + ['jedi'],
+" \ 'c': default_sources + ['clang_complete'],
+" \ 'javascript': default_sources + ['LanguageClient-neovim'],
+" \ 'javascript.jsx': default_sources + ['LanguageClient-neovim'],
+" \ })
+
+" ============================================================================ "
+" ===                           MISC                                       === "
+" ============================================================================ "
+
 " TODO: Replace when wl-protocols stabilise and are actually used:
 " https://github.com/neovim/neovim/issues/9213
 " let g:clipboard = {
@@ -299,83 +642,6 @@ let g:lightline = {
 " \   'cache_enabled': 1,
 " \ }
 
-" === MatchTagAlways ===
-let g:mta_filetypes = {}
-" let g:mta_filetypes = {
-" \ 'html' : 1,
-" \ 'xhtml' : 1,
-" \ 'xml' : 1,
-" \ 'jinja' : 1,
-" \ 'javascript.jsx' : 0,
-" \}
-
-" === Testing ===
-let test#strategy = 'neoterm'
-let g:neoterm_size = '15'
-let g:neoterm_autoscroll = 1
-let g:neoterm_autoinsert = 1
-let g:neoterm_default_mod = ':botright'
-let g:test#preserve_screen = 1
-nnoremap <silent> <leader>tn :TestNearest<cr>
-nnoremap <silent> <leader>tv :TestNearest -v<cr>
-nnoremap <silent> <leader>tl :TestLast<cr>
-nnoremap <silent> <leader>tf :TestFile<cr>
-
-" === Illuminate ===
-let g:Illuminate_ftblacklist = ['nerdtree']
-
-" === Miscellaneous ===
-map <space> <leader>
-" Try and use <c-[> when jj is not possible
-inoremap jj <esc>
-
-nnoremap <up> <nop>
-nnoremap <down> <nop>
-nnoremap <left> <nop>
-nnoremap <right> <nop>
-inoremap <up> <nop>
-inoremap <down> <nop>
-inoremap <left> <nop>
-inoremap <right> <nop>
-
-" Prevent highlighting being funky
-autocmd BufEnter,InsertLeave * :syntax sync fromstart
-
-" MarkDown syntax
-let g:markdown_enable_spell_checking = 0
-
-" Reverses default behaviour so that j and k move down/up by display lines,
-" while gj and gk move by real lines
-nnoremap k gk
-nnoremap gk k
-nnoremap j gj
-nnoremap gj j
-
-" Always search forward with n and backward with N
-nnoremap <expr> n  'Nn'[v:searchforward]
-nnoremap <expr> N  'nN'[v:searchforward]
-
-autocmd InsertLeave,WinEnter * set cursorline
-autocmd InsertEnter,WinLeave * set nocursorline
-
-" Unsets the 'last search pattern' register by hitting return
-nnoremap <cr> :noh<cr><cr>
-
-" Ctrl-a behaviour
-map <c-a> <esc>ggVG<cr>
-
-set pastetoggle=<F3>
-nnoremap <F4> :UndotreeToggle<cr>
-
-" Copy current file path
-nnoremap <silent> <leader>c :let @+=expand('%:p')<cr>
-
-" Easy expansion of the active file directory
-cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
-
-" Treat all header files as C files
-autocmd BufRead,BufNewFile *.h,*.c set filetype=c
-
 " Detect CloudFormation templates
 function! SetCfn()
   set ft=cloudformation
@@ -385,30 +651,6 @@ autocmd BufRead,BufNewFile *.yaml if getline(1) =~ 'AWSTemplateFormatVersion' | 
 autocmd BufRead,BufNewFile *.yaml if getline(2) =~ 'AWSTemplateFormatVersion' | :call SetCfn() | endif
 autocmd BufRead,BufNewFile *.yaml if match(readfile(@%), 'AWS::') | :call SetCfn() | endif
 
-" https://github.com/mxw/vim-jsx/issues/124
-hi link xmlEndTag xmlTag
-
-set mouse=a
-set noshowmode
-set splitbelow
-set splitright
-set showcmd
-set hidden
-set cursorline
-set undofile
-set showmatch
-set hlsearch
-set lazyredraw
-set ignorecase
-set smartcase
-
-" Don't litter swp files everywhere
-set backupdir=~/.cache
-set directory=~/.cache
-
-" Use w!! to write file as root
-cmap w!! %!sudo tee > /dev/null % 
-
-" Allow per-directory .vimrc overrides
-set exrc
-set secure
+if exists('g:loaded_webdevicons')
+  call webdevicons#refresh()
+endif
