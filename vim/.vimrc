@@ -5,132 +5,121 @@ set nocompatible
 " ===                               PLUGINS                                === "
 " ============================================================================ "
 
-" Check whether vim-plug is installed and install it if necessary
-let plugpath = expand('<sfile>:p:h'). '/autoload/plug.vim'
-if !filereadable(plugpath)
-    if executable('curl')
-        let plugurl = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-        call system('curl -fLo ' . shellescape(plugpath) . ' --create-dirs ' . plugurl)
-        if v:shell_error
-            echom "Error downloading vim-plug. Please install it manually.\n"
-            exit
-        endif
-    else
-        echom "vim-plug not installed. Please install it manually or install curl.\n"
-        exit
-    endif
-endif
+try
+  call plug#begin('~/.vim/plugged')
 
-call plug#begin('~/.vim/plugged')
+  " === Editing === "
 
-" === Editing === "
+  " Legend
+  Plug 'tpope/vim-commentary'
+  Plug 'tpope/vim-fugitive'
+  Plug 'tpope/vim-rhubarb'
+  Plug 'tpope/vim-surround'
 
-" Legend
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rhubarb'
-Plug 'tpope/vim-surround'
+  " Intellisense (auto-completion, linting, fixing - combines Ale and Deoplete)
+  Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 
-" Intellisense (auto-completion, linting, fixing - combines Ale and Deoplete)
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+  " Trailing whitespace highlighting & automatic fixing
+  Plug 'ntpeters/vim-better-whitespace'
 
-" Trailing whitespace highlighting & automatic fixing
-Plug 'ntpeters/vim-better-whitespace'
+  " Auto-close brackets plugin
+  Plug 'rstacruz/vim-closer'
 
-" Auto-close brackets plugin
-Plug 'rstacruz/vim-closer'
+  " Return to last place in file upon re-opening
+  Plug 'farmergreg/vim-lastplace'
 
-" Return to last place in file upon re-opening
-Plug 'farmergreg/vim-lastplace'
+  " Print method signatures in echo area
+  Plug 'Shougo/echodoc.vim'
 
-" Print method signatures in echo area
-Plug 'Shougo/echodoc.vim'
+  " Test running
+  Plug 'janko-m/vim-test'
 
-" Test running
-Plug 'janko-m/vim-test'
+  " HTML Abbreviations expansion
+  Plug 'mattn/emmet-vim'
 
-" HTML Abbreviations expansion
-Plug 'mattn/emmet-vim'
+  " Switch into tmux easily
+  Plug 'christoomey/vim-tmux-navigator'
 
-" Switch into tmux easily
-Plug 'christoomey/vim-tmux-navigator'
+  " cxiw and .
+  Plug 'tommcdo/vim-exchange'
 
-" cxiw and .
-Plug 'tommcdo/vim-exchange'
+  " nvim terminal wrapper
+  Plug 'kassio/neoterm'
 
-" nvim terminal wrapper
-Plug 'kassio/neoterm'
+  " Zen mode
+  Plug 'junegunn/goyo.vim'
 
-" Zen mode
-Plug 'junegunn/goyo.vim'
+  " Highlight matching characters
+  Plug 'RRethy/vim-illuminate'
 
-" Highlight matching characters
-Plug 'RRethy/vim-illuminate'
+  " Always highlight XML/HTML tags
+  Plug 'Valloric/MatchTagAlways'
 
-" Always highlight XML/HTML tags
-Plug 'Valloric/MatchTagAlways'
+  " Nice undo tree
+  Plug 'mbbill/undotree'
 
-" Nice undo tree
-Plug 'mbbill/undotree'
+  " :GV git browser
+  Plug 'junegunn/gv.vim'
 
-" :GV git browser
-Plug 'junegunn/gv.vim'
+  " Markdown syntax
+  Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 
-" Markdown syntax
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+  " Snippets
+  Plug 'SirVer/ultisnips'
+  Plug 'joenye/vim-snippets'
 
-" Snippets
-Plug 'SirVer/ultisnips'
-Plug 'joenye/vim-snippets'
+  " === Syntax Highlighting === "
 
-" === Syntax Highlighting === "
+  " Python
+  Plug 'hdima/python-syntax'
 
-" Python
-Plug 'hdima/python-syntax'
+  " Markdown
+  Plug 'gabrielelana/vim-markdown'
 
-" Markdown
-Plug 'gabrielelana/vim-markdown'
+  " nginx
+  Plug 'chr4/nginx.vim'
 
-" nginx
-Plug 'chr4/nginx.vim'
+  " Javascript
+  Plug 'othree/javascript-libraries-syntax.vim'
+  " Plug 'pangloss/vim-javascript'
+  Plug 'othree/yajs.vim'
 
-" Javascript
-Plug 'othree/javascript-libraries-syntax.vim'
-" Plug 'pangloss/vim-javascript'
-Plug 'othree/yajs.vim'
+  " React JSX
+  Plug 'mxw/vim-jsx'
 
-" React JSX
-Plug 'mxw/vim-jsx'
+  " Typescript
+  Plug 'HerringtonDarkholme/yats.vim'
 
-" Typescript
-Plug 'HerringtonDarkholme/yats.vim'
+  " HTML5
+  Plug 'othree/html5.vim'
 
-" HTML5
-Plug 'othree/html5.vim'
+  " JSON
+  Plug 'elzr/vim-json'
 
-" JSON
-Plug 'elzr/vim-json'
+  " === UI/Menus === "
 
-" === UI/Menus === "
+  " Fuzzy-finding, buffer management
+  Plug 'Shougo/denite.nvim'
 
-" Fuzzy-finding, buffer management
-Plug 'Shougo/denite.nvim'
+  " NERDTree
+  Plug 'scrooloose/nerdtree'
+  Plug 'tpope/vim-vinegar'
 
-" NERDTree
-Plug 'scrooloose/nerdtree'
-Plug 'tpope/vim-vinegar'
+  " Theme
+  Plug 'ryanoasis/vim-devicons'
+  Plug 'rakr/vim-one'
 
-" Theme
-Plug 'ryanoasis/vim-devicons'
-Plug 'rafi/awesome-vim-colorschemes'
+  " Status bar
+  Plug 'itchyny/lightline.vim'
 
-" Status bar
-Plug 'itchyny/lightline.vim'
+  " <C-e>
+  Plug 'simeji/winresizer'
 
-" <C-e>
-Plug 'simeji/winresizer'
+  call plug#end()
 
-call plug#end()
+catch
+  echo 'Vim plug not installed. Go and install it.'
+endtry
 
 " ============================================================================ "
 " ===                           MAPPINGS                                   === "
@@ -222,13 +211,31 @@ let g:user_emmet_settings = {
 \}
 
 " === vim-better-whitespace === "
-"   <leader>y - Automatically remove trailing whitespace
+" Remove all trailing whitespace
 nmap <leader>y :StripWhitespace<CR>
 
 " === coc.nvim ===
-nmap <silent> <leader>dd <Plug>(coc-definition)
-nmap <silent> <leader>dr <Plug>(coc-references)
-nmap <silent> <leader>dj <Plug>(coc-implementation)
+let g:coc_global_extensions = ['coc-eslint', 'coc-json', 'coc-css', 'coc-python', 'coc-tsserver']
+
+" Extension-specific fix action on current item and selection
+nmap <silent> <leader>da <Plug>(coc-codeaction)
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Extension-specific format on selection
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+" Jump around code
+nmap <silent> <leader>gd <Plug>(coc-definition)
+nmap <silent> <leader>gy <Plug>(coc-type-definition)
+nmap <silent> <leader>gi <Plug>(coc-implementation)
+nmap <silent> <leader>gr <Plug>(coc-references)
+
+" Rename current word
+nmap <leader>l <Plug>(coc-rename)
+
+" Jump between diagnostics
 nmap <silent> <leader>j <Plug>(coc-diagnostic-next)
 nmap <silent> <leader>k <Plug>(coc-diagnostic-prev)
 
@@ -237,21 +244,29 @@ function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
-
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
 
+augroup CocGroup
+	autocmd!
+  " Force show signature help on placeholder jump
+	autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
 " === denite.nvim ===
-"   ;         - Browser currently open buffers
+"   ,         - Browser currently open buffers (not using ; since that repeats f-search
 "   <leader>r - Browse list of files in current directory
 "   <leader>g - Search current directory for occurences of given term and close window if no results
 "   <leader>t - Search current directory for occurences of word under cursor
-nmap ; :Denite buffer -winrow=1<CR>
-nmap <leader>r :Denite file/rec<CR>
-nnoremap <leader>g :<C-u>Denite grep:. -no-empty -mode=normal<CR>
-nnoremap <leader>t :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
+nmap , :Denite buffer -split=floating -winrow=1<CR>
+nmap <leader>r :Denite file/rec -split=floating -winrow=1<CR>
+try
+  gnoremap <leader>g :<C-u>Denite grep:. -no-empty -mode=normal<CR>
+  nnoremap <leader>t :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
+catch
+endtry
 
 " ============================================================================ "
 " ===                           EDITING OPTIONS                            === "
@@ -312,8 +327,10 @@ set undodir=~/.cache/vim/undo
 
 " Enable true color support
 set termguicolors
+syntax enable
 
 try
+  let g:one_allow_italics = 1
   colorscheme one
 catch
   colorscheme slate
@@ -348,6 +365,9 @@ set splitbelow
 
 " Don't display mode in command line (lightline already shows)
 set noshowmode
+
+" Always display sign column
+set signcolumn=yes
 
 " coc.nvim color changes
 hi! link CocErrorSign WarningMsg
@@ -430,72 +450,67 @@ let g:neoterm_default_mod = ':botright'
 let g:test#preserve_screen = 1
 
 " === lightline ===
-try
+" Purely for lightline to read
+let g:lightline_symbol_map = {
+  \ 'error': '💩',
+  \ 'warning': '⚠️',
+  \ 'info': '🔧',
+  \ 'hint': '🔧'
+  \ }
 
-  " Purely for lightline to read
-  let g:lightline_symbol_map = {
-    \ 'error': '✗',
-    \ 'warning': '◆',
-    \ 'info': '∙',
-    \ 'hint': '∙'
-    \ }
+function! s:lightline_coc_diagnostic(kind, sign) abort
+  let info = get(b:, 'coc_diagnostic_info', 0)
+  if empty(info) || get(info, a:kind, 0) == 0
+    return ''
+  endif
+  try
+    let s = g:lightline_symbol_map[a:sign]
+  catch
+    let s = ''
+  endtry
+  return printf('%s %d', s, info[a:kind])
+endfunction
+function! LightlineCocErrors() abort
+  return s:lightline_coc_diagnostic('error', 'error')
+endfunction
+function! LightlineCocWarnings() abort
+  return s:lightline_coc_diagnostic('warning', 'warning')
+endfunction
+function! LightlineCocInfo() abort
+  return s:lightline_coc_diagnostic('information', 'info')
+endfunction
+function! LightlineCocHints() abort
+  return s:lightline_coc_diagnostic('hints', 'hint')
+endfunction
 
-  function! s:lightline_coc_diagnostic(kind, sign) abort
-    let info = get(b:, 'coc_diagnostic_info', 0)
-    if empty(info) || get(info, a:kind, 0) == 0
-      return ''
-    endif
-    try
-      let s = g:lightline_symbol_map[a:sign]
-    catch
-      let s = ''
-    endtry
-    return printf('%s %d', s, info[a:kind])
-  endfunction
-  function! LightlineCocErrors() abort
-    return s:lightline_coc_diagnostic('error', 'error')
-  endfunction
-  function! LightlineCocWarnings() abort
-    return s:lightline_coc_diagnostic('warning', 'warning')
-  endfunction
-  function! LightlineCocInfo() abort
-    return s:lightline_coc_diagnostic('information', 'info')
-  endfunction
-  function! LightlineCocHints() abort
-    return s:lightline_coc_diagnostic('hints', 'hint')
-  endfunction
+autocmd User CocDiagnosticChange call lightline#update()
 
-  autocmd User CocDiagnosticChange call lightline#update()
-
-  let g:lightline = {
-        \ 'colorscheme': 'one',
-        \ 'active': {
-        \   'left': [ [ 'mode', 'paste' ], [ 'gitbranch', 'readonly', 'filename', 'modified' ], [ 'coc_error', 'coc_warning', 'coc_hint', 'coc_info' ] ],
-        \   'right': [ [ 'lineinfo' ], [ 'percent' ], [ 'filetype', 'fileencoding', 'fileformat' ] ]
-        \ },
-        \ 'component_expand': {
-        \ 'coc_error': 'LightlineCocErrors',
-        \ 'coc_warning': 'LightlineCocWarnings',
-        \ 'coc_info': 'LightlineCocInfo',
-        \ 'coc_hint': 'LightlineCocHints',
-        \ 'coc_fix': 'LightlineCocFixes'
-        \ },
-        \ 'component_type': {
-        \   'coc_error': 'error',
-        \   'coc_warning': 'warning',
-        \   'coc_info': 'tabsel',
-        \   'coc_hint': 'middle',
-        \   'coc_fix': 'middle',
-        \ },
-        \ 'component_function': {
-        \   'gitbranch': 'fugitive#head',
-        \ },
-        \ 'separator': { 'left': '', 'right': '' },
-        \ 'subseparator': { 'left': '', 'right': '' }
-        \ }
-catch
-  echo 'lightline not installed. Run :PlugInstall'
-endtry
+let g:lightline = {
+      \ 'colorscheme': 'one',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ], [ 'gitbranch', 'readonly', 'filename', 'modified' ], [ 'coc_error', 'coc_warning', 'coc_hint', 'coc_info' ] ],
+      \   'right': [ [ 'lineinfo' ], [ 'percent' ], [ 'filetype', 'fileencoding', 'fileformat' ] ]
+      \ },
+      \ 'component_expand': {
+      \ 'coc_error': 'LightlineCocErrors',
+      \ 'coc_warning': 'LightlineCocWarnings',
+      \ 'coc_info': 'LightlineCocInfo',
+      \ 'coc_hint': 'LightlineCocHints',
+      \ 'coc_fix': 'LightlineCocFixes'
+      \ },
+      \ 'component_type': {
+      \   'coc_error': 'error',
+      \   'coc_warning': 'warning',
+      \   'coc_info': 'middle',
+      \   'coc_hint': 'middle',
+      \   'coc_fix': 'middle',
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'fugitive#head',
+      \ },
+      \ 'separator': { 'left': '', 'right': '' },
+      \ 'subseparator': { 'left': '', 'right': '' }
+      \ }
 
 " === denite.nvim ===
 try
@@ -530,7 +545,7 @@ try
   call denite#custom#map('insert', '<C-p>', '<denite:move_to_previous_line>', 'noremap')
 
   " Custom options for Denite
-  "   auto_resize             - Auto resize the Denite window height automatically.
+  "   auto_resize             - Auto resize the Denite window height automatically
   "   prompt                  - Customize denite prompt
   "   direction               - Specify Denite window direction as directly below current pane
   "   winminheight            - Specify min height for Denite window

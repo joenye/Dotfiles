@@ -5,7 +5,7 @@ export ZSH=~/.oh-my-zsh
 ZSH_THEME='robbyrussell'
 COMPLETION_WAITING_DOTS='true'
 
-plugins=(git docker docker-compose zsh-nvm aws zsh-syntax-highlighting)
+plugins=(git docker docker-compose zsh-nvm aws zsh-syntax-highlighting z)
 
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
