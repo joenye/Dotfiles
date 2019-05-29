@@ -1,6 +1,9 @@
 {
   "suggest.echodocSupport": true,
 
+  // coc-tsserver
+  "javascript.suggestionActions.enabled": false, // https://github.com/Microsoft/vscode/issues/47299
+
   // coc-eslint
   "eslint.filetypes": ["javascript", "typescript", "typescriptreact", "javascriptreact"],
 

@@ -46,9 +46,6 @@ try
   " nvim terminal wrapper
   Plug 'kassio/neoterm'
 
-  " Zen mode
-  Plug 'junegunn/goyo.vim'
-
   " Highlight matching characters
   Plug 'RRethy/vim-illuminate'
 
@@ -68,6 +65,12 @@ try
   Plug 'SirVer/ultisnips'
   Plug 'joenye/vim-snippets'
 
+  " Generate JSDoc based on signature
+  Plug 'heavenshell/vim-jsdoc'
+
+  " Good when sharing screen
+  Plug 'junegunn/goyo.vim'
+
   " === Syntax Highlighting === "
 
   " Python
@@ -81,7 +84,6 @@ try
 
   " Javascript
   Plug 'othree/javascript-libraries-syntax.vim'
-  " Plug 'pangloss/vim-javascript'
   Plug 'othree/yajs.vim'
 
   " React JSX
@@ -233,11 +235,14 @@ nmap <silent> <leader>gi <Plug>(coc-implementation)
 nmap <silent> <leader>gr <Plug>(coc-references)
 
 " Rename current word
-nmap <leader>l <Plug>(coc-rename)
+nmap <leader>dr <Plug>(coc-rename)
 
 " Jump between diagnostics
 nmap <silent> <leader>j <Plug>(coc-diagnostic-next)
 nmap <silent> <leader>k <Plug>(coc-diagnostic-prev)
+
+" === vim-jsdoc ===
+nmap <leader>z :JsDoc<CR>
 
 " Use <tab> for trigger completion and navigate to next complete item
 function! s:check_back_space() abort
@@ -263,8 +268,9 @@ augroup end
 nmap , :Denite buffer -split=floating -winrow=1<CR>
 nmap <leader>r :Denite file/rec -split=floating -winrow=1<CR>
 try
-  gnoremap <leader>g :<C-u>Denite grep:. -no-empty -mode=normal<CR>
-  nnoremap <leader>t :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
+  nmap <leader>a :Denite grep:::! -split=floating -winrow=1<CR>
+  gnoremap <leader>g :<C-u>Denite grep:. -no-empty -mode=normal -split=floating -winrow=1<CR>
+  nnoremap <leader>t :<C-u>DeniteCursorWord grep:. -mode=normal -split=floating -winrow=1<CR>
 catch
 endtry
 
@@ -282,9 +288,6 @@ set nonumber
 " Don't show last command
 set noshowcmd
 
-" Yank and paste with the system clipboard
-set clipboard=unnamed
-
 " Hides buffers instead of closing them
 set hidden
 
@@ -296,9 +299,6 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 
 " Close preview window when completion is done
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-
-" Disable line/column number in status line (still appears in airline preview window)
-set noruler
 
 " Only one line for command line
 set cmdheight=1
@@ -326,8 +326,32 @@ set undodir=~/.cache/vim/undo
 " ============================================================================ "
 
 " Enable true color support
-set termguicolors
+if has('nvim')
+  set termguicolors
+endif
 syntax enable
+
+" Add custom highlights in method that is executed every time a colorscheme is sourced
+" See https://gist.github.com/romainl/379904f91fa40533175dfaec4c833f2f
+" and https://github.com/junegunn/goyo.vim/issues/84
+function! MyHighlights() abort
+  " Hightlight trailing whitespace
+  highlight Trail ctermbg=red guibg=red
+  call matchadd('Trail', '\s\+$', 100)
+
+  " Transparent background
+  hi Normal ctermbg=NONE guibg=NONE
+  hi NonText ctermbg=NONE guibg=NONE
+  hi LineNr ctermfg=NONE guibg=NONE
+  hi SignColumn ctermfg=NONE guibg=NONE
+  hi StatusLine guifg=#16252b guibg=#6699CC
+  hi StatusLineNC guifg=#16252b guibg=#16252b
+endfunction
+
+augroup MyColors
+  autocmd!
+  autocmd ColorScheme * call MyHighlights()
+augroup END
 
 try
   let g:one_allow_italics = 1
@@ -335,27 +359,6 @@ try
 catch
   colorscheme slate
 endtry
-
-" Transparent background
-hi Normal ctermbg=NONE guibg=NONE
-hi NonText ctermbg=NONE guibg=NONE
-hi LineNr ctermfg=NONE guibg=NONE
-hi SignColumn ctermfg=NONE guibg=NONE
-hi StatusLine guifg=#16252b guibg=#6699CC
-hi StatusLineNC guifg=#16252b guibg=#16252b
-
-" Add custom highlights in method that is executed every time a colorscheme is sourced
-" See https://gist.github.com/romainl/379904f91fa40533175dfaec4c833f2f
-function! MyHighlights() abort
-  " Hightlight trailing whitespace
-  highlight Trail ctermbg=red guibg=red
-  call matchadd('Trail', '\s\+$', 100)
-endfunction
-
-augroup MyColors
-  autocmd!
-  autocmd ColorScheme * call MyHighlights()
-augroup END
 
 " Don't give completion messages like 'match 1 of 2' or 'The only match'
 set shortmess+=c
@@ -380,10 +383,6 @@ hi! NERDTreeCWD guifg=#99c794
 " https://github.com/mxw/vim-jsx/issues/124
 hi link xmlEndTag xmlTag
 
-" Prevent highlighting being funky
-" TODO: Remove?
-autocmd BufEnter,InsertLeave * :syntax sync fromstart
-
 " Call method on window enter
 augroup WindowManagement
   autocmd!
@@ -397,6 +396,13 @@ function! Handle_Win_Enter()
   endif
 endfunction
 
+" Highlight current line only on active buffer
+augroup CursorLine
+  au!
+  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+  au WinLeave * setlocal nocursorline
+augroup END
+
 " ============================================================================ "
 " ===                           PLUGIN OPTIONS                             === "
 " ============================================================================ "
@@ -409,6 +415,15 @@ let g:WebDevIconsUnicodeDecorateFolderNodes = 1
 
 " === echodoc.vim ===
 let g:echodoc#enable_at_startup = 1
+
+" === vim-jsx === "
+" Highlight jsx syntax even in non .jsx files
+let g:jsx_ext_required = 0
+
+" === vim-jsdoc === "
+let g:jsdoc_allow_input_prompt = 1
+let g:jsdoc_enable_es6 = 1
+let g:jsdoc_underscore_private = 1
 
 " === ultisnips ===
 let g:UltiSnipsExpandTrigger="<C-j>"
@@ -449,8 +464,17 @@ let g:neoterm_autoinsert = 1
 let g:neoterm_default_mod = ':botright'
 let g:test#preserve_screen = 1
 
+" === vim-devicons ===
+" https://github.com/ryanoasis/vim-devicons/issues/154
+if exists('g:loaded_webdevicons')
+  call webdevicons#refresh()
+endif
+
+" === goyo.vim ===
+" https://github.com/junegunn/goyo.vim/issues/160
+autocmd! User GoyoLeave silent! ctermbg=NONE guibg=NONE
+
 " === lightline ===
-" Purely for lightline to read
 let g:lightline_symbol_map = {
   \ 'error': '💩',
   \ 'warning': '⚠️',
@@ -579,65 +603,6 @@ catch
   echo 'denite.nvim not installed. Run :PlugInstall'
 endtry
 
-" === FZF ===
-" nmap ; :Buffers<cr>
-" nmap <leader>e :Rooter<cr><bar>:Tags<cr>
-" nmap <leader>r :Rooter<cr><bar>:Files<cr>
-" nmap <leader>i :Rooter<cr><bar>:Files<cr>
-" nmap <leader>l :Lines<cr>
-" nmap <leader>a :Rooter<cr><bar>:Rg<cr>
-" nmap <leader>h :History<cr>
-" command! CmdHist call fzf#vim#command_history({'right': '40'})
-" command! QHist call fzf#vim#search_history({'right': '40'})
-" let g:fzf_layout = { 'down': '~25%' }
-
-" === ALE ===
-" let g:ale_lint_on_save = 1
-" let g:ale_lint_on_enter = 1
-" let g:ale_lint_on_text_changed = 1
-" let g:ale_lint_delay = 500
-" let g:ale_sign_error = '>>'
-" let g:ale_sign_warning = '--'
-" let g:ale_sign_column_always = 1
-" let g:ale_python_mypy_options = '--ignore-missing-imports --follow-imports=silent'
-" let g:ale_javascript_standard_options = '--parser babel-eslint'
-" let g:ale_linters = {
-" \   'python': ['flake8'],
-" \   'javascript': ['eslint'],
-" \   'c': ['clang'],
-" \   'cloudformation': ['cloudformation']
-" \}
-" let g:ale_fixers = {
-" \  'javascript': ['eslint'],
-" \  'c': ['clang-format'],
-" \  'python': ['black'],
-" \  'xml': ['xmllint']
-" \}
-" " \  'javascript': ['standard'],
-" " \  'c': ['clang-format']
-" " \}
-" nmap <leader>f <plug>(ale_fix)
-" nmap <silent> <leader>j :ALENext<cr>
-" nmap <silent> <leader>k :ALEPrevious<cr>
-"
-" === Deoplete (uses insert-mode omnifunc completion) ===
-" let g:deoplete#enable_at_startup = 1
-" " Configure in-built insert-mode completion to scan loaded buffers, current and included files
-" set complete=.,w,b,u,i
-" set completeopt=longest,menuone,preview,noinsert,noselect
-" " Don't show typed word in completion menu
-" call deoplete#custom#source('_', 'matchers', ['matcher_fuzzy', 'matcher_length'])
-
-" " These can't live in ftplugins, since they need to be loaded when deoplete starts
-" let default_sources = ['buffer', 'tag', 'file', 'ultisnips']
-" call deoplete#custom#option('sources', {
-" \ '_': default_sources,
-" \ 'python': default_sources + ['jedi'],
-" \ 'c': default_sources + ['clang_complete'],
-" \ 'javascript': default_sources + ['LanguageClient-neovim'],
-" \ 'javascript.jsx': default_sources + ['LanguageClient-neovim'],
-" \ })
-
 " ============================================================================ "
 " ===                           MISC                                       === "
 " ============================================================================ "
@@ -666,6 +631,3 @@ autocmd BufRead,BufNewFile *.yaml if getline(1) =~ 'AWSTemplateFormatVersion' | 
 autocmd BufRead,BufNewFile *.yaml if getline(2) =~ 'AWSTemplateFormatVersion' | :call SetCfn() | endif
 autocmd BufRead,BufNewFile *.yaml if match(readfile(@%), 'AWS::') | :call SetCfn() | endif
 
-if exists('g:loaded_webdevicons')
-  call webdevicons#refresh()
-endif
