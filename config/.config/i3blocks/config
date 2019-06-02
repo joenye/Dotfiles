@@ -31,6 +31,15 @@ color=#FFFFFF
 full_text=
 interval=3
 
+[separator]
+
+[space]
+label=📦
+color=#FFFFFF
+instance=/;free
+full_text=
+interval=3
+
 #[separator]
 
 #[temperature]
@@ -114,11 +123,11 @@ label=📅
 interval=3
 color=#FFFFFF
 full_text=
-instance=%a %d %b %Y  🕒 %H:%M 
+instance=%a %d %b %Y  🕒 %H:%M
 
 [datetime-dc]
 label=
 interval=3
 color=#FFFFFF
 full_text=
-instance=%H:%M 
+instance=%H:%M

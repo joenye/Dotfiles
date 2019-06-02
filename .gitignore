@@ -26,3 +26,5 @@ config/.config/*
 !config/.config/termite
 !config/.config/rofi
 !config/.config/fontconfig
+!config/.config/i3
+

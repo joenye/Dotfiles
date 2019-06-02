@@ -4,6 +4,17 @@ set nocompatible
 " ============================================================================ "
 " ===                               PLUGINS                                === "
 " ============================================================================ "
+try
+  if empty(glob('~/.vim/autoload/plug.vim'))
+    echo 'Installing vim plug...'
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+      \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    echo 'Installed vim plug successfully.'
+  endif
+catch
+  'Failed to install. Install manually.'
+endtry
 
 try
   call plug#begin('~/.vim/plugged')
@@ -120,7 +131,7 @@ try
   call plug#end()
 
 catch
-  echo 'Vim plug not installed. Go and install it.'
+  echo 'Vim plug not installed. Attempting to install...'
 endtry
 
 " ============================================================================ "
