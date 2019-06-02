@@ -12,10 +12,10 @@ if [[ "${status}" == "up" ]]; then
   fi
 fi
 
-# if [[ "${BLOCK_BUTTON}" == 1 ]]; then
-#     echo ${quality}% ${ssid_name}
-# else
-#     echo ${quality}%
-# fi
+quality=0
 
-echo ${quality}% ${ssid_name}
+if [[ "${quality}" != "" ]]; then
+	echo ${quality}% ${ssid_name}
+else
+	echo "-"
+fi

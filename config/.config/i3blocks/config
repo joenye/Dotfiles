@@ -63,7 +63,7 @@ label=
 color=#FFFFFF
 full_text=
 interval=3
-command=if ping -w 1 -c 1 google.co.uk >/dev/null 2>&1; then echo ""; else echo "🔴"; fi
+command=if ping -w 1 -c 1 google.co.uk >/dev/null 2>&1; then echo ""; else echo ":("; fi
 
 [network]
 label=📡
@@ -131,3 +131,10 @@ interval=3
 color=#FFFFFF
 full_text=
 instance=%H:%M
+
+[text]
+label=
+interval=3
+color=#FFFFFF
+full_text=
+instance=
