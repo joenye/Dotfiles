@@ -12,8 +12,6 @@ if [[ "${status}" == "up" ]]; then
   fi
 fi
 
-quality=0
-
 if [[ "${quality}" != "" ]]; then
 	echo ${quality}% ${ssid_name}
 else
