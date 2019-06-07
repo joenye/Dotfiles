@@ -6,7 +6,7 @@ set $up k
 set $right l
 set $term termite
 set $menu rofi -show run
-set $i3lock i3lock-fancy --greyscale --pixelate
+set $i3lock ~/.i3/lock --pixelate --no-text
 
 ### Font
 font pango:MesloLGSDZ Nerd Font Mono 8
@@ -19,7 +19,7 @@ font pango:MesloLGSDZ Nerd Font Mono 8
 # output DP-1 position 2560,0 scale 1
 
 # Wallpaper
-# output * bg /home/joenye/Pictures/Wallpapers/desktop.png fill
+exec_always feh --bg-fill ~/Pictures/Wallpapers/desktop.jpg
 
 ### Key bindings
 bindsym $mod+Return exec $term
@@ -96,11 +96,8 @@ bindsym $mod+a focus parent
 # bindsym $mod+bracketLeft exec playerctl previous  # [
 # bindsym $mod+bracketRight exec playerctl next  # ]
 
-# Cycle through border styles
-bindsym $mod+m border toggle
-
 # Screenshots
-# bindsym Print exec file=~/Pictures/Screenshots/$(date +'%Y-%m-%d-%H%M%S_grim.png') && slurp | grim -c -g - $file && eog $file
+bindsym Control+Print exec gnome-screenshot -i
 
 ### Resize mode
 mode "resize" {
@@ -129,6 +126,7 @@ workspace_auto_back_and_forth yes
 
 # Run at startup
 exec_always xrandr --output HDMI1 --right-of eDP1
-exec_always --no-startup-id setxkbmap gb
+exec_always setxkbmap gb
+exec --no-startup-id xcompmgr
 exec --no-startup-id dunst
 exec --no-startup-id i3-battery-popup -n

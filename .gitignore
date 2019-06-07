@@ -18,6 +18,10 @@ tags
 vim/.vim/*
 aws/.aws/*
 
+newsboat/.newsboat/*
+!newsboat/.newsboat/urls
+!newsboat/.newsboat/config
+
 config/.config/*
 !config/.config/i3blocks
 !config/.config/mako
@@ -27,4 +31,4 @@ config/.config/*
 !config/.config/rofi
 !config/.config/fontconfig
 !config/.config/i3
-
+!config/.config/dunst

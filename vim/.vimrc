@@ -30,6 +30,9 @@ try
   " Intellisense (auto-completion, linting, fixing - combines Ale and Deoplete)
   Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 
+  " Minimal - only for exceptional filetypes - no key mappings or lightline integration
+  Plug 'w0rp/ale'
+
   " Trailing whitespace highlighting & automatic fixing
   Plug 'ntpeters/vim-better-whitespace'
 
@@ -39,7 +42,7 @@ try
   " Return to last place in file upon re-opening
   Plug 'farmergreg/vim-lastplace'
 
-  " Print method signatures in echo area
+  " Print method signatures and Ale lint errors in echo area
   Plug 'Shougo/echodoc.vim'
 
   " Test running
@@ -613,6 +616,17 @@ try
 catch
   echo 'denite.nvim not installed. Run :PlugInstall'
 endtry
+
+" === ale ===
+let g:ale_lint_on_enter = 1
+let g:ale_lint_on_text_changed = 1
+let g:ale_lint_delay = 500
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '--'
+let g:ale_sign_column_always = 1
+let g:ale_linters = {
+\   'cloudformation': ['cloudformation']
+\}
 
 " ============================================================================ "
 " ===                           MISC                                       === "
