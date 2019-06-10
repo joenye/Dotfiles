@@ -1,6 +1,9 @@
 [global]
     font = MesloLGMDZ Font Mono 10
 
+    frame_width = 0
+    frame_color = "#000000"
+
     # allow a small subset of html markup:
     # <b>bold</b>
     # <i>italic</i>
@@ -9,7 +12,7 @@
     #
     # for a complete reference see http://developer.gnome.org/pango/stable/PangoMarkupFormat.html
     # If markup is not allowed, those tags will be stripped out of the message.
-    allow_markup = yes
+    markup = yes
 
     # The format of the message. Possible variables are:
     #   %a  appname
@@ -120,9 +123,6 @@
     # browser for opening urls in context menu
     browser = /usr/bin/firefox -new-tab
 
-[frame]
-    width = 0
-    color = "#000000"
 
 [shortcuts]
     # shortcuts are specified as [modifier+][modifier+]...key
