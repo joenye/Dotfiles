@@ -69,7 +69,7 @@ try
   " Nice undo tree
   Plug 'mbbill/undotree'
 
-  " :GV git browser
+  " :GV, :GV! git browser
   Plug 'junegunn/gv.vim'
 
   " Markdown syntax
@@ -138,7 +138,7 @@ catch
 endtry
 
 " ============================================================================ "
-" ===                           MAPPINGS                                   === "
+" === MAPPINGS ===
 " ============================================================================ "
 
 " Remap leader key to <space>
@@ -275,18 +275,44 @@ augroup CocGroup
 augroup end
 
 " === denite.nvim ===
-"   ,         - Browser currently open buffers (not using ; since that repeats f-search
-"   <leader>r - Browse list of files in current directory
-"   <leader>g - Search current directory for occurences of given term and close window if no results
-"   <leader>t - Search current directory for occurences of word under cursor
-nmap , :Denite buffer -split=floating -winrow=1<CR>
-nmap <leader>r :Denite file/rec -split=floating -winrow=1<CR>
-try
-  nmap <leader>a :Denite grep:::! -split=floating -winrow=1<CR>
-  gnoremap <leader>g :<C-u>Denite grep:. -no-empty -mode=normal -split=floating -winrow=1<CR>
-  nnoremap <leader>t :<C-u>DeniteCursorWord grep:. -mode=normal -split=floating -winrow=1<CR>
-catch
-endtry
+
+" Denite 3.0+ removes denite#custom#map overrides and forces you to specify mappings
+" There's 2 modes on filter window: normal mode ("filter mode") and insert mode
+autocmd FileType denite call s:denite_my_settings()
+	function! s:denite_my_settings() abort
+    " Typically opens the file
+	  nnoremap <silent><buffer><expr> <CR>
+	  \ denite#do_map('do_action')
+	  nnoremap <silent><buffer><expr> d
+	  \ denite#do_map('do_action', 'delete')
+    " Open preview window
+	  nnoremap <silent><buffer><expr> p
+	  \ denite#do_map('do_action', 'preview')
+	  nnoremap <silent><buffer><expr> q
+	  \ denite#do_map('quit')
+    " Switch to insert ("filter") mode
+	  nnoremap <silent><buffer><expr> i
+	  \ denite#do_map('open_filter_buffer')
+	  nnoremap <silent><buffer><expr> +
+	  \ denite#do_map('toggle_select').'j'
+endfunction
+
+"   ,         - Browse currently open buffers (not using ; since that repeats f-search); starts in insert ("filter") mode
+"   <leader>r - Browse list of files in current directory; starts in insert ("filter") mode
+"   <leader>t - Search current directory for occurences of word under cursor; starts in normal mode
+nmap , :Denite buffer<CR>
+nmap <leader>r :Denite file/rec -start-filter<CR>
+nmap <leader>a :Denite grep:::! -start-filter<CR>
+nnoremap <leader>t :<C-u>DeniteCursorWord grep:.<CR>
+
+autocmd FileType denite-filter call s:denite_my_filter_settings()
+function! s:denite_my_filter_settings() abort
+    " Switch to normal mode
+    imap <silent><buffer> <C-o>
+    \ <Plug>(denite_filter_quit)
+    imap <silent><buffer> <C-o>
+    \ <Plug>(denite_filter_quit)
+endfunction
 
 " ============================================================================ "
 " ===                           EDITING OPTIONS                            === "
@@ -560,59 +586,32 @@ try
   "
   call denite#custom#var('file/rec', 'command', ['rg', '--files', '--glob', '!.git'])
 
-  " Custom options for ripgrep (mostly defaults according to Denite docs)
-  "   --vimgrep:  Show results with every match on it's own line
-  "   --hidden:   Search hidden directories and files
-  "   --heading:  Show the file name above clusters of matches from each file
-  "   --S:        Search case insensitively if the pattern is all lowercase
+  " Custom options for ripgrep
   call denite#custom#var('grep', 'command', ['rg'])
-  call denite#custom#var('grep', 'default_opts', ['--hidden', '--vimgrep', '--heading', '-S'])
-
-  " Recommended defaults according to Denite docs
+  call denite#custom#var('grep', 'default_opts', ['-i', '--vimgrep', '--no-heading'])
   call denite#custom#var('grep', 'recursive_opts', [])
   call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
   call denite#custom#var('grep', 'separator', ['--'])
   call denite#custom#var('grep', 'final_opts', [])
 
+  " Use lightline instead
+  call denite#custom#option('_', 'statusline', v:false)
+
   " Remove date from buffer list
   call denite#custom#var('buffer', 'date_format', '')
 
-  call denite#custom#map('insert', '<C-j>', '<denite:move_to_next_line>', 'noremap')
-  call denite#custom#map('insert', '<C-n>', '<denite:move_to_next_line>', 'noremap')
-  call denite#custom#map('insert', '<C-k>', '<denite:move_to_previous_line>', 'noremap')
-  call denite#custom#map('insert', '<C-p>', '<denite:move_to_previous_line>', 'noremap')
-
   " Custom options for Denite
-  "   auto_resize             - Auto resize the Denite window height automatically
-  "   prompt                  - Customize denite prompt
-  "   direction               - Specify Denite window direction as directly below current pane
-  "   winminheight            - Specify min height for Denite window
-  "   highlight_mode_insert   - Specify h1-CursorLine in insert mode
-  "   prompt_highlight        - Specify color of prompt
-  "   highlight_matched_char  - Matched characters highlight
-  "   highlight_matched_range - matched range highlight
-  let s:denite_options = {'default' : {
-  \ 'auto_resize': 1,
-  \ 'prompt': 'λ:',
-  \ 'direction': 'rightbelow',
-  \ 'winminheight': '10',
-  \ 'highlight_mode_insert': 'Visual',
-  \ 'highlight_mode_normal': 'Visual',
-  \ 'prompt_highlight': 'Function',
-  \ 'highlight_matched_char': 'Function',
-  \ 'highlight_matched_range': 'Normal'
-  \ }}
+  call denite#custom#option('default', {
+    \ 'auto_resize': 1,
+    \ 'split': 'floating',
+    \ 'winrow': 1,
+    \ 'prompt': 'λ:',
+    \ 'direction': 'rightbelow',
+    \ 'winminheight': '20',
+    \ 'highlight_filter_background': 'CursorLine',
+    \ 'source_names': 'short',
+    \ })
 
-  " Loop through denite options and enable them
-  function! s:profile(opts) abort
-    for l:fname in keys(a:opts)
-      for l:dopt in keys(a:opts[l:fname])
-        call denite#custom#option(l:fname, l:dopt, a:opts[l:fname][l:dopt])
-      endfor
-    endfor
-  endfunction
-
-  call s:profile(s:denite_options)
 catch
   echo 'denite.nvim not installed. Run :PlugInstall'
 endtry
