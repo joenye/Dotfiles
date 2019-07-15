@@ -114,6 +114,16 @@ bar {
     colors {
         background #323232
     }
+colors {
+    background #222222
+    statusline #eeeeee
+    separator #666666
+    #                  border  backgr. text
+    focused_workspace  #4c7899 #285577 #ffffff
+    active_workspace   #333333 #5f676a #ffffff
+    inactive_workspace #333333 #222222 #888888
+    urgent_workspace   #2f343a #900000 #ffffff
+    }
 }
 
 # Miscellaneous
@@ -126,6 +136,7 @@ exec_always --no-startup-id xrandr --output HDMI1 --right-of eDP1
 exec_always --no-startup-id feh --bg-fill ~/Pictures/Wallpapers/desktop.jpg
 
 exec_always setxkbmap gb
+exec --no-startup-id xinput --set-prop 12 "libinput Natural Scrolling Enabled" 1
 exec --no-startup-id sleep 2; xcompmgr
 exec --no-startup-id dunst
 exec --no-startup-id i3-battery-popup -n

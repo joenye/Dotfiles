@@ -11,5 +11,6 @@
   "python.pythonPath": "/usr/bin/python3",
   "python.jediEnabled": true,  // TODO: Remove (switches to python-language-server instead of Jedi) when issue is fixed: https://github.com/Microsoft/python-language-server/issues/918
   "python.linting.pylintEnabled": false,
-  "python.linting.flake8Enabled": true
+  "python.linting.flake8Enabled": true,
+  "python.formatting.provider": "yapf"
 }

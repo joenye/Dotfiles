@@ -91,7 +91,7 @@ try
   Plug 'hdima/python-syntax'
 
   " Markdown
-  Plug 'gabrielelana/vim-markdown'
+  " Plug 'gabrielelana/vim-markdown'
 
   " nginx
   Plug 'chr4/nginx.vim'
@@ -449,6 +449,7 @@ augroup END
 
 " == vim-markdown ===
 let g:markdown_enable_spell_checking = 0
+let g:markdown_enable_mappings = 0
 
 " == vim-devicons ===
 let g:WebDevIconsUnicodeDecorateFolderNodes = 1
@@ -600,18 +601,15 @@ try
   " Remove date from buffer list
   call denite#custom#var('buffer', 'date_format', '')
 
+  " TODO: \ 'auto_resize': v:true,
   " Custom options for Denite
   call denite#custom#option('default', {
-    \ 'auto_resize': 1,
     \ 'split': 'floating',
     \ 'winrow': 1,
     \ 'prompt': 'λ:',
-    \ 'direction': 'rightbelow',
-    \ 'winminheight': '20',
-    \ 'highlight_filter_background': 'CursorLine',
-    \ 'source_names': 'short',
+    \ 'smartcase': 1,
+    \ 'source_names': 'short'
     \ })
-
 catch
   echo 'denite.nvim not installed. Run :PlugInstall'
 endtry
