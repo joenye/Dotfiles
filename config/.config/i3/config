@@ -139,4 +139,5 @@ exec_always setxkbmap gb
 exec --no-startup-id xinput --set-prop 12 "libinput Natural Scrolling Enabled" 1
 exec --no-startup-id sleep 2; xcompmgr
 exec --no-startup-id dunst
+exec --no-startup-id gtk-quarantine-status
 exec --no-startup-id i3-battery-popup -n
