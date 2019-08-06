@@ -12,5 +12,6 @@
   "python.jediEnabled": true,  // TODO: Remove (switches to python-language-server instead of Jedi) when issue is fixed: https://github.com/Microsoft/python-language-server/issues/918
   "python.linting.pylintEnabled": false,
   "python.linting.flake8Enabled": true,
-  "python.formatting.provider": "yapf"
+  "python.linting.flake8Path": "/usr/local/bin/flake8",
+  "python.formatting.provider": "black"
 }
