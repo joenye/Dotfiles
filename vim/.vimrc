@@ -286,11 +286,15 @@ autocmd FileType denite call s:denite_my_settings()
 endfunction
 
 " ,         - Browse currently open buffers (not using ; since that repeats f-search); starts in insert ("filter") mode
+" <leader>r - Browse list of files in current project directory, respecting .gitignore; starts in insert ("filter") mode
+" <leader>t - Browse list of files in current project directory, ignoring .gitignore; starts in insert ("filter") mode
 " <leader>r - Browse list of files in current directory; starts in insert ("filter") mode
 " <leader>a - Browse contents of files in current directory; starts in insert ("filter") mode
 nmap , :<C-u>Denite buffer -default-action=switch<CR>
-nmap <silent> <leader>r :DeniteProjectDir `finddir('.git', ';') != '' ? 'file/rec/git' : 'file/rec'` -start-filter<CR>
-nmap <leader>a :<C-u>Denite -start-filter grep:::!<CR>
+nmap <silent> <leader>r :<C-u>DeniteProjectDir file/rec/git<CR>
+nmap <silent> <leader>t :<C-u>DeniteProjectDir file/rec<CR>
+nmap <leader>a :<C-u>Denite grep:::!<CR>
+nmap <leader>a :<C-u>DeniteProjectDir grep:::!<CR>
 
 " https://github.com/rafi/vim-config/blob/d7cdc594e73dfbca76b4868505f19db94f088a64/config/plugins/all.vim
 " nnoremap <silent><LocalLeader>r :<C-u>Denite -resume -refresh -no-start-filter<CR>
@@ -592,6 +596,7 @@ try
   " Interface
   call denite#custom#option('default', {
     \ 'auto_resume': 1,
+    \ 'resume': 1,
     \ 'start_filter': 1,
     \ 'statusline': 1,
     \ 'smartcase': 1,
@@ -599,10 +604,6 @@ try
     \ 'direction': 'dynamicbottom',
     \ 'prompt': '❯',
     \ 'max_dynamic_update_candidates': 50000,
-    \ 'winwidth': &columns,
-    \ 'winheight': &lines / 3,
-    \ 'wincol': 0,
-    \ 'winrow': (&lines - 3) - (&lines / 3),
     \ })
 
   if has('nvim')
@@ -612,16 +613,21 @@ try
   " Converter to show relative paths
   call denite#custom#source('buffer,file_old', 'converters', ['converter_relative_word'])
 
-  " Use Ag for grep
-  call denite#custom#var('file/rec', 'command',
-    \ ['ag', '-U', '--hidden', '--follow', '--nocolor', '--nogroup', '-g', ''])
+  " Ag for searching filenames, including those in .gitignore`
+  call denite#custom#var('file/rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '--unrestricted', '-g', ''])
+
+  " Ag for searching filenames, excluding those in .gitignore`
+  call denite#custom#alias('source', 'file/rec/git', 'file/rec')
+  call denite#custom#var('file/rec/git', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
+
+  " Ag for searching file content
   call denite#custom#var('grep', 'command', ['ag'])
+  call denite#custom#var('grep', 'default_opts',
+      \ ['-i', '--vimgrep'])
   call denite#custom#var('grep', 'recursive_opts', [])
   call denite#custom#var('grep', 'pattern_opt', [])
   call denite#custom#var('grep', 'separator', ['--'])
   call denite#custom#var('grep', 'final_opts', [])
-  call denite#custom#var('grep', 'default_opts',
-    \ [ '--skip-vcs-ignores', '--vimgrep', '--smart-case', '--hidden' ])
 
   " Define alias to allow using git ls-files if in Git project
   call denite#custom#alias('source', 'file/rec/git', 'file/rec')

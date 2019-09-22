@@ -14,7 +14,7 @@
   "python.linting.pylintEnabled": false,
   "python.linting.flake8Enabled": true,
   "python.linting.flake8Path": "/usr/local/bin/flake8",
-  "python.formatting.provider": "black"
+  "python.formatting.provider": "black",
 
   // http://enigmatrix.me/blog/2019/06/12/my-vim-setup/
   "diagnostic.infoSign": "ღ",
