@@ -98,7 +98,7 @@ try
 
   " NERDTree
   Plug 'scrooloose/nerdtree'
-  Plug 'tpope/vim-vinegar'
+  " Plug 'tpope/vim-vinegar'
 
   " Theme
   Plug 'ryanoasis/vim-devicons'
@@ -172,10 +172,13 @@ inoremap <left> <nop>
 inoremap <right> <nop>
 
 " Ctrl-a behaviour
-map <c-a> <esc>ggVG<cr>
+map <C-a> <esc>ggVG<cr>
 
 " === nerdtree ===
-map <C-n> :NERDTreeFind<CR>
+map <C-n> :NERDTree<cr>
+" Bad key binding (makes cr trigger NERDTree)
+" map <C-j> :NERDTreeFind<cr>
+nmap - :edit %:h<cr>
 
 " === undotree ===
 nnoremap <F4> :UndotreeToggle<cr>
@@ -285,16 +288,16 @@ autocmd FileType denite call s:denite_my_settings()
 	  \ denite#do_map('toggle_select').'j'
 endfunction
 
-" ,         - Browse currently open buffers (not using ; since that repeats f-search); starts in insert ("filter") mode
+" ,         - Browse currently open buffers (not using ; since that repeats f-search); starts in normal mode
 " <leader>r - Browse list of files in current project directory, respecting .gitignore; starts in insert ("filter") mode
 " <leader>t - Browse list of files in current project directory, ignoring .gitignore; starts in insert ("filter") mode
 " <leader>r - Browse list of files in current directory; starts in insert ("filter") mode
 " <leader>a - Browse contents of files in current directory; starts in insert ("filter") mode
 nmap , :<C-u>Denite buffer -default-action=switch<CR>
-nmap <silent> <leader>r :<C-u>DeniteProjectDir file/rec/git<CR>
-nmap <silent> <leader>t :<C-u>DeniteProjectDir file/rec<CR>
-nmap <leader>a :<C-u>Denite grep:::!<CR>
-nmap <leader>a :<C-u>DeniteProjectDir grep:::!<CR>
+nmap <silent> <leader>r :<C-u>DeniteProjectDir -start-filter -resume -buffer-name=file_gitignore file/rec/git<CR>
+nmap <silent> <leader>t :<C-u>DeniteProjectDir -start-filter -resume -buffer-name=file_no_gitignore file/rec<CR>
+nmap <leader>a :<C-u>DeniteProjectDir -start-filter -resume -buffer-name=content_gitignore grep:::!<CR>
+nmap <leader>s :<C-u>Denite -start-filter -resume -buffer-name=content_no_gitignore grep:::!<CR>
 
 " https://github.com/rafi/vim-config/blob/d7cdc594e73dfbca76b4868505f19db94f088a64/config/plugins/all.vim
 " nnoremap <silent><LocalLeader>r :<C-u>Denite -resume -refresh -no-start-filter<CR>
@@ -384,7 +387,9 @@ set undodir=~/.cache/vim/undo
 if has('nvim')
   set termguicolors
 endif
-syntax enable
+if !exists('g:syntax_on')
+	syntax enable
+endif
 
 " Add custom highlights in method that is executed every time a colorscheme is sourced
 " See https://gist.github.com/romainl/379904f91fa40533175dfaec4c833f2f
@@ -468,7 +473,8 @@ let g:markdown_enable_spell_checking = 0
 let g:markdown_enable_mappings = 0
 
 " == vim-devicons ===
-let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+let g:WebDevIconsUnicodeDecorateFolderNodes = v:true
+let g:WebDevIconsNerdTreeBeforeGlyphPadding = ""
 
 " === echodoc.vim ===
 let g:echodoc#enable_at_startup = 1
@@ -595,9 +601,8 @@ try
 
   " Interface
   call denite#custom#option('default', {
+    \ 'auto_resize': 1,
     \ 'auto_resume': 1,
-    \ 'resume': 1,
-    \ 'start_filter': 1,
     \ 'statusline': 1,
     \ 'smartcase': 1,
     \ 'vertical_preview': 1,
@@ -611,7 +616,7 @@ try
   endif
 
   " Converter to show relative paths
-  call denite#custom#source('buffer,file_old', 'converters', ['converter_relative_word'])
+  call denite#custom#source('buffer,file_old', 'converters', ['converter/relative_word'])
 
   " Ag for searching filenames, including those in .gitignore`
   call denite#custom#var('file/rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '--unrestricted', '-g', ''])
