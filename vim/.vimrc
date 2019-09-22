@@ -72,9 +72,6 @@ try
   " :GV, :GV! git browser
   Plug 'junegunn/gv.vim'
 
-  " Markdown syntax
-  Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
-
   " Snippets
   Plug 'SirVer/ultisnips'
   Plug 'joenye/vim-snippets'
@@ -87,35 +84,17 @@ try
 
   " === Syntax Highlighting === "
 
-  " Python
-  Plug 'hdima/python-syntax'
+  Plug 'sheerun/vim-polyglot'
 
-  " Markdown
-  " Plug 'gabrielelana/vim-markdown'
-
-  " nginx
-  Plug 'chr4/nginx.vim'
-
-  " Javascript
-  Plug 'othree/javascript-libraries-syntax.vim'
-  Plug 'othree/yajs.vim'
-
-  " React JSX
-  Plug 'mxw/vim-jsx'
-
-  " Typescript
-  Plug 'HerringtonDarkholme/yats.vim'
-
-  " HTML5
-  Plug 'othree/html5.vim'
-
-  " JSON
-  Plug 'elzr/vim-json'
+  Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 
   " === UI/Menus === "
 
   " Fuzzy-finding, buffer management
   Plug 'Shougo/denite.nvim'
+
+  "  Denite MRU sources
+  Plug 'Shougo/neomru.vim'
 
   " NERDTree
   Plug 'scrooloose/nerdtree'
@@ -231,7 +210,14 @@ let g:user_emmet_settings = {
 nmap <leader>y :StripWhitespace<CR>
 
 " === coc.nvim ===
-let g:coc_global_extensions = ['coc-eslint', 'coc-json', 'coc-css', 'coc-python', 'coc-tsserver']
+let g:coc_global_extensions = [
+  \ 'coc-eslint',
+  \ 'coc-html',
+  \ 'coc-json',
+  \ 'coc-prettier',
+  \ 'coc-css',
+  \ 'coc-python',
+  \ 'coc-tsserver']
 
 " Extension-specific fix action on current item and selection
 nmap <silent> <leader>da <Plug>(coc-codeaction)
@@ -288,6 +274,8 @@ autocmd FileType denite call s:denite_my_settings()
     " Open preview window
 	  nnoremap <silent><buffer><expr> p
 	  \ denite#do_map('do_action', 'preview')
+	  nnoremap <silent><buffer><expr> v
+	  \ denite#do_map('do_action', 'vsplit')
 	  nnoremap <silent><buffer><expr> q
 	  \ denite#do_map('quit')
     " Switch to insert ("filter") mode
@@ -297,22 +285,45 @@ autocmd FileType denite call s:denite_my_settings()
 	  \ denite#do_map('toggle_select').'j'
 endfunction
 
-"   ,         - Browse currently open buffers (not using ; since that repeats f-search); starts in insert ("filter") mode
-"   <leader>r - Browse list of files in current directory; starts in insert ("filter") mode
-"   <leader>t - Search current directory for occurences of word under cursor; starts in normal mode
-nmap , :Denite buffer<CR>
-nmap <leader>r :Denite file/rec -start-filter<CR>
-nmap <leader>a :Denite grep:::! -start-filter<CR>
-nnoremap <leader>t :<C-u>DeniteCursorWord grep:.<CR>
+" ,         - Browse currently open buffers (not using ; since that repeats f-search); starts in insert ("filter") mode
+" <leader>r - Browse list of files in current directory; starts in insert ("filter") mode
+" <leader>a - Browse contents of files in current directory; starts in insert ("filter") mode
+nmap , :<C-u>Denite buffer -default-action=switch<CR>
+nmap <silent> <leader>r :DeniteProjectDir `finddir('.git', ';') != '' ? 'file/rec/git' : 'file/rec'` -start-filter<CR>
+nmap <leader>a :<C-u>Denite -start-filter grep:::!<CR>
+
+" https://github.com/rafi/vim-config/blob/d7cdc594e73dfbca76b4868505f19db94f088a64/config/plugins/all.vim
+" nnoremap <silent><LocalLeader>r :<C-u>Denite -resume -refresh -no-start-filter<CR>
+" nnoremap <silent><LocalLeader>f :<C-u>Denite file/rec<CR>
+" nnoremap <silent><LocalLeader>b :<C-u>Denite buffer file_mru -default-action=switch<CR>
+" nnoremap <silent><LocalLeader>d :<C-u>Denite directory_rec directory_mru -default-action=cd<CR>
+" nnoremap <silent><LocalLeader>v :<C-u>Denite neoyank -buffer-name=register<CR>
+" xnoremap <silent><LocalLeader>v :<C-u>Denite neoyank -buffer-name=register -default-action=replace<CR>
+" nnoremap <silent><LocalLeader>l :<C-u>Denite location_list -buffer-name=list<CR>
+" nnoremap <silent><LocalLeader>q :<C-u>Denite quickfix -buffer-name=list<CR>
+" nnoremap <silent><LocalLeader>n :<C-u>Denite dein<CR>
+" nnoremap <silent><LocalLeader>g :<C-u>Denite grep -no-start-filter<CR>
+" nnoremap <silent><LocalLeader>j :<C-u>Denite jump change file/point -buffer-name=jump<CR>
+" nnoremap <silent><LocalLeader>u :<C-u>Denite junkfile:new junkfile<CR>
+" nnoremap <silent><LocalLeader>o :<C-u>Denite outline<CR>
+" nnoremap <silent><LocalLeader>s :<C-u>Denite session -buffer-name=list<CR>
+" nnoremap <silent><LocalLeader>t :<C-u>Denite -buffer-name=tag tag:include<CR>
+" nnoremap <silent><LocalLeader>p :<C-u>Denite jump -buffer-name=jump<CR>
+" nnoremap <silent><LocalLeader>h :<C-u>Denite help<CR>
+" nnoremap <silent><LocalLeader>m :<C-u>Denite file/rec -buffer-name=memo -path=~/docs/books<CR>
+" nnoremap <silent><LocalLeader>z :<C-u>Denite z<CR>
+" nnoremap <silent><LocalLeader>/ :<C-u>Denite line -start-filter<CR>
+" nnoremap <silent><LocalLeader>* :<C-u>DeniteCursorWord line<CR>
+" nnoremap <silent><LocalLeader>; :<C-u>Denite command command_history<CR>
 
 autocmd FileType denite-filter call s:denite_my_filter_settings()
 function! s:denite_my_filter_settings() abort
     " Switch to normal mode
-    imap <silent><buffer> <C-o>
-    \ <Plug>(denite_filter_quit)
-    imap <silent><buffer> <C-o>
-    \ <Plug>(denite_filter_quit)
+    imap <silent><buffer> <C-c> <Plug>(denite_filter_quit)
+    imap <silent><buffer> <C-o> <Plug>(denite_filter_quit)
+    imap <silent><buffer> <C-o> <Plug>(denite_filter_quit)
 endfunction
+
 
 " ============================================================================ "
 " ===                           EDITING OPTIONS                            === "
@@ -448,6 +459,7 @@ augroup END
 " ============================================================================ "
 
 " == vim-markdown ===
+let g:polyglot_disabled = ['markdown']
 let g:markdown_enable_spell_checking = 0
 let g:markdown_enable_mappings = 0
 
@@ -480,9 +492,6 @@ let g:mta_filetypes = {}
 " \ 'jinja' : 1,
 " \ 'javascript.jsx' : 0,
 " \}
-
-" === vim-markdown ===
-let g:markdown_enable_spell_checking = 0
 
 " === nerdtree ===
 let NERDTreeShowHidden=1
@@ -579,37 +588,59 @@ let g:lightline = {
 
 " === denite.nvim ===
 try
-  " Uses ripgrep for searching current directory for files
-  " By default, ripgrep will respect rules in .gitignore
-  "   --files: Print each file that would be searched (but don't search)
-  "   --glob:  Include or exclues files for searching that match the given glob
-  "            (aka ignore .git files)
-  "
-  call denite#custom#var('file/rec', 'command', ['rg', '--files', '--glob', '!.git'])
 
-  " Custom options for ripgrep
-  call denite#custom#var('grep', 'command', ['rg'])
-  call denite#custom#var('grep', 'default_opts', ['-i', '--vimgrep', '--no-heading'])
+  " Interface
+  call denite#custom#option('default', {
+    \ 'auto_resume': 1,
+    \ 'start_filter': 1,
+    \ 'statusline': 1,
+    \ 'smartcase': 1,
+    \ 'vertical_preview': 1,
+    \ 'direction': 'dynamicbottom',
+    \ 'prompt': '❯',
+    \ 'max_dynamic_update_candidates': 50000,
+    \ 'winwidth': &columns,
+    \ 'winheight': &lines / 3,
+    \ 'wincol': 0,
+    \ 'winrow': (&lines - 3) - (&lines / 3),
+    \ })
+
+  if has('nvim')
+    call denite#custom#option('_', { 'split': 'floating', 'statusline': 0 })
+  endif
+
+  " Converter to show relative paths
+  call denite#custom#source('buffer,file_old', 'converters', ['converter_relative_word'])
+
+  " Use Ag for grep
+  call denite#custom#var('file/rec', 'command',
+    \ ['ag', '-U', '--hidden', '--follow', '--nocolor', '--nogroup', '-g', ''])
+  call denite#custom#var('grep', 'command', ['ag'])
   call denite#custom#var('grep', 'recursive_opts', [])
-  call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
+  call denite#custom#var('grep', 'pattern_opt', [])
   call denite#custom#var('grep', 'separator', ['--'])
   call denite#custom#var('grep', 'final_opts', [])
+  call denite#custom#var('grep', 'default_opts',
+    \ [ '--skip-vcs-ignores', '--vimgrep', '--smart-case', '--hidden' ])
+
+  " Define alias to allow using git ls-files if in Git project
+  call denite#custom#alias('source', 'file/rec/git', 'file/rec')
+	call denite#custom#var('file/rec/git', 'command',
+	      \ ['git', 'ls-files', '-co', '--exclude-standard'])
 
   " Use lightline instead
   call denite#custom#option('_', 'statusline', v:false)
 
+  " Continue to work in large repos`
+  call denite#custom#option('_', 'max_dynamic_update_candidates', 100000)
+
   " Remove date from buffer list
   call denite#custom#var('buffer', 'date_format', '')
 
-  " TODO: \ 'auto_resize': v:true,
-  " Custom options for Denite
-  call denite#custom#option('default', {
-    \ 'split': 'floating',
-    \ 'winrow': 1,
-    \ 'prompt': 'λ:',
-    \ 'smartcase': 1,
-    \ 'source_names': 'short'
-    \ })
+  " Remove current buffer from buffers list
+  call denite#custom#source('buffer', 'matchers',
+      \ ['matcher/fuzzy', 'matcher/ignore_current_buffer'])
+
 catch
   echo 'denite.nvim not installed. Run :PlugInstall'
 endtry
