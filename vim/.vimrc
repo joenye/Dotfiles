@@ -28,7 +28,7 @@ try
   Plug 'tpope/vim-surround'
 
   " Intellisense (auto-completion, linting, fixing - combines Ale and Deoplete)
-  Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+  Plug 'neoclide/coc.nvim', {'tag': '*', 'branch': 'release'}
 
   " Minimal - only for exceptional filetypes - no key mappings or lightline integration
   Plug 'w0rp/ale'
