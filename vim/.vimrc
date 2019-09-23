@@ -224,8 +224,8 @@ let g:coc_global_extensions = [
 
 " Extension-specific fix action on current item and selection
 nmap <silent> <leader>da <Plug>(coc-codeaction)
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
+xmap <leader>ca  <Plug>(coc-codeaction-selected)
+nmap <leader>ca  <Plug>(coc-codeaction-selected)
 
 " Extension-specific format on selection
 vmap <leader>f  <Plug>(coc-format-selected)
@@ -329,8 +329,8 @@ function! s:denite_my_filter_settings() abort
     imap <silent><buffer> <C-c> <Plug>(denite_filter_quit)
     imap <silent><buffer> <C-o> <Plug>(denite_filter_quit)
     imap <silent><buffer> <C-o> <Plug>(denite_filter_quit)
+	  imap <silent><buffer> <expr>dd denite#do_map('restart')
 endfunction
-
 
 " ============================================================================ "
 " ===                           EDITING OPTIONS                            === "
