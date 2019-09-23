@@ -228,7 +228,7 @@ xmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>a  <Plug>(coc-codeaction-selected)
 
 " Extension-specific format on selection
-xmap <leader>f  <Plug>(coc-format-selected)
+vmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
 " Jump around code
@@ -691,6 +691,7 @@ function! SetCfn()
   set ft=cloudformation
   set syn=yaml
 endfunction
+autocmd BufRead,BufNewFile *.yaml if getline(1) =~ 'Resources:' | :call SetCfn() | endif
 autocmd BufRead,BufNewFile *.yaml if getline(1) =~ 'AWSTemplateFormatVersion' | :call SetCfn() | endif
 autocmd BufRead,BufNewFile *.yaml if getline(2) =~ 'AWSTemplateFormatVersion' | :call SetCfn() | endif
 autocmd BufRead,BufNewFile *.yaml if match(readfile(@%), 'AWS::') | :call SetCfn() | endif
