@@ -222,6 +222,9 @@ let g:coc_global_extensions = [
   \ 'coc-python',
   \ 'coc-tsserver']
 
+" Use :Prettier to format file
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
 " Extension-specific fix action on current item and selection
 nmap <silent> <leader>da <Plug>(coc-codeaction)
 xmap <leader>ca  <Plug>(coc-codeaction-selected)
@@ -602,7 +605,6 @@ try
   " Interface
   call denite#custom#option('default', {
     \ 'auto_resize': 1,
-    \ 'auto_resume': 1,
     \ 'statusline': 1,
     \ 'smartcase': 1,
     \ 'vertical_preview': 1,
