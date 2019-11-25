@@ -118,6 +118,14 @@ signal=1
 
 [separator]
 
+[nighthawk]
+label=🎧
+color=#FFFFFF
+full_text=
+interval=3
+
+[separator]
+
 [datetime]
 label=📅
 interval=3

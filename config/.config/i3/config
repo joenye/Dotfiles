@@ -92,6 +92,11 @@ bindsym $mod+a focus parent
 # bindsym $mod+p exec playerctl play-pause
 # bindsym $mod+bracketLeft exec playerctl previous  # [
 # bindsym $mod+bracketRight exec playerctl next  # ]
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioPrev exec playerctl previous
+bindsym XF86AudioNext exec playerctl next
+bindsym KP_Subtract exec nighthawk toggle_mode
+bindsym KP_Multiply exec nighthawk toggle
 
 # Screenshots
 bindsym Control+Print exec gnome-screenshot -i

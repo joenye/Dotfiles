@@ -1,31 +1,87 @@
-#!/bin/sh
-if [ $# -eq 0 ] || ! [ $1 = 'on' -o $1 = 'off' ] ; then
-    echo "Must specify 'on' or 'off'"
-    exit 0
+#!/bin/bash
+DEVICE_ID='04:52:C7:0D:AB:EB'
+DISABLE_BLUETOOTH=false
+if [ $2 = '--disable-bluetooth' ]; then
+    DISABLE_BLUETOOTH=true
 fi
 
-power_off_if_required() {
+_power_on_if_required() {
     BT_STATE=`bluetooth | awk '{print $3}'`
-    if [ $BT_STATE == 'on' ]; then
-        sudo bluetooth off
-    fi
-}
-
-power_on_if_required() {
-    BT_STATE=`bluetooth | awk '{print $3}'`
-    if [ $BT_STATE == 'off' ]; then
+    if [ ${BT_STATE} == 'off' ]; then
         echo 'Powering on device...'
         sudo bluetooth on
         sleep 5
     fi
 }
 
-if [ $1 = 'on' ] ; then
-    power_on_if_required
-    echo -e 'power on\nconnect 04:52:C7:0D:AB:EB' | bluetoothctl
+_power_off_if_required() {
+    BT_STATE=`bluetooth | awk '{print $3}'`
+    if [[ ${BT_STATE} = 'on' ]] && [[ ${DISABLE_BLUETOOTH} = 'true' ]]; then
+        sudo bluetooth off
+    fi
+}
+
+
+on() {
+    _power_on_if_required
+    echo -e "power on\nconnect ${DEVICE_ID}" | bluetoothctl
     sleep 1
-    echo -e 'connect 04:52:C7:0D:AB:EB' | bluetoothctl
-else
+    echo -e "connect ${DEVICE_ID}" | bluetoothctl
+}
+
+off() {
     echo -e 'disconnect\npower off' | bluetoothctl
-    power_off_if_required
-fi
+    _power_off_if_required
+}
+
+toggle() {
+    coproc bluetoothctl
+    echo -e "info ${DEVICE_ID}\nexit" >&${COPROC[1]}
+    OUTPUT=$(cat <&${COPROC[0]})
+
+    if [[ $OUTPUT == *"Connected: yes"* ]]; then
+	off
+    else
+	on
+    fi
+}
+
+toggle_mode() {
+    SINK_INDEX=$(pacmd list-cards | grep ${DEVICE_ID} -B 6 | grep index | awk '{print $2}')
+    MODE=$(pacmd list-cards | grep ${DEVICE_ID} -A 15 | grep "active profile" | awk '{print $3}' | cut -d "<" -f 2 | cut -d ">" -f 1)
+
+    if [ ${MODE} = 'headset_head_unit' ]; then
+	pacmd set-card-profile ${SINK_INDEX} a2dp_sink
+	playerctl play
+    elif [ ${MODE} = 'a2dp_sink' ]; then
+	pacmd set-card-profile ${SINK_INDEX} headset_head_unit
+	# Pause track before entering microphone mode
+	playerctl pause
+    else
+	echo "Unsupported mode: ${MODE}"
+	exit 1
+    fi
+}
+
+case ${1} in
+    on)
+        echo "On"
+        on
+	;;
+    off)
+        echo "Off"
+        off
+	;;
+    toggle)
+        echo "Toggle connection"
+	toggle
+	;;
+    toggle_mode)
+        echo "Toggle headset mode"
+	toggle_mode
+	;;
+    *)
+        echo "Invalid command ${1}. Must specify one of: 'on', 'off', 'toggle'"
+        exit 1
+	;;
+esac

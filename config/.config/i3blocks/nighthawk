@@ -1,0 +1,29 @@
+#!/bin/bash
+coproc bluetoothctl
+echo -e "info ${DEVICE_ID}\nexit" >&${COPROC[1]}
+OUTPUT=$(cat <&${COPROC[0]})
+
+if ! [[ $OUTPUT == *"Connected: yes"* ]]; then
+    echo "-"
+    exit 0
+fi
+
+DEVICE_ID='04:52:C7:0D:AB:EB'
+SINK_INDEX=$(pacmd list-cards | grep ${DEVICE_ID} -B 6 | grep index | awk '{print $2}')
+MODE=$(pacmd list-cards | grep ${DEVICE_ID} -A 15 | grep "active profile" | awk '{print $3}' | cut -d "<" -f 2 | cut -d ">" -f 1)
+
+if [ "${MODE}" == "" ]; then
+    echo "-"
+    exit 0
+fi
+
+if [ ${MODE} = 'headset_head_unit' ]; then
+    echo "← 🎤"
+    exit 0
+elif [ ${MODE} = 'a2dp_sink' ]; then
+    echo "← 🎵"
+    exit 0
+else
+    echo "Unsupported mode: ${MODE}"
+    exit 1
+fi
