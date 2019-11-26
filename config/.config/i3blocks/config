@@ -122,7 +122,7 @@ signal=1
 label=🎧
 color=#FFFFFF
 full_text=
-interval=3
+interval=1
 
 [separator]
 
