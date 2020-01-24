@@ -48,13 +48,13 @@ interval=3
 #full_text=
 #interval=3
 
-#[separator]
+[separator]
 
-#[ip-address]
-#label=🔖
-#color=#FFFFFF
-#full_text=ip
-#interval=3
+[ip-address]
+label=🔖
+color=#FFFFFF
+full_text=ip
+interval=3
 
 [separator]
 
