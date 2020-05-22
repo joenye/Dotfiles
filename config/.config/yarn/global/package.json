@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "create-coc-extension": "^0.3.2",
     "create-react-app": "^3.3.0",
     "fake-git-history": "^0.0.1",
     "prettier": "^1.11.1",

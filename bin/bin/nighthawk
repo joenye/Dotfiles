@@ -1,7 +1,7 @@
 #!/bin/bash
 DEVICE_ID='04:52:C7:0D:AB:EB'
 DISABLE_BLUETOOTH=false
-if [ $2 = '--disable-bluetooth' ]; then
+if [ '$2' = '--disable-bluetooth' ]; then
     DISABLE_BLUETOOTH=true
 fi
 

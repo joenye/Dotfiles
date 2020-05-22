@@ -28,7 +28,7 @@ try
   Plug 'tpope/vim-surround'
 
   " Intellisense (auto-completion, linting, fixing - combines Ale and Deoplete)
-  Plug 'neoclide/coc.nvim', {'tag': '*', 'branch': 'release'}
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
   " Minimal - only for exceptional filetypes - no key mappings or lightline integration
   Plug 'w0rp/ale'
@@ -36,17 +36,14 @@ try
   " Trailing whitespace highlighting & automatic fixing
   Plug 'ntpeters/vim-better-whitespace'
 
-  " Auto-close brackets plugin
+  " Auto-close brackets
   Plug 'rstacruz/vim-closer'
 
   " Return to last place in file upon re-opening
   Plug 'farmergreg/vim-lastplace'
 
-  " Print method signatures and Ale lint errors in echo area
-  Plug 'Shougo/echodoc.vim'
-
   " Test running
-  Plug 'janko-m/vim-test'
+  Plug 'vim-test/vim-test'
 
   " HTML Abbreviations expansion
   Plug 'mattn/emmet-vim'
@@ -93,12 +90,8 @@ try
   " Fuzzy-finding, buffer management
   Plug 'Shougo/denite.nvim'
 
-  "  Denite MRU sources
-  Plug 'Shougo/neomru.vim'
-
   " NERDTree
   Plug 'scrooloose/nerdtree'
-  " Plug 'tpope/vim-vinegar'
 
   " Theme
   Plug 'ryanoasis/vim-devicons'
@@ -205,11 +198,11 @@ nmap <expr> <leader>, emmet#expandAbbrIntelligent('\<space>')
 let g:user_emmet_settings = {
 \   'javascript.jsx' : {
 \       'extends' : 'jsx',
-\    },
+\    }
 \}
 
 " === vim-better-whitespace === "
-" Remove all trailing whitespace
+" Remove all trailing witespace
 nmap <leader>y :StripWhitespace<CR>
 
 " === coc.nvim ===
@@ -217,10 +210,12 @@ let g:coc_global_extensions = [
   \ 'coc-eslint',
   \ 'coc-html',
   \ 'coc-json',
+  \ 'coc-yaml',
   \ 'coc-prettier',
   \ 'coc-css',
   \ 'coc-python',
-  \ 'coc-tsserver']
+  \ 'coc-tsserver',
+  \ 'coc-marketplace']
 
 " Use :Prettier to format file
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
@@ -305,8 +300,6 @@ nmap <leader>s :<C-u>Denite -start-filter -resume -buffer-name=content_no_gitign
 " https://github.com/rafi/vim-config/blob/d7cdc594e73dfbca76b4868505f19db94f088a64/config/plugins/all.vim
 " nnoremap <silent><LocalLeader>r :<C-u>Denite -resume -refresh -no-start-filter<CR>
 " nnoremap <silent><LocalLeader>f :<C-u>Denite file/rec<CR>
-" nnoremap <silent><LocalLeader>b :<C-u>Denite buffer file_mru -default-action=switch<CR>
-" nnoremap <silent><LocalLeader>d :<C-u>Denite directory_rec directory_mru -default-action=cd<CR>
 " nnoremap <silent><LocalLeader>v :<C-u>Denite neoyank -buffer-name=register<CR>
 " xnoremap <silent><LocalLeader>v :<C-u>Denite neoyank -buffer-name=register -default-action=replace<CR>
 " nnoremap <silent><LocalLeader>l :<C-u>Denite location_list -buffer-name=list<CR>
@@ -478,9 +471,6 @@ let g:markdown_enable_mappings = 0
 " == vim-devicons ===
 let g:WebDevIconsUnicodeDecorateFolderNodes = v:true
 let g:WebDevIconsNerdTreeBeforeGlyphPadding = ""
-
-" === echodoc.vim ===
-let g:echodoc#enable_at_startup = 1
 
 " === vim-jsx === "
 " Highlight jsx syntax even in non .jsx files
@@ -688,13 +678,4 @@ let g:ale_linters = {
 " \   'cache_enabled': 1,
 " \ }
 
-" Detect CloudFormation templates
-function! SetCfn()
-  set ft=cloudformation
-  set syn=yaml
-endfunction
-autocmd BufRead,BufNewFile *.yaml if getline(1) =~ 'Resources:' | :call SetCfn() | endif
-autocmd BufRead,BufNewFile *.yaml if getline(1) =~ 'AWSTemplateFormatVersion' | :call SetCfn() | endif
-autocmd BufRead,BufNewFile *.yaml if getline(2) =~ 'AWSTemplateFormatVersion' | :call SetCfn() | endif
-autocmd BufRead,BufNewFile *.yaml if match(readfile(@%), 'AWS::') | :call SetCfn() | endif
-
+autocmd FileType python let b:coc_root_patterns = ['.git', '.env']
