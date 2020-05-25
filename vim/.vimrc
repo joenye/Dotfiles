@@ -208,6 +208,7 @@ nmap <leader>y :StripWhitespace<CR>
 " === coc.nvim ===
 let g:coc_global_extensions = [
   \ 'coc-eslint',
+  \ 'coc-cfn-lint',
   \ 'coc-html',
   \ 'coc-json',
   \ 'coc-yaml',

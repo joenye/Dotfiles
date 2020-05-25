@@ -67,7 +67,7 @@ command=if ping -w 1 -c 1 google.co.uk >/dev/null 2>&1; then echo ""; else echo 
 
 [network]
 label=📡
-instance=wlp1s0
+instance=wlp4s0
 color=#FFFFFF
 full_text=
 interval=3

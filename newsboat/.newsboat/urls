@@ -1,5 +1,4 @@
 https://drewdevault.com/feed.xml
-https://www.reddit.com/r/programming/top.rss?t=week
 https://news.ycombinator.com/rss
 https://dubstepdish.com/index.php/feed/
 http://feeds.feedburner.com/codinghorror?format=xml
@@ -8,9 +7,10 @@ http://feeds.feedburner.com/martinkl?format=xml
 http://www.aaronsw.com/2002/feeds/pgessays.rss
 https://johnhcochrane.blogspot.com/feeds/posts/default
 https://binarydebt.wordpress.com/feed/
-http://0pointer.net/blog/index.rss20
 https://brandur.org/articles.atom
 https://jvns.ca/atom.xml
 http://feeds.feedburner.com/HighScalability
 http://garethrees.org/index_rss.xml
 https://www.allthingsdistributed.com/index.xml
+https://reddit-top-rss.herokuapp.com/?subreddit=programming&score=500&view=rss
+https://reddit-top-rss.herokuapp.com/?subreddit=aws&score=50&view=rss
