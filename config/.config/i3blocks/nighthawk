@@ -18,10 +18,10 @@ if [ "${MODE}" == "" ]; then
 fi
 
 if [ ${MODE} = 'headset_head_unit' ]; then
-    echo "← 🎤"
+    echo "🎧 → 🎤"
     exit 0
 elif [ ${MODE} = 'a2dp_sink' ]; then
-    echo "← 🎵"
+    echo "🎧 → 🎵"
     exit 0
 else
     echo "Unsupported mode: ${MODE}"

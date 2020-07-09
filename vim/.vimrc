@@ -69,6 +69,9 @@ try
   " :GV, :GV! git browser
   Plug 'junegunn/gv.vim'
 
+  " Use 'o' for older, 'O' for newer, 'q' to close,
+  Plug 'rhysd/git-messenger.vim'
+
   " Snippets
   Plug 'SirVer/ultisnips'
   Plug 'joenye/vim-snippets'
@@ -124,6 +127,9 @@ nnoremap <cr> :noh<cr><cr>
 " Always search forward with n and backward with N
 nnoremap <expr> n  'Nn'[v:searchforward]
 nnoremap <expr> N  'nN'[v:searchforward]
+
+" Use :Todo to edit todos
+command! -nargs=0 Todo :e ~/notes/GTD/TODOs.md
 
 " Reverses default behaviour so that j and k move down/up by display lines, while gj and gk move by real lines
 nnoremap k gk
@@ -181,7 +187,7 @@ nnoremap <silent> <leader>gs :Gstatus<cr>
 " Note :Gvdiff forces vertical split, else horizontal is used if the window is not wide enough
 nnoremap <silent> <leader>gd :Gvdiff<cr>
 nnoremap <silent> <leader>gc :Gcommit<cr>
-nnoremap <silent> <leader>gb :Gblame<cr>
+nnoremap <silent> <leader>gb :GitMessenger<cr>
 nnoremap <silent> <leader>gl :GV<cr>
 nnoremap <silent> <leader>gp :Git push<cr>
 nnoremap <silent> <leader>gi :Git add -p %<cr>
@@ -209,6 +215,7 @@ nmap <leader>y :StripWhitespace<CR>
 let g:coc_global_extensions = [
   \ 'coc-eslint',
   \ 'coc-cfn-lint',
+  \ 'coc-yank',
   \ 'coc-html',
   \ 'coc-json',
   \ 'coc-yaml',
@@ -242,6 +249,9 @@ nmap <leader>dr <Plug>(coc-rename)
 " Jump between diagnostics
 nmap <silent> <leader>j <Plug>(coc-diagnostic-next)
 nmap <silent> <leader>k <Plug>(coc-diagnostic-prev)
+
+" coc-yank
+nnoremap <silent> <space>yy  :<C-u>CocList -A --normal yank<cr>
 
 " === vim-jsdoc ===
 nmap <leader>z :JsDoc<CR>
@@ -463,6 +473,9 @@ augroup END
 " ============================================================================ "
 " ===                           PLUGIN OPTIONS                             === "
 " ============================================================================ "
+
+" == markdown-preview ===
+let g:mkdp_browser = 'firefox'
 
 " == vim-markdown ===
 let g:polyglot_disabled = ['markdown']

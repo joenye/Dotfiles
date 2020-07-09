@@ -1,19 +1,26 @@
 #!/bin/bash
 
-device="${BLOCK_INSTANCE:-wlan0}"
+interfaces=${BLOCK_INSTANCE//,/ }
+wifi=$(echo $interfaces | awk '{print $1}')
+ethernet=$(echo $interfaces | awk '{print $2}')
+
 ssid_name=$(iwgetid -r)
-status=$(cat /sys/class/net/${device}/operstate)
+wifi_status=$(cat /sys/class/net/${wifi}/operstate)
+ethernet_status=$(cat /sys/class/net/${ethernet}/operstate)
 
-if [[ "${status}" == "up" ]]; then
-  if [[ -d "/sys/class/net/${device}/wireless" ]]; then
-    quality=$(grep ${device} /proc/net/wireless | awk '{ print int($3 * 100 / 70) }')
-  else
-    quality="off"
-  fi
+if [[ "${wifi_status}" == "up" ]]; then
+	if [[ -d "/sys/class/net/${wifi}/wireless" ]]; then
+		quality=$(grep ${wifi} /proc/net/wireless | awk '{ print int($3 * 100 / 70) }')
+    		if [[ "${quality}" != "" ]]; then
+			echo "${quality}% ${ssid_name}"
+			exit 0
+    		fi
+	fi
 fi
 
-if [[ "${quality}" != "" ]]; then
-	echo ${quality}% ${ssid_name}
-else
-	echo "-"
+if [[ "${ethernet_status}" == "up" ]]; then
+	echo "eth"
+	exit 0
 fi
+
+echo "-"

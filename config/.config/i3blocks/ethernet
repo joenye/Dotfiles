@@ -1,0 +1,11 @@
+#!/bin/bash
+
+device="${BLOCK_INSTANCE:-eth0}"
+ssid_name=$(iwgetid -r)
+status=$(cat /sys/class/net/${device}/operstate)
+
+if [[ "${status}" == "up" ]]; then
+	echo "on"
+else
+	echo "off"
+fi

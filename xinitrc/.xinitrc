@@ -1,1 +1,1 @@
-exec dbus-launch --autolaunch=$(cat /var/lib/dbus/machine-id) i3
+exec dbus-launch --exit-with-session i3
