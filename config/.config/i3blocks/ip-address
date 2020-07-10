@@ -3,23 +3,34 @@
 # ipinfo has rate limit of 1000 requests per day
 # 3 requests every 200 seconds => 926 requests per day
 INTERVAL=280
+ENABLE_DEBUG=1
+DEBUG_ITERATION=0
 
 while true; do
+    DEBUG_ITERATION=$((DEBUG_ITERATION+1))
     PRIVATE_IPV4_ADDRESS=$(hostname -I | awk '{print $1}')
-    PUBLIC_IPV4_ADDRESS=$(curl -m 5 https://ipinfo.io/ip)
-    CITY=$(curl -m 5 https://ipinfo.io/city)
-    COUNTRY=$(curl -m 5 https://ipinfo.io/country)
+    PUBLIC_IPV4_ADDRESS=$(curl -m 3 https://ipinfo.io/ip)
     EXIT_CODE=$?
     if [[ $EXIT_CODE -eq 0 ]]; then
+        CITY=$(curl -m 5 https://ipinfo.io/city)
+        COUNTRY=$(curl -m 5 https://ipinfo.io/country)
         GREY="#696969"
-	echo "$PRIVATE_IPV4_ADDRESS <span foreground=\"$GREY\">|</span> $PUBLIC_IPV4_ADDRESS ($CITY, $COUNTRY)"
+	OUTPUT="$PRIVATE_IPV4_ADDRESS <span foreground=\"$GREY\">|</span> $PUBLIC_IPV4_ADDRESS ($CITY, $COUNTRY)"
+	if [[ $ENABLE_DEBUG -eq 1 ]]; then
+	  OUTPUT+=" [$DEBUG_ITERATION]"
+	fi
+	echo $OUTPUT
     else
-        echo $PRIVATE_IPV4_ADDRESS
+	OUTPUT=$PRIVATE_IPV4_ADDRESS
+	if [[ $ENABLE_DEBUG -eq 1 ]]; then
+	  OUTPUT+=" [$DEBUG_ITERATION]"
+	fi
+	echo $OUTPUT
     fi
 
-    ACTIVE_INTERFACES=$(route | grep '^default' | grep -o '[^ ]*$')
+    ACTIVE_INTERFACES=$(timeout 3 route | grep '^default' | grep -o '[^ ]*$')
     SECONDS=0
-    while [[ $SECONDS < $INTERVAL ]]; do
+    while [[ $SECONDS -lt $INTERVAL ]]; do
         INTERFACES=$(timeout 3 route | grep '^default' | grep -o '[^ ]*$')
 	if [[ "$INTERFACES" != "$ACTIVE_INTERFACES" ]]; then
 	    # Reload early on change in network interfaces
