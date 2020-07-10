@@ -1,13 +1,30 @@
 #!/bin/bash
 
-PRIVATE_IPV4_ADDRESS=$(ip route get 1 | awk '{print $(NF-2);exit}')
+# ipinfo has rate limit of 1000 requests per day
+# 3 requests every 200 seconds => 926 requests per day
+INTERVAL=280
 
-PUBLIC_IPV4_ADDRESS=$(curl https://ipinfo.io/ip -m 5)
-EXIT_CODE=$?
+while true; do
+    PRIVATE_IPV4_ADDRESS=$(hostname -I | awk '{print $1}')
+    PUBLIC_IPV4_ADDRESS=$(curl -m 5 https://ipinfo.io/ip)
+    CITY=$(curl -m 5 https://ipinfo.io/city)
+    COUNTRY=$(curl -m 5 https://ipinfo.io/country)
+    EXIT_CODE=$?
+    if [[ $EXIT_CODE -eq 0 ]]; then
+        GREY="#696969"
+	echo "$PRIVATE_IPV4_ADDRESS <span foreground=\"$GREY\">|</span> $PUBLIC_IPV4_ADDRESS ($CITY, $COUNTRY)"
+    else
+        echo $PRIVATE_IPV4_ADDRESS
+    fi
 
-if [[ $EXIT_CODE -eq 0 ]]; then
-    GREY="#696969"
-    echo "${PRIVATE_IPV4_ADDRESS} <span foreground=\"${GREY}\">|</span> ${PUBLIC_IPV4_ADDRESS}"
-else
-    echo ${PRIVATE_IPV4_ADDRESS}
-fi
+    ACTIVE_INTERFACES=$(route | grep '^default' | grep -o '[^ ]*$')
+    SECONDS=0
+    while [[ $SECONDS < $INTERVAL ]]; do
+        INTERFACES=$(timeout 3 route | grep '^default' | grep -o '[^ ]*$')
+	if [[ "$INTERFACES" != "$ACTIVE_INTERFACES" ]]; then
+	    # Reload early on change in network interfaces
+	    break
+	fi
+	sleep 2 # Avoid CPU drain
+    done
+done

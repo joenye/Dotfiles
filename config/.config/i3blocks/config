@@ -54,7 +54,7 @@ interval=3
 label=🔖
 color=#FFFFFF
 full_text=ip
-interval=5
+interval=persist
 markup=pango
 
 [separator]
