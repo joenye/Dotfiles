@@ -54,7 +54,8 @@ interval=3
 label=🔖
 color=#FFFFFF
 full_text=ip
-interval=3
+interval=5
+markup=pango
 
 [separator]
 
@@ -139,6 +140,7 @@ interval=3
 color=#FFFFFF
 full_text=
 instance=%H:%M
+markup=pango
 
 [text]
 label=

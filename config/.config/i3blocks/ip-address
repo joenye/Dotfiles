@@ -1,9 +1,13 @@
 #!/bin/bash
 
-IP_ADDRESS=$(ip route get 1 | awk '{print $(NF-2);exit}')
+PRIVATE_IPV4_ADDRESS=$(ip route get 1 | awk '{print $(NF-2);exit}')
 
-# if [[ "${BLOCK_BUTTON}" == 1 ]]; then
-#     echo ${IP_ADDRESS}
-# fi
+PUBLIC_IPV4_ADDRESS=$(curl https://ipinfo.io/ip -m 5)
+EXIT_CODE=$?
 
-echo ${IP_ADDRESS}
+if [[ $EXIT_CODE -eq 0 ]]; then
+    GREY="#696969"
+    echo "${PRIVATE_IPV4_ADDRESS} <span foreground=\"${GREY}\">|</span> ${PUBLIC_IPV4_ADDRESS}"
+else
+    echo ${PRIVATE_IPV4_ADDRESS}
+fi

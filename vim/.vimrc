@@ -187,7 +187,7 @@ nnoremap <silent> <leader>gs :Gstatus<cr>
 " Note :Gvdiff forces vertical split, else horizontal is used if the window is not wide enough
 nnoremap <silent> <leader>gd :Gvdiff<cr>
 nnoremap <silent> <leader>gc :Gcommit<cr>
-nnoremap <silent> <leader>gb :GitMessenger<cr>
+nnoremap <silent> <leader>gb :Gblame<cr>
 nnoremap <silent> <leader>gl :GV<cr>
 nnoremap <silent> <leader>gp :Git push<cr>
 nnoremap <silent> <leader>gi :Git add -p %<cr>
