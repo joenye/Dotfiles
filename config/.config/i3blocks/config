@@ -1,6 +1,7 @@
 command=~/.config/i3blocks/$BLOCK_NAME
 full_text=〉
 align=center
+markup=pango
 color=#666666
 separator=false
 separator_block_width=7
@@ -11,11 +12,20 @@ separator_block_width=7
 #full_text=
 #interval=3
 
+#[separator]
+
 #[spotify.py]
 #label=🎧
 #color=#FFFFFF
 #full_text=
 #interval=3
+
+#[clipboard]
+#label=📋
+#color=#FFFFFF
+#full_text=
+#interval=5
+#command=echo "$(xclip -o -selection "clipboard" | grep -o '^.\{0,9\}' | sed -e 's/[^a-zA-Z0-9\-]/_/g')"
 
 [memory]
 label=🐏
@@ -40,6 +50,16 @@ instance=/;free
 full_text=
 interval=3
 
+[separator]
+
+[disk-io]
+label=💽
+instance=/^nvme0n1/
+color=#FFFFFF
+full_text=
+interval=persist
+
+
 #[separator]
 
 #[temperature]
@@ -55,7 +75,6 @@ label=🔖
 color=#FFFFFF
 full_text=ip
 interval=persist
-markup=pango
 
 [separator]
 
@@ -72,6 +91,14 @@ instance=wlp4s0,enp0s31f6
 color=#FFFFFF
 full_text=
 interval=3
+
+[bandwidth]
+label= 
+color=#FFFFFF
+full_text=
+interval=3
+#INLABEL=IIIII
+#OUTLABEL=OUT
 
 [separator]
 
@@ -140,7 +167,6 @@ interval=3
 color=#FFFFFF
 full_text=
 instance=%H:%M
-markup=pango
 
 [text]
 label=

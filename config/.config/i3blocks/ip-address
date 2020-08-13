@@ -3,7 +3,7 @@
 # ipinfo has rate limit of 1000 requests per day
 # 3 requests every 200 seconds => 926 requests per day
 INTERVAL=280
-ENABLE_DEBUG=1
+ENABLE_DEBUG=0
 DEBUG_ITERATION=0
 
 while true; do

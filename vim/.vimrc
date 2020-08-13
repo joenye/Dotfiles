@@ -100,6 +100,7 @@ try
   Plug 'ryanoasis/vim-devicons'
   Plug 'rakr/vim-one'
 
+
   " Status bar
   Plug 'itchyny/lightline.vim'
 

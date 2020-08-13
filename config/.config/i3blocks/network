@@ -8,19 +8,25 @@ ssid_name=$(iwgetid -r)
 wifi_status=$(cat /sys/class/net/${wifi}/operstate)
 ethernet_status=$(cat /sys/class/net/${ethernet}/operstate)
 
-if [[ "${wifi_status}" == "up" ]]; then
-	if [[ -d "/sys/class/net/${wifi}/wireless" ]]; then
-		quality=$(grep ${wifi} /proc/net/wireless | awk '{ print int($3 * 100 / 70) }')
-    		if [[ "${quality}" != "" ]]; then
-			echo "${quality}% ${ssid_name}"
-			exit 0
-    		fi
-	fi
+if [[ "${ethernet_status}" == "up" ]] && [[ "${wifi_status}" == "up" ]]; then
+	echo "eth > ${ssid_name}"
+	exit 0
 fi
 
 if [[ "${ethernet_status}" == "up" ]]; then
 	echo "eth"
 	exit 0
+fi
+
+if [[ "${wifi_status}" == "up" ]]; then
+	if [[ -d "/sys/class/net/${wifi}/wireless" ]]; then
+		quality=$(grep ${wifi} /proc/net/wireless | awk '{ print int($3 * 100 / 70) }')
+    		if [[ "${quality}" != "" ]]; then
+			# echo "${quality}% ${ssid_name}"
+			echo "${quality}% Why Fi"
+			exit 0
+    		fi
+	fi
 fi
 
 echo "-"
