@@ -93,19 +93,23 @@ try
   " Fuzzy-finding, buffer management
   Plug 'Shougo/denite.nvim'
 
-  " NERDTree
-  Plug 'scrooloose/nerdtree'
+  " fern.vim
+  Plug 'lambdalisue/nerdfont.vim'
+  Plug 'lambdalisue/fern.vim'
+  Plug 'lambdalisue/fern-renderer-nerdfont.vim'
+  Plug 'lambdalisue/fern-mapping-project-top.vim'
 
   " Theme
-  Plug 'ryanoasis/vim-devicons'
   Plug 'rakr/vim-one'
-
 
   " Status bar
   Plug 'itchyny/lightline.vim'
 
   " <C-e>
   Plug 'simeji/winresizer'
+
+  " === Tools === "
+  Plug 'hrj/vim-DrawIt'
 
   call plug#end()
 
@@ -174,12 +178,6 @@ inoremap <right> <nop>
 " Ctrl-a behaviour
 map <C-a> <esc>ggVG<cr>
 
-" === nerdtree ===
-map <C-n> :NERDTree<cr>
-" Bad key binding (makes cr trigger NERDTree)
-" map <C-j> :NERDTreeFind<cr>
-nmap - :edit %:h<cr>
-
 " === undotree ===
 nnoremap <F4> :UndotreeToggle<cr>
 
@@ -210,7 +208,7 @@ let g:user_emmet_settings = {
 
 " === vim-better-whitespace === "
 " Remove all trailing witespace
-nmap <leader>y :StripWhitespace<CR>
+nmap <silent> <leader>Y :StripWhitespace<CR>
 
 " === coc.nvim ===
 let g:coc_global_extensions = [
@@ -252,7 +250,7 @@ nmap <silent> <leader>j <Plug>(coc-diagnostic-next)
 nmap <silent> <leader>k <Plug>(coc-diagnostic-prev)
 
 " coc-yank
-nnoremap <silent> <space>yy  :<C-u>CocList -A --normal yank<cr>
+nnoremap <silent> <leader>y  :<C-u>CocList -A --normal yank<cr>
 
 " === vim-jsdoc ===
 nmap <leader>z :JsDoc<CR>
@@ -340,6 +338,40 @@ function! s:denite_my_filter_settings() abort
 	  imap <silent><buffer> <expr>dd denite#do_map('restart')
 endfunction
 
+" === fern.vim ===
+
+map <C-n> :Fern %:p:h -drawer -reveal=%:p<cr>
+nmap - :Fern %:p:h -reveal=%:p<cr>
+
+augroup fern-custom
+  autocmd! *
+  autocmd FileType fern call s:init_fern()
+augroup END
+
+function! s:init_fern() abort
+  " Define NERDTree-like mappings
+  nmap <buffer> o <Plug>(fern-action-open:edit)
+  nmap <buffer> ma <Plug>(fern-action-new-path)
+  nmap <buffer> md <Plug>(fern-action-remove)
+  nmap <buffer> u <Plug>(fern-action-leave)
+  nmap <buffer> r <Plug>(fern-action-reload)
+  nmap <buffer> R <Plug>(fern-action-rename)
+  " Useful in drawer style. Use native <C-^> for split window style
+  nmap <buffer> q :<C-u>quit<CR>
+
+  " Smart expand
+  nmap <buffer><expr>
+      \ <Plug>(fern-smart-expand-collapse)
+      \ fern#smart#leaf(
+      \   "\<Plug>(fern-action-collapse)",
+      \   "\<Plug>(fern-action-expand)",
+      \   "\<Plug>(fern-action-collapse)",
+      \ )
+
+  nmap <buffer><nowait> l <Plug>(fern-smart-expand-collapse)
+
+endfunction
+
 " ============================================================================ "
 " ===                           EDITING OPTIONS                            === "
 " ============================================================================ "
@@ -359,9 +391,6 @@ set hidden
 
 " Highlight current cursor line, except on entering
 set cursorline
-
-" Close vim if NERDTree is only thing open
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " Close preview window when completion is done
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
@@ -403,7 +432,7 @@ endif
 " See https://gist.github.com/romainl/379904f91fa40533175dfaec4c833f2f
 " and https://github.com/junegunn/goyo.vim/issues/84
 function! MyHighlights() abort
-  " Hightlight trailing whitespace
+  " Highlight trailing whitespace
   highlight Trail ctermbg=red guibg=red
   call matchadd('Trail', '\s\+$', 100)
 
@@ -445,9 +474,6 @@ hi! link CocErrorSign WarningMsg
 hi! link CocWarningSign Number
 hi! link CocInfoSign Type
 
-" Customize NERDTree directory
-hi! NERDTreeCWD guifg=#99c794
-
 " https://github.com/mxw/vim-jsx/issues/124
 hi link xmlEndTag xmlTag
 
@@ -471,6 +497,15 @@ augroup CursorLine
   au WinLeave * setlocal nocursorline
 augroup END
 
+" Consistent highlighting (prevent certain windows, e.g. coc-yank changing cursor color)
+highlight Cursor guifg=default guibg=default
+highlight iCursor guifg=default guibg=default
+set guicursor=n-v-c:block-Cursor
+set guicursor+=i:ver100-iCursor
+set guicursor+=n-v-c:blinkon0
+set guicursor+=i:blinkwait10
+
+
 " ============================================================================ "
 " ===                           PLUGIN OPTIONS                             === "
 " ============================================================================ "
@@ -482,10 +517,6 @@ let g:mkdp_browser = 'firefox'
 let g:polyglot_disabled = ['markdown']
 let g:markdown_enable_spell_checking = 0
 let g:markdown_enable_mappings = 0
-
-" == vim-devicons ===
-let g:WebDevIconsUnicodeDecorateFolderNodes = v:true
-let g:WebDevIconsNerdTreeBeforeGlyphPadding = ""
 
 " === vim-jsx === "
 " Highlight jsx syntax even in non .jsx files
@@ -511,18 +542,30 @@ let g:mta_filetypes = {}
 " \ 'javascript.jsx' : 0,
 " \}
 
-" === nerdtree ===
-let NERDTreeShowHidden=1
-let NERDTreeMinimalUI=1
-let NERDTreeIgnore = ['\.pyc$', '^__pycache__$', '\.sw.$', '\.un\~', '^\.DS_Store$', '^tags$', '\.git$[[dir]]', '\.idea$[[dir]]', '\.sass-cache$']
-let g:NERDTreeMapQuit = 'qq'
-let g:NERDTreeStatusline = ''
-let NERDTreeChDirMode=2
-let g:NERDTreeDirArrowExpandable = '├'
-let g:NERDTreeDirArrowCollapsible = '└'
+" === fern.vim ===
+let g:fern#renderer = "nerdfont"
+let g:fern#default_hidden = 1
+let g:fern#drawer_keep = 1
 
-" === vim-illuminate ===
-let g:Illuminate_ftblacklist = ['nerdtree']
+" Disable netrw
+let g:loaded_netrw = 1
+let g:loaded_netrwPlugin = 1
+let g:loaded_netrwSettings = 1
+let g:loaded_netrwFileHandlers = 1
+
+augroup my-fern-hijack
+  autocmd!
+  autocmd BufEnter * ++nested call s:hijack_directory()
+augroup END
+
+function! s:hijack_directory() abort
+  let path = expand('%:p')
+  if !isdirectory(path)
+    return
+  endif
+  bwipeout %
+  execute printf('Fern %s', fnameescape(path))
+endfunction
 
 " === vim-test ===
 let test#strategy = 'neoterm'
@@ -531,12 +574,6 @@ let g:neoterm_autoscroll = 1
 let g:neoterm_autoinsert = 1
 let g:neoterm_default_mod = ':botright'
 let g:test#preserve_screen = 1
-
-" === vim-devicons ===
-" https://github.com/ryanoasis/vim-devicons/issues/154
-if exists('g:loaded_webdevicons')
-  call webdevicons#refresh()
-endif
 
 " === goyo.vim ===
 " https://github.com/junegunn/goyo.vim/issues/160
@@ -608,49 +645,35 @@ let g:lightline = {
 try
 
   " Interface
-  call denite#custom#option('default', {
+  call denite#custom#option('_', {
     \ 'auto_resize': 1,
-    \ 'statusline': 1,
-    \ 'smartcase': 1,
-    \ 'vertical_preview': 1,
-    \ 'direction': 'dynamicbottom',
     \ 'prompt': '❯',
     \ 'max_dynamic_update_candidates': 50000,
+    \ 'statusline': 0,
+    \ 'split': 'floating',
     \ })
-
-  if has('nvim')
-    call denite#custom#option('_', { 'split': 'floating', 'statusline': 0 })
-  endif
 
   " Converter to show relative paths
   call denite#custom#source('buffer,file_old', 'converters', ['converter/relative_word'])
 
-  " Ag for searching filenames, including those in .gitignore`
-  call denite#custom#var('file/rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '--unrestricted', '-g', ''])
+  " Ripgrep for searching filenames, including those in .gitignore`
+  call denite#custom#var('file/rec', 'command',
+	\ ['rg', '--files', '--glob', '!.git', '--color', 'never'])
 
-  " Ag for searching filenames, excluding those in .gitignore`
-  call denite#custom#alias('source', 'file/rec/git', 'file/rec')
-  call denite#custom#var('file/rec/git', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
-
-  " Ag for searching file content
-  call denite#custom#var('grep', 'command', ['ag'])
-  call denite#custom#var('grep', 'default_opts',
-      \ ['-i', '--vimgrep'])
-  call denite#custom#var('grep', 'recursive_opts', [])
-  call denite#custom#var('grep', 'pattern_opt', [])
-  call denite#custom#var('grep', 'separator', ['--'])
-  call denite#custom#var('grep', 'final_opts', [])
-
-  " Define alias to allow using git ls-files if in Git project
+  " Git for searching filenames, excluding those in .gitignore`
   call denite#custom#alias('source', 'file/rec/git', 'file/rec')
 	call denite#custom#var('file/rec/git', 'command',
 	      \ ['git', 'ls-files', '-co', '--exclude-standard'])
 
-  " Use lightline instead
-  call denite#custom#option('_', 'statusline', v:false)
-
-  " Continue to work in large repos`
-  call denite#custom#option('_', 'max_dynamic_update_candidates', 100000)
+  " Ripgrep for searching file content
+  call denite#custom#var('grep', {
+		\ 'command': ['rg'],
+		\ 'default_opts': ['-i', '--vimgrep', '--no-heading'],
+		\ 'recursive_opts': [],
+		\ 'pattern_opt': ['--regexp'],
+		\ 'separator': ['--'],
+		\ 'final_opts': [],
+		\ })
 
   " Remove date from buffer list
   call denite#custom#var('buffer', 'date_format', '')

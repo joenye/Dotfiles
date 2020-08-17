@@ -22,8 +22,8 @@ if [[ "${wifi_status}" == "up" ]]; then
 	if [[ -d "/sys/class/net/${wifi}/wireless" ]]; then
 		quality=$(grep ${wifi} /proc/net/wireless | awk '{ print int($3 * 100 / 70) }')
     		if [[ "${quality}" != "" ]]; then
-			# echo "${quality}% ${ssid_name}"
-			echo "${quality}% Why Fi"
+			echo "${quality}% ${ssid_name}"
+			# echo "${quality}% Why Fi"
 			exit 0
     		fi
 	fi
