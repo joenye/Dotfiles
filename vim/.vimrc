@@ -98,6 +98,7 @@ try
   Plug 'lambdalisue/fern.vim'
   Plug 'lambdalisue/fern-renderer-nerdfont.vim'
   Plug 'lambdalisue/fern-mapping-project-top.vim'
+  Plug 'LumaKernel/fern-mapping-reload-all.vim'
 
   " Theme
   Plug 'rakr/vim-one'
@@ -151,6 +152,8 @@ cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 if has('nvim')
   " Escape nvim terminal
   tmap <c-o> <c-\><c-n>
+  nmap <C-h> <C-w>h
+  nmap <C-l> <C-w>l
 endif
 
 " Delete current visual selection and dump in black hole buffer before pasting
@@ -340,8 +343,8 @@ endfunction
 
 " === fern.vim ===
 
-map <C-n> :Fern %:p:h -drawer -reveal=%:p<cr>
-nmap - :Fern %:p:h -reveal=%:p<cr>
+map <silent> <C-n> :Fern %:p:h -drawer -stay -reveal=%:p<cr>
+nmap <silent> - :Fern %:p:h -reveal=%:p<cr>
 
 augroup fern-custom
   autocmd! *
@@ -355,9 +358,20 @@ function! s:init_fern() abort
   nmap <buffer> md <Plug>(fern-action-remove)
   nmap <buffer> u <Plug>(fern-action-leave)
   nmap <buffer> r <Plug>(fern-action-reload)
-  nmap <buffer> R <Plug>(fern-action-rename)
-  " Useful in drawer style. Use native <C-^> for split window style
-  nmap <buffer> q :<C-u>quit<CR>
+  nmap <buffer> R <Plug>(fern-action-reload:all)
+  nmap <buffer> a <Plug>(fern-action-rename)
+  nmap <buffer><expr> <Plug>(fern-my-quit-or-return)
+        \ fern#smart#drawer(
+        \   ":<C-u>quit<CR>",
+        \   "<C-^>",
+        \ )
+  nmap <buffer><nowait> q <Plug>(fern-my-quit-or-return)
+
+  " Unmap Fern defaults to allow navigating between windows without doing <C-w><C-*>
+  silent! nunmap <buffer> <C-h>
+  silent! nunmap <buffer> <C-l>
+  silent! nunmap <buffer> <C-j>
+  silent! nunmap <buffer> <C-k>
 
   " Smart expand
   nmap <buffer><expr>
@@ -390,7 +404,7 @@ set noshowcmd
 set hidden
 
 " Highlight current cursor line, except on entering
-set cursorline
+autocmd! InsertEnter,InsertLeave * set cul!
 
 " Close preview window when completion is done
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
@@ -497,14 +511,9 @@ augroup CursorLine
   au WinLeave * setlocal nocursorline
 augroup END
 
-" Consistent highlighting (prevent certain windows, e.g. coc-yank changing cursor color)
+" Consistent highlighting (even if opening for example coc-yank window)
 highlight Cursor guifg=default guibg=default
 highlight iCursor guifg=default guibg=default
-set guicursor=n-v-c:block-Cursor
-set guicursor+=i:ver100-iCursor
-set guicursor+=n-v-c:blinkon0
-set guicursor+=i:blinkwait10
-
 
 " ============================================================================ "
 " ===                           PLUGIN OPTIONS                             === "
