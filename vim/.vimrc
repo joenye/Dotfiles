@@ -95,6 +95,7 @@ try
 
   " fern.vim
   Plug 'lambdalisue/nerdfont.vim'
+  Plug 'lambdalisue/glyph-palette.vim'
   Plug 'lambdalisue/fern.vim'
   Plug 'lambdalisue/fern-renderer-nerdfont.vim'
   Plug 'lambdalisue/fern-mapping-project-top.vim'
@@ -111,6 +112,9 @@ try
 
   " === Tools === "
   Plug 'hrj/vim-DrawIt'
+
+  " Remove once NeoVim bug is fixed: https://github.com/neovim/neovim/issues/12587
+  Plug 'antoinemadec/FixCursorHold.nvim'
 
   call plug#end()
 
@@ -344,18 +348,26 @@ endfunction
 " === fern.vim ===
 
 map <silent> <C-n> :Fern %:p:h -drawer -stay -reveal=%:p<cr>
-nmap <silent> - :Fern %:p:h -reveal=%:p<cr>
+nmap <silent> - :Fern %:p:h -opener=edit -stay -reveal=%:p<cr>
 
 augroup fern-custom
   autocmd! *
   autocmd FileType fern call s:init_fern()
 augroup END
 
+augroup my-glyph-palette
+  autocmd! *
+  autocmd FileType fern call glyph_palette#apply()
+  autocmd FileType nerdtree,startify call glyph_palette#apply()
+augroup END
+
 function! s:init_fern() abort
   " Define NERDTree-like mappings
   nmap <buffer> o <Plug>(fern-action-open:edit)
+  nmap <buffer> mm <Plug>(fern-action-move)
   nmap <buffer> ma <Plug>(fern-action-new-path)
   nmap <buffer> md <Plug>(fern-action-remove)
+  nmap <buffer> mc <Plug>(fern-action-copy)
   nmap <buffer> u <Plug>(fern-action-leave)
   nmap <buffer> r <Plug>(fern-action-reload)
   nmap <buffer> R <Plug>(fern-action-reload:all)
@@ -363,7 +375,7 @@ function! s:init_fern() abort
   nmap <buffer><expr> <Plug>(fern-my-quit-or-return)
         \ fern#smart#drawer(
         \   ":<C-u>quit<CR>",
-        \   "<C-^>",
+        \   "<C-o>",
         \ )
   nmap <buffer><nowait> q <Plug>(fern-my-quit-or-return)
 
@@ -372,6 +384,13 @@ function! s:init_fern() abort
   silent! nunmap <buffer> <C-l>
   silent! nunmap <buffer> <C-j>
   silent! nunmap <buffer> <C-k>
+
+  " Unmap \rwp so <leader>r doesn't wait
+  silent! nunmap \rwp
+
+  " Unmap m, c so mm, ma, md, mc works smoothly
+  silent! nunmap <buffer> m
+  silent! nunmap <buffer> c
 
   " Smart expand
   nmap <buffer><expr>
@@ -655,7 +674,7 @@ try
 
   " Interface
   call denite#custom#option('_', {
-    \ 'auto_resize': 1,
+    \ 'auto_resize': 0,
     \ 'prompt': '❯',
     \ 'max_dynamic_update_candidates': 50000,
     \ 'statusline': 0,
