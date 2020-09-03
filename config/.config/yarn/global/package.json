@@ -4,6 +4,6 @@
     "create-react-app": "^3.3.0",
     "fake-git-history": "^0.0.1",
     "prettier": "^1.11.1",
-    "serve": "^10.1.1"
+    "serve": "^10.1.2"
   }
 }
