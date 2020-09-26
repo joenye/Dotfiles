@@ -54,9 +54,6 @@ try
   " cxiw and .
   Plug 'tommcdo/vim-exchange'
 
-  " nvim terminal wrapper
-  Plug 'kassio/neoterm'
-
   " Highlight matching characters
   Plug 'RRethy/vim-illuminate'
 
@@ -77,13 +74,17 @@ try
   Plug 'joenye/vim-snippets'
 
   " Generate JSDoc based on signature
-  Plug 'heavenshell/vim-jsdoc'
+  Plug 'heavenshell/vim-jsdoc', {
+    \ 'for': ['javascript', 'javascript.jsx', 'typescript'],
+    \ 'do': 'make install'
+  \}
 
   " Good when sharing screen
   Plug 'junegunn/goyo.vim'
 
   " === Syntax Highlighting === "
 
+  let g:polyglot_disabled = ['markdown']
   Plug 'sheerun/vim-polyglot'
 
   Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
@@ -184,6 +185,9 @@ inoremap <right> <nop>
 
 " Ctrl-a behaviour
 map <C-a> <esc>ggVG<cr>
+
+" Better than default 4 seconds for Coc lint updates
+set updatetime=300
 
 " === undotree ===
 nnoremap <F4> :UndotreeToggle<cr>
@@ -449,6 +453,9 @@ set directory=~/.cache/vim/swap
 set undofile
 set undodir=~/.cache/vim/undo
 
+" Show preview of changes when using :substitute
+set inccommand=nosplit
+
 " ============================================================================ "
 " ===                           UI/MENU OPTIONS                            === "
 " ============================================================================ "
@@ -542,7 +549,6 @@ highlight iCursor guifg=default guibg=default
 let g:mkdp_browser = 'firefox'
 
 " == vim-markdown ===
-let g:polyglot_disabled = ['markdown']
 let g:markdown_enable_spell_checking = 0
 let g:markdown_enable_mappings = 0
 
@@ -574,6 +580,7 @@ let g:mta_filetypes = {}
 let g:fern#renderer = "nerdfont"
 let g:fern#default_hidden = 1
 let g:fern#drawer_keep = 1
+let g:fern#scheme#file#show_absolute_path_on_root_label = 1
 
 " Disable netrw
 let g:loaded_netrw = 1
@@ -671,7 +678,6 @@ let g:lightline = {
 
 " === denite.nvim ===
 try
-
   " Interface
   call denite#custom#option('_', {
     \ 'auto_resize': 0,
@@ -681,12 +687,9 @@ try
     \ 'split': 'floating',
     \ })
 
-  " Converter to show relative paths
-  call denite#custom#source('buffer,file_old', 'converters', ['converter/relative_word'])
-
   " Ripgrep for searching filenames, including those in .gitignore`
   call denite#custom#var('file/rec', 'command',
-	\ ['rg', '--files', '--glob', '!.git', '--color', 'never'])
+	\ ['rg', '--files', '--glob', '--hidden', '!.git', '--color', 'never'])
 
   " Git for searching filenames, excluding those in .gitignore`
   call denite#custom#alias('source', 'file/rec/git', 'file/rec')
@@ -696,7 +699,7 @@ try
   " Ripgrep for searching file content
   call denite#custom#var('grep', {
 		\ 'command': ['rg'],
-		\ 'default_opts': ['-i', '--vimgrep', '--no-heading'],
+		\ 'default_opts': ['-i', '--vimgrep', '--no-heading', '--hidden'],
 		\ 'recursive_opts': [],
 		\ 'pattern_opt': ['--regexp'],
 		\ 'separator': ['--'],
@@ -709,6 +712,13 @@ try
   " Remove current buffer from buffers list
   call denite#custom#source('buffer', 'matchers',
       \ ['matcher/fuzzy', 'matcher/ignore_current_buffer'])
+
+  " Sort buffer list by most recently accessed
+  call denite#custom#source('buffer', 'sorters', ['sorter/oldfiles'])
+
+  " Show relative paths in buffer list
+  call denite#custom#source('buffer', 'converters', ['converter/relative_word'])
+
 
 catch
   echo 'denite.nvim not installed. Run :PlugInstall'

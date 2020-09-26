@@ -1,6 +1,6 @@
 [user]
 	name = Joe Nye
-	email = joenye@amazon.com
+	email = prokonye@gmail.com
 	signingkey = 95CC4CA55A79BFD4
 [alias]
         lol = log --graph --decorate --pretty=oneline --abbrev-commit
@@ -21,3 +21,5 @@
 ;	templatedir = ~/.git_template
 ; [commit]
 ; 	gpgSign = true
+[diff]
+	submodule = log

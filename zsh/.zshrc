@@ -2,6 +2,7 @@ export PATH=$HOME/bin:/usr/local/bin:$HOME/.npm-global/bin:/usr/local/go/bin:$HO
 export ZSH=~/.oh-my-zsh
 [[ $TERM == xterm-termite ]] && export TERM=xterm
 
+GOPROXY=chalupa-dns-sinkhole.corp.amazon.com
 ZSH_THEME='robbyrussell'
 COMPLETION_WAITING_DOTS='true'
 

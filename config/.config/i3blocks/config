@@ -76,7 +76,7 @@ interval=persist
 #full_text=ip
 #interval=persist
 
-#[separator]
+[separator]
 
 [ping]
 label=
@@ -85,12 +85,12 @@ full_text=
 interval=3
 command=if ping -w 1 -c 1 google.co.uk >/dev/null 2>&1; then echo ""; else echo "😢"; fi
 
-#[network]
-#label=📡
-#instance=wlp4s0,enp0s31f6
-#color=#FFFFFF
-#full_text=
-#interval=3
+[network]
+label=📡
+instance=wlp4s0,enp0s31f6
+color=#FFFFFF
+full_text=
+interval=3
 
 [bandwidth]
 label= 

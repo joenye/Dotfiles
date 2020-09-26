@@ -20,6 +20,7 @@
   "python.formatting.provider": "black",
 
   // "diagnostic.virtualText": true,
+  // "diagnostic.virtualTextCurrentLineOnly": false,
   "diagnostic.infoSign": "ღ",
   "diagnostic.hintSign": "ஐ",
   "diagnostic.warningSign": "⚠",
