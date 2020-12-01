@@ -93,6 +93,7 @@ try
 
   " Fuzzy-finding, buffer management
   Plug 'Shougo/denite.nvim'
+  Plug 'joenye/coc-denite'
 
   " fern.vim
   Plug 'lambdalisue/nerdfont.vim'
@@ -187,7 +188,7 @@ inoremap <right> <nop>
 map <C-a> <esc>ggVG<cr>
 
 " Better than default 4 seconds for Coc lint updates
-set updatetime=300
+set updatetime=1000
 
 " === undotree ===
 nnoremap <F4> :UndotreeToggle<cr>
@@ -317,6 +318,8 @@ nmap <silent> <leader>r :<C-u>DeniteProjectDir -start-filter -resume -buffer-nam
 nmap <silent> <leader>t :<C-u>DeniteProjectDir -start-filter -resume -buffer-name=file_no_gitignore file/rec<CR>
 nmap <leader>a :<C-u>DeniteProjectDir -start-filter -resume -buffer-name=content_gitignore grep:::!<CR>
 nmap <leader>s :<C-u>Denite -start-filter -resume -buffer-name=content_no_gitignore grep:::!<CR>
+nmap <leader>cd :<C-u>Denite coc-diagnostic<CR>
+nmap <leader>cc :<C-u>Denite coc-command<CR>
 
 " https://github.com/rafi/vim-config/blob/d7cdc594e73dfbca76b4868505f19db94f088a64/config/plugins/all.vim
 " nnoremap <silent><LocalLeader>r :<C-u>Denite -resume -refresh -no-start-filter<CR>
@@ -718,6 +721,9 @@ try
 
   " Show relative paths in buffer list
   call denite#custom#source('buffer', 'converters', ['converter/relative_word'])
+
+  " call denite#custom#source('coc-diagnostic', 'converters', ['converter/basename_to_top'])
+  " call denite#custom#var('coc-diagnostic', 'abbr', '')
 
 
 catch

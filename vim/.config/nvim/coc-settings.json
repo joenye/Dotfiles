@@ -5,6 +5,7 @@
 
   // coc-tsserver
   "javascript.suggestionActions.enabled": false, // https://github.com/Microsoft/vscode/issues/47299
+  "tsserver.maxTsServerMemory": 8000, // 8GB
 
   // coc-prettier
   "prettier.disableSuccessMessage": true,

@@ -68,13 +68,13 @@ interval=persist
 #full_text=
 #interval=3
 
-#[separator]
+[separator]
 
-#[ip-address]
-#label=🔖
-#color=#FFFFFF
-#full_text=ip
-#interval=persist
+[ip-address]
+label=🔖
+color=#FFFFFF
+full_text=ip
+interval=persist
 
 [separator]
 
