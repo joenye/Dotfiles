@@ -43,7 +43,7 @@ GetOptions("help|h" => \&help,
            "c=i"    => \$t_crit,
            "chip=s" => \$chip);
 
-$temperature = `cat /sys/devices/virtual/thermal/thermal_zone1/temp` / 1000;
+$temperature = `cat /sys/devices/virtual/thermal/thermal_zone0/temp` / 1000;
 
 # Print short_text, full_text
 print "$temperature°C\n" x2;

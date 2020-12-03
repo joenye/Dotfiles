@@ -4,10 +4,8 @@ INSTANCE="${BLOCK_INSTANCE}"
 
 if [[ "${INSTANCE}" ]]; then
 	echo ${INSTANCE}
-	echo ${INSTANCE}
 	echo ""
 else
-	echo " "
 	echo " "
 	echo ""
 fi
