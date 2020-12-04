@@ -5,9 +5,12 @@ set $down j
 set $up k
 set $right l
 set $term termite
+set $sleep systemctl suspend
 set $menu wofi --show=run --gtk-dark
 set $dmenu wofi --show=drun --allow-images --gtk-dark
 set $background ~/Pictures/Wallpapers/desktop.jpg
+set $screenshot file=~/Pictures/Screenshots/$(date +'%Y-%m-%d-%H%M%S_grim.png') && grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name') $file && swappy -f $file
+set $screenclip file=~/Pictures/Screenshots/$(date +'%Y-%m-%d-%H%M%S_grim.png') && slurp | grim -c -g - $file && swappy -f $file
 set $lock swaylock \
 	--screenshots \
 	--clock \
@@ -47,19 +50,21 @@ output * bg $background fill
 
 ### Key bindings
 bindsym $mod+d exec $menu
-bindsym $mod+shift+d exec $dmenu
+bindsym $mod+Shift+d exec $dmenu
+bindsym $mod+c exec clipman pick --tool wofi --notify
 
 bindsym $mod+Return exec $term
 bindsym $mod+Shift+Return exec ~/.config/sway/sway-cwd.sh
 
-bindsym $mod+Print exec $screenshot
-bindsym $mod+Shift+Print exec $screenclip
+bindsym Print exec $screenshot
+bindsym Ctrl+Print exec $screenclip
 
 bindsym $mod+Shift+q kill
 bindsym $mod+Shift+c reload
 bindsym $mod+Ctrl+Shift+e exit
 
 bindsym $mod+q exec $lock
+bindsym $mod+z exec $sleep
 
 bindsym --locked XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+1 i3blocks
 bindsym --locked XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+1 i3blocks
@@ -139,9 +144,6 @@ bindsym $mod+m border toggle
 bindsym Control+Space exec makoctl dismiss
 bindsym Control+Shift+Space exec makoctl dismiss --all
 
-# Screenshots
-bindsym Print exec file=~/Pictures/Screenshots/$(date +'%Y-%m-%d-%H%M%S_grim.png') && slurp | grim -c -g - $file && eog $file
-
 ### Resize mode
 mode "resize" {
     bindsym $left resize shrink width 20px
@@ -152,17 +154,6 @@ mode "resize" {
 }
 bindsym $mod+r mode "resize"
 
-# Status bar
-bar {
-    position top
-    status_command i3blocks
-    workspace_buttons yes
-    font pango:MesloLGSDZ Nerd Font Mono 9
-    colors {
-        background #323232
-    }
-}
-
 # Miscellaneous
 default_border pixel
 hide_edge_borders smart
@@ -172,8 +163,12 @@ workspace_auto_back_and_forth yes
 exec swayidle \
     timeout 300 'exec $lock' \
     timeout 600 'swaymsg "output * dpms off"' \
+    timeout 900 'exec $sleep' \
     resume 'swaymsg "output * dpms on"' \
     before-sleep 'exec $lock'
+
+# Status bar
+exec_always ~/.config/waybar/waybar.sh
 
 # Screen-sharing (WebRTC)
 exec "systemctl --user import-environment"
@@ -186,5 +181,16 @@ exec mako
 # Low battery pop-up
 for_window [title="Battery Warning"] sticky enable
 exec i3-battery-popup -n
-
 exec gtk-quarantine-status
+
+# https://github.com/swaywm/sway/wiki/GTK-3-settings-on-Wayland
+set $gnome-schema org.gnome.desktop.interface
+exec_always {
+    gsettings set $gnome-schema gtk-theme Adwaita-dark
+    # gsettings set $gnome-schema icon-theme 'Your icon theme'
+    # gsettings set $gnome-schema cursor-theme 'Your cursor Theme'
+    # gsettings set $gnome-schema font-name 'Your font name'
+}
+
+exec wl-paste -t text --watch clipman store
+exec wl-paste -p -t text --watch clipman store -P --histpath="~/.local/share/clipman-primary.json"

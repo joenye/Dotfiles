@@ -141,7 +141,7 @@ nnoremap <expr> n  'Nn'[v:searchforward]
 nnoremap <expr> N  'nN'[v:searchforward]
 
 " Use :Todo to edit todos
-command! -nargs=0 Todo :e ~/notes/GTD/TODOs.md
+command! -nargs=0 Todo :e ~/Notes/GTD/TODOs.md
 
 " Reverses default behaviour so that j and k move down/up by display lines, while gj and gk move by real lines
 nnoremap k gk

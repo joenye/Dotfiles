@@ -32,3 +32,4 @@ config/.config/*
 !config/.config/fontconfig
 !config/.config/i3
 !config/.config/dunst
+!config/.config/waybar

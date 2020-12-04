@@ -122,13 +122,13 @@ signal=1
 
 [separator]
 
-[nighthawk]
-label=NH 
-color=#FFFFFF
-full_text=
-interval=1
+# [nighthawk]
+# label=NH 
+# color=#FFFFFF
+# full_text=
+# interval=1
 
-[separator]
+# [separator]
 
 [datetime]
 label=📅 
