@@ -33,3 +33,4 @@ config/.config/*
 !config/.config/i3
 !config/.config/dunst
 !config/.config/waybar
+!config/.config/alacritty

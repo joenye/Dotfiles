@@ -1,75 +1,162 @@
+/* ==============12==============================================================
+ *
+ * Waybar configuration
+ *
+ * Configuration reference: https://github.com/Alexays/Waybar/wiki/Configuration
+ *
+ * =========================================================================== */
+
+/* -----------------------------------------------------------------------------
+ * Keyframes
+ * -------------------------------------------------------------------------- */
+
+@keyframes blink-warning {
+  70% {
+    color: white;
+  }
+
+  to {
+    color: white;
+    background-color: orange;
+  }
+}
+
+@keyframes blink-critical {
+  70% {
+    color: white;
+  }
+
+  to {
+    color: white;
+    background-color: red;
+  }
+}
+
+/* -----------------------------------------------------------------------------
+ * Base styles
+ * -------------------------------------------------------------------------- */
+
+/* Reset all styles */
 * {
   border: none;
   border-radius: 0;
-  font-family: "MesloLGSDZ Nerd Font Mono";
-  /* font-weight: bold; */
-  color: #ffffff;
-  font-size: 13;
-  min-height: 0px;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
 }
 
-window#waybar {
+/* The whole bar */
+#waybar {
   background: #323232;
-  color: #aab2bf;
+  color: white;
+  font-family: "MesloLGSDZ Nerd Font Mono";
+  font-size: 13px;
 }
 
-#window {
-  padding: 0 0px;
-}
+/* -----------------------------------------------------------------------------
+ * Module styles
+ * -------------------------------------------------------------------------- */
 
-#workspaces button:hover {
-  box-shadow: inherit;
-  text-shadow: inherit;
-  background: #16191c;
-  border: #16191c;
-  padding: 0 3px;
-}
-#workspaces button:hover {
-  padding: 0 5px;
-}
-#workspaces button {
-  padding: 0 5px;
-  color: #aab2bf;
-}
-#workspaces button.focused {
-  border-top: 2px solid @color15;
-  color: #aab2bf;
-}
-#mode {
-  background: #000000;
-  border-bottom: 2px solid @color15;
-  margin: 0 10px;
-}
 #custom-separator {
   color: #4c566a;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
-#memory.warning,
-#cpu.warning,
-#battery.warning:not(.charging) {
-  color: #997350;
+#battery {
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
 }
 
-#memory.critical,
-#battery.critical:not(.charging),
-#cpu.critical,
-#temperature.critical,
-#network.linked,
+#battery.warning {
+  color: orange;
+}
+
+#battery.critical {
+  color: red;
+}
+
+#battery.warning.discharging {
+  animation-name: blink-warning;
+  animation-duration: 3s;
+}
+
+#battery.critical.discharging {
+  animation-name: blink-critical;
+  animation-duration: 2s;
+}
+
+#cpu.warning {
+  color: orange;
+}
+
+#cpu.critical {
+  color: red;
+}
+
+#memory {
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+#memory.warning {
+  color: orange;
+}
+
+#memory.critical {
+  color: red;
+  animation-name: blink-critical;
+  animation-duration: 2s;
+}
+
+#mode {
+  background: #64727d;
+  border-top: 2px solid white;
+  /* To compensate for the top border and still have vertical centering */
+  padding-bottom: 2px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
 #network.disconnected {
-  color: #a3535a;
+  color: orange;
 }
 
-#clock,
-#battery,
-#cpu,
-#memory,
-#temperature,
-#backlight,
-#network,
-#pulseaudio,
-#custom-media,
-#tray,
-#mode,
-#idle_inhibitor {
-  padding: 0 12px;
+#custom-spotify {
+  color: rgb(102, 220, 105);
+}
+
+#temperature.critical {
+  color: red;
+}
+
+#tray {
+  padding-left: 20px;
+  padding-right: 8px;
+}
+
+/* #window { */
+/*   font-style: bold; */
+/* } */
+
+#workspaces button {
+  border-top: 2px solid transparent;
+  /* To compensate for the top border and still have vertical centering */
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #888888;
+}
+
+#workspaces button.focused {
+  border-color: #4c7899;
+  color: white;
+  background-color: #285577;
+}
+
+#workspaces button.urgent {
+  border-color: #c9545d;
+  color: #c9545d;
 }

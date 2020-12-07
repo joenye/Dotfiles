@@ -4,9 +4,9 @@ set $left h
 set $down j
 set $up k
 set $right l
-set $term termite
+set $term alacritty
 set $sleep systemctl suspend
-set $menu wofi --show=run --gtk-dark
+set $menu dmenu_path | wofi --show drun -i --allow-images --gtk-dark | xargs swaymsg exec --
 set $dmenu wofi --show=drun --allow-images --gtk-dark
 set $background ~/Pictures/Wallpapers/desktop.jpg
 set $screenshot file=~/Pictures/Screenshots/$(date +'%Y-%m-%d-%H%M%S_grim.png') && grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name') $file && swappy -f $file
@@ -64,7 +64,7 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Ctrl+Shift+e exit
 
 bindsym $mod+q exec $lock
-bindsym $mod+z exec $sleep
+bindsym --locked $mod+z exec $sleep
 
 bindsym --locked XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+1 i3blocks
 bindsym --locked XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+1 i3blocks
@@ -136,6 +136,7 @@ bindsym $mod+bracketRight exec playerctl next  # ]
 bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioPrev exec playerctl previous
 bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioStop exec playerctl stop
 
 # Cycle through border styles
 bindsym $mod+m border toggle
@@ -144,7 +145,7 @@ bindsym $mod+m border toggle
 bindsym Control+Space exec makoctl dismiss
 bindsym Control+Shift+Space exec makoctl dismiss --all
 
-### Resize mode
+# Resize mode
 mode "resize" {
     bindsym $left resize shrink width 20px
     bindsym $down resize grow height 20px
@@ -162,16 +163,20 @@ workspace_auto_back_and_forth yes
 # Swayidle configuration
 exec swayidle \
     timeout 300 'exec $lock' \
-    timeout 600 'swaymsg "output * dpms off"' \
+		timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
     timeout 900 'exec $sleep' \
-    resume 'swaymsg "output * dpms on"' \
     before-sleep 'exec $lock'
 
+# Inhibit idle
+for_window [app_id="firefox-trunk"] inhibit_idle fullscreen
+for_window [app_id="pavucontrol"] floating enable
+
 # Status bar
-exec_always ~/.config/waybar/waybar.sh
+bar {
+    swaybar_command waybar
+}
 
 # Screen-sharing (WebRTC)
-exec "systemctl --user import-environment"
 exec pipewire
 exec /usr/libexec/xdg-desktop-portal-wlr
 exec /usr/lib/xdg-desktop-portal
@@ -194,3 +199,8 @@ exec_always {
 
 exec wl-paste -t text --watch clipman store
 exec wl-paste -p -t text --watch clipman store -P --histpath="~/.local/share/clipman-primary.json"
+
+# https://github.com/swaywm/sway/wiki#gtk-applications-take-20-seconds-to-start
+exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
+exec hash dbus-update-activation-environment 2>/dev/null && \
+     dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
