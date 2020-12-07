@@ -66,12 +66,12 @@ bindsym $mod+Ctrl+Shift+e exit
 bindsym $mod+q exec $lock
 bindsym --locked $mod+z exec $sleep
 
-bindsym --locked XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+1 i3blocks
-bindsym --locked XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+1 i3blocks
-bindsym --locked XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+1 i3blocks
+bindsym --locked XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+
+bindsym --locked XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%-
+bindsym --locked XF86AudioMute exec amixer -q -D pulse sset Master toggle
 
-bindsym --locked XF86MonBrightnessUp exec brightnessctl s +5% && pkill -RTMIN+2 i3blocks
-bindsym --locked XF86MonBrightnessDown exec brightnessctl s 5%- && pkill -RTMIN+2 i3blocks
+bindsym --locked XF86MonBrightnessUp exec light -A 5
+bindsym --locked XF86MonBrightnessDown exec light -U 5
 
 bindsym $mod+$left focus left
 bindsym $mod+$down focus down

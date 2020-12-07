@@ -34,3 +34,4 @@ config/.config/*
 !config/.config/dunst
 !config/.config/waybar
 !config/.config/alacritty
+!config/.config/kanshi
