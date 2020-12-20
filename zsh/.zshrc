@@ -1,7 +1,8 @@
-export GOPATH=$HOME/go
-export PATH=$HOME/bin:/usr/local/bin:$HOME/.npm-global/bin:/usr/local/go/bin:$HOME/.yarn/bin:$HOME/.cargo/bin:$HOME/.local/bin:/snap/bin:$GOPATH/bin:$PATH
-export ZSH=~/.oh-my-zsh
-[[ $TERM == xterm-termite ]] && export TERM=xterm
+zmodload zsh/zprof
+
+# -----------------------------------------------------------------------------
+# Exports
+# -----------------------------------------------------------------------------
 
 # https://www.reddit.com/r/i3wm/comments/6in8m1/did_you_know_xdg_current_desktop/
 # https://github.com/emersion/xdg-desktop-portal-wlr
@@ -13,36 +14,55 @@ MOZ_ENABLE_WAYLAND=1
 ZSH_THEME='robbyrussell'
 COMPLETION_WAITING_DOTS='true'
 
-plugins=(git docker docker-compose zsh-nvm aws zsh-syntax-highlighting z pyenv)
+PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
+PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH
+PKG_CONFIG_PATH=/usr/local/share/pkgconfig:$PKG_CONFIG_PATH
+LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
+LD_LIBRARY_PATH=/usr/local/lib/x86_64-linux-gnu/:$LD_LIBRARY_PATH
+LD_LIBRARY_PATH=/usr/local/lib64/:$LD_LIBRARY_PATH
+LD_LIBRARY_PATH=/usr/local/lib64/x86_64-linux-gnu/:$LD_LIBRARY_PATH
 
+# Lazy load zsh-nvm plugin
+NVM_LAZY_LOAD=true
+
+# NVM_LAZY_LOAD_EXTRA_COMMANDS=('nvim')
+plugins=(git docker docker-compose zsh-nvm fzf aws zsh-syntax-highlighting z pyenv)
+
+# Use vim on SSH, else nvim
 if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
+  EDITOR='vim'
 else
-  export EDITOR='nvim'
-  export GIT_EDITOR='nvim'
+  EDITOR='nvim'
+  GIT_EDITOR='nvim'
 fi
 
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+# -----------------------------------------------------------------------------
+# Sourcing
+# -----------------------------------------------------------------------------
+
+source $ZSH/oh-my-zsh.sh
+
+# -----------------------------------------------------------------------------
+# Aliases
+# -----------------------------------------------------------------------------
 
 alias vim='nvim'
 alias python='python3'
 alias pip='pip3'
-# alias ctags="`brew --prefix`/bin/ctags"
 
-# Amazon aliases
 alias tail-apihandler-logs='sls logs -f workflowLoopRunner --stage joenye -t'
 alias tail-wf-logs='sls logs -f workflowLoopRunner --stage joenye -t'
 
-source $ZSH/oh-my-zsh.sh
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# -----------------------------------------------------------------------------
+# Functions
+# -----------------------------------------------------------------------------
 
-export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
-export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH
-export PKG_CONFIG_PATH=/usr/local/share/pkgconfig:$PKG_CONFIG_PATH
-export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=/usr/local/lib/x86_64-linux-gnu/:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=/usr/local/lib64/:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=/usr/local/lib64/x86_64-linux-gnu/:$LD_LIBRARY_PATH
+# https://github.com/ohmyzsh/ohmyzsh/issues/8751#issuecomment-616009741
+_systemctl_unit_state() {
+  typeset -gA _sys_unit_state
+  _sys_unit_state=( $(__systemctl list-unit-files "$PREFIX*" | awk '{print $1, $2}') ) }
 
-# Alacritty
-fpath+=${ZDOTDIR:-~}/.zsh_functions
+timezsh() {
+  shell=${1-$SHELL}
+  for i in $(seq 1 10); do /usr/bin/time $shell -i -c exit; done
+}

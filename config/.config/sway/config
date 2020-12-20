@@ -6,8 +6,9 @@ set $up k
 set $right l
 set $term alacritty
 set $sleep systemctl suspend
-set $menu dmenu_path | wofi --show drun -i --allow-images --gtk-dark | xargs swaymsg exec --
-set $dmenu wofi --show=drun --allow-images --gtk-dark
+# NB: Hold shift to execute in terminal
+set $menu dmenu_path | wofi --show drun -i --allow-images --gtk-dark
+set $dmenu wofi --show=run --gtk-dark
 set $background ~/Pictures/Wallpapers/desktop.jpg
 set $screenshot file=~/Pictures/Screenshots/$(date +'%Y-%m-%d-%H%M%S_grim.png') && grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name') $file && swappy -f $file
 set $screenclip file=~/Pictures/Screenshots/$(date +'%Y-%m-%d-%H%M%S_grim.png') && slurp | grim -c -g - $file && swappy -f $file
@@ -49,8 +50,8 @@ input "2:14:ETPS/2_Elantech_Touchpad" {
 output * bg $background fill
 
 ### Key bindings
-bindsym $mod+d exec $menu
-bindsym $mod+Shift+d exec $dmenu
+bindsym $mod+d exec $dmenu
+bindsym $mod+Shift+d exec $menu
 bindsym $mod+c exec clipman pick --tool wofi --notify
 
 bindsym $mod+Return exec $term
@@ -171,6 +172,9 @@ exec swayidle \
 for_window [app_id="firefox-trunk"] inhibit_idle fullscreen
 for_window [app_id="pavucontrol"] floating enable
 
+# Show shell type in window title
+for_window [shell=".*"] title_format "%title :: %shell"
+
 # Status bar
 bar {
     swaybar_command waybar
@@ -182,6 +186,7 @@ exec /usr/libexec/xdg-desktop-portal-wlr
 exec /usr/lib/xdg-desktop-portal
 
 exec mako
+exec kanshi
 
 # Low battery pop-up
 for_window [title="Battery Warning"] sticky enable

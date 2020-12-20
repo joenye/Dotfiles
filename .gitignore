@@ -35,3 +35,4 @@ config/.config/*
 !config/.config/waybar
 !config/.config/alacritty
 !config/.config/kanshi
+!config/.config/wofi

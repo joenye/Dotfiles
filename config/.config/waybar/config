@@ -10,10 +10,10 @@
         "sway/workspaces",
         "sway/mode"
     ],
-    "modules-center": [
+    // "modules-center": [
         // "sway/window"
-        "custom/playerctl"
-    ],
+        // "custom/playerctl"
+    // ],
     "modules-right": [
         "idle_inhibitor", "custom/separator",
         "pulseaudio", "custom/separator",
@@ -22,6 +22,7 @@
         "memory", "custom/separator",
         "disk", "custom/separator",
         "temperature", "custom/separator",
+        "custom/fans", "custom/separator",
         "backlight", "custom/separator",
         "battery", "custom/separator",
         "clock#date", "custom/separator",
@@ -116,6 +117,12 @@
         "interval": 5,
         "critical-threshold": 80,
         "format": "🌡️ {temperatureC}°C"
+    },
+
+    "custom/fans": {
+        "interval": 5,
+        "format": "🌬️ {} RPM",
+        "exec": "sensors | grep fan | tr -s ' ' | awk '{print $2}'"
     },
 
     "backlight": {
