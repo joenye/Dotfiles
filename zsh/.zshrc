@@ -2,8 +2,8 @@
 # Exports
 # -----------------------------------------------------------------------------
 
-PATH=$HOME/bin:/usr/local/bin:$HOME/.npm-global/bin:/usr/local/go/bin:$HOME/.yarn/bin:$HOME/.cargo/bin:$HOME/.local/bin:/snap/bin:$GOPATH/bin:$PATH
 GOPATH=$HOME/go
+PATH=$HOME/bin:/usr/local/bin:$HOME/.npm-global/bin:/usr/local/go/bin:$HOME/.yarn/bin:$HOME/.cargo/bin:$HOME/.local/bin:/snap/bin:$GOPATH/bin:$PATH
 
 # https://www.reddit.com/r/i3wm/comments/6in8m1/did_you_know_xdg_current_desktop/
 # https://github.com/emersion/xdg-desktop-portal-wlr
