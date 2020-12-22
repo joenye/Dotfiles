@@ -175,6 +175,9 @@ for_window [app_id="pavucontrol"] floating enable
 # Show shell type in window title
 for_window [shell=".*"] title_format "%title :: %shell"
 
+# Hide (but don't kill) Firefox/Chrome mic/webcam sharing indicator
+for_window [title=".+[Ss]haring (Indicator|your screen)"] floating enable, move to scratchpad
+
 # Status bar
 bar {
     swaybar_command waybar
@@ -187,6 +190,8 @@ exec /usr/lib/xdg-desktop-portal
 
 exec mako
 exec kanshi
+# Use manual lat/lng because VPN gives inaccurate location
+exec gammastep-indicator -l 45.9432:24.9668
 
 # Low battery pop-up
 for_window [title="Battery Warning"] sticky enable

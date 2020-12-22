@@ -1,8 +1,9 @@
-zmodload zsh/zprof
-
 # -----------------------------------------------------------------------------
 # Exports
 # -----------------------------------------------------------------------------
+
+PATH=$HOME/bin:/usr/local/bin:$HOME/.npm-global/bin:/usr/local/go/bin:$HOME/.yarn/bin:$HOME/.cargo/bin:$HOME/.local/bin:/snap/bin:$GOPATH/bin:$PATH
+GOPATH=$HOME/go
 
 # https://www.reddit.com/r/i3wm/comments/6in8m1/did_you_know_xdg_current_desktop/
 # https://github.com/emersion/xdg-desktop-portal-wlr
@@ -25,22 +26,25 @@ LD_LIBRARY_PATH=/usr/local/lib64/x86_64-linux-gnu/:$LD_LIBRARY_PATH
 # Lazy load zsh-nvm plugin
 NVM_LAZY_LOAD=true
 
-# NVM_LAZY_LOAD_EXTRA_COMMANDS=('nvim')
+NVM_LAZY_LOAD_EXTRA_COMMANDS=('nvim')
 plugins=(git docker docker-compose zsh-nvm fzf aws zsh-syntax-highlighting z pyenv)
 
 # Use vim on SSH, else nvim
 if [[ -n $SSH_CONNECTION ]]; then
   EDITOR='vim'
+  GIT_EDITOR='vim'
+  VISUAL='vim'
 else
   EDITOR='nvim'
   GIT_EDITOR='nvim'
+  VISUAL='nvim'
 fi
 
 # -----------------------------------------------------------------------------
 # Sourcing
 # -----------------------------------------------------------------------------
 
-source $ZSH/oh-my-zsh.sh
+source ~/.oh-my-zsh/oh-my-zsh.sh
 
 # -----------------------------------------------------------------------------
 # Aliases
@@ -52,6 +56,9 @@ alias pip='pip3'
 
 alias tail-apihandler-logs='sls logs -f workflowLoopRunner --stage joenye -t'
 alias tail-wf-logs='sls logs -f workflowLoopRunner --stage joenye -t'
+
+alias reboot='shutdown -r now'
+alias shutdown='shutdown now'
 
 # -----------------------------------------------------------------------------
 # Functions

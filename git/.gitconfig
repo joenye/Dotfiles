@@ -13,6 +13,7 @@
         status = auto
 [core]
 	autocrlf = input
+	editor = nvim
 [push]
 	default = simple
 [gpg]

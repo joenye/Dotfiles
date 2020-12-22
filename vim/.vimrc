@@ -93,7 +93,7 @@ try
 
   " Fuzzy-finding, buffer management
   Plug 'Shougo/denite.nvim'
-  Plug 'joenye/coc-denite'
+  Plug 'neoclide/coc-denite'
 
   " fern.vim
   Plug 'lambdalisue/nerdfont.vim'
@@ -289,6 +289,8 @@ augroup end
 " There's 2 modes on filter window: normal mode ("filter mode") and insert mode
 autocmd FileType denite call s:denite_my_settings()
 	function! s:denite_my_settings() abort
+    " Wrap contents locally
+    setlocal wrap
     " Typically opens the file
 	  nnoremap <silent><buffer><expr> <CR>
 	  \ denite#do_map('do_action')
@@ -398,6 +400,9 @@ function! s:init_fern() abort
   " Unmap m, c so mm, ma, md, mc works smoothly
   silent! nunmap <buffer> m
   silent! nunmap <buffer> c
+
+  " Unmap default :StripWhitespace
+  silent! xunmap <leader>s
 
   " Smart expand
   nmap <buffer><expr>
@@ -697,7 +702,7 @@ try
   " Git for searching filenames, excluding those in .gitignore`
   call denite#custom#alias('source', 'file/rec/git', 'file/rec')
 	call denite#custom#var('file/rec/git', 'command',
-	      \ ['git', 'ls-files', '-co', '--exclude-standard'])
+	      \ ['git', 'ls-files', '--recurse-submodules', '--cached', '--exclude-standard'])
 
   " Ripgrep for searching file content
   call denite#custom#var('grep', {
