@@ -1,2 +1,12 @@
-#!/bin/sh
-/opt/cisco/anyconnect/bin/vpnui
+#!/bin/bash
+set -e
+
+if [ "$1" = "connect" ]; then
+  printf "Enter password + OTP: "
+  read -s PASSWORD_OTP
+  printf "\njoenye\n${PASSWORD_OTP}\ny" | /opt/cisco/anyconnect/bin/vpn -s connect dub-orca.amazon.com
+elif [ "$1" = "disconnect" ]; then
+  /opt/cisco/anyconnect/bin/vpn disconnect
+else
+  echo "You must enter an argument of either 'connect' or 'disconnect'"
+fi

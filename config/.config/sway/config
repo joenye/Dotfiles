@@ -6,10 +6,11 @@ set $up k
 set $right l
 set $term termite
 set $sleep systemctl suspend
+set $colourpick grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
 # NB: Hold shift to execute in terminal
 set $menu dmenu_path | wofi --show drun -i --allow-images --gtk-dark
 set $dmenu wofi --show=run --gtk-dark
-set $background ~/Pictures/Wallpapers/desktop.jpg
+set $background ~/Pictures/Wallpapers/desktop2.jpg
 set $screenshot file=~/Pictures/Screenshots/$(date +'%Y-%m-%d-%H%M%S_grim.png') && grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name') $file && swappy -f $file
 set $screenclip file=~/Pictures/Screenshots/$(date +'%Y-%m-%d-%H%M%S_grim.png') && slurp | grim -c -g - $file && swappy -f $file
 set $lock swaylock \
@@ -46,6 +47,10 @@ input "2:14:ETPS/2_Elantech_Touchpad" {
     natural_scroll enabled
 }
 
+### Outputs
+
+# output eDP-1 adaptive_sync on
+
 ### Wallpaper
 output * bg $background fill
 
@@ -59,6 +64,8 @@ bindsym $mod+Shift+Return exec ~/.config/sway/sway-cwd.sh
 
 bindsym Print exec $screenshot
 bindsym Ctrl+Print exec $screenclip
+
+bindsym $mod+x exec $colourpick
 
 bindsym $mod+Shift+q kill
 bindsym $mod+Shift+c reload
@@ -189,9 +196,9 @@ exec /usr/libexec/xdg-desktop-portal-wlr
 exec /usr/lib/xdg-desktop-portal
 
 exec mako
-exec kanshi
+exec_always pkill kanshi; exec kanshi
 # Use manual lat/lng because VPN gives inaccurate location
-exec gammastep-indicator -l 51.5074:0.1278
+exec gammastep-indicator -l 45.9432:24.9668
 
 # Low battery pop-up
 for_window [title="Battery Warning"] sticky enable

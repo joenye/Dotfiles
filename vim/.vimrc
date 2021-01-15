@@ -232,7 +232,7 @@ let g:coc_global_extensions = [
   \ 'coc-yaml',
   \ 'coc-prettier',
   \ 'coc-css',
-  \ 'coc-python',
+  \ 'coc-pyright',
   \ 'coc-tsserver',
   \ 'coc-marketplace']
 

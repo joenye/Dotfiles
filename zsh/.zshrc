@@ -11,9 +11,6 @@ XDG_CURRENT_DESKTOP=sway
 XDG_SESSION_TYPE=wayland
 MOZ_ENABLE_WAYLAND=1
 
-# Firefox
-GDK_BACKEND=wayland
-
 # GOPROXY=chalupa-dns-sinkhole.corp.amazon.com
 ZSH_THEME='robbyrussell'
 COMPLETION_WAITING_DOTS='true'

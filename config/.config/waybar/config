@@ -18,6 +18,7 @@
         "idle_inhibitor", "custom/separator",
         "pulseaudio", "custom/separator",
         "network", "custom/separator",
+        "custom/cisco", "custom/separator",
         "cpu", "custom/separator",
         "memory", "custom/separator",
         "disk", "custom/separator",
@@ -84,7 +85,8 @@
     "network": {
         "interval": 5,
         // "interface": "wlp2*", // (Optional) To force the use of this interface
-        "format-wifi": "📡 {essid} ({signalStrength}%)",
+        // "format-wifi": "📡 {essid} ({signalStrength}%)",
+        "format-wifi": "📡",
         "format-ethernet": "🔌 {ifname}",
         "format-linked": "{ifname} (No IP)",
         "format-disconnected": "🔌 Disconnected",
@@ -92,6 +94,17 @@
         "tooltip-format": "{ifname}: {ipaddr}/{cidr}",
         "tooltip-format": "{ipaddr}/{cidr}\nDown: {bandwidthDownBits}\nUp: {bandwidthUpBits}",
         "tooltip-format-disconnected": "Disconnected"
+    },
+
+    "custom/cisco": {
+        "format": "{icon}",
+        "interval": 5,
+        "exec": "STATE=$(/opt/cisco/anyconnect/bin/vpn state | grep state | tail -n 1 | cut -d ' ' -f 5-); echo '{\"alt\": \"'${STATE}'\", \"tooltip\": \"'VPN ${STATE}'\"}\"'",
+        "return-type": "json",
+        "format-icons": {
+          "Connected": "🔒",
+          "Disconnected": "🔓"
+        }
     },
 
     "cpu": {
@@ -142,13 +155,13 @@
     },
 
     "clock#date": {
-        "timezone": "Europe/London",
+        // Use timedatectl to ensure system time is correct
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format": "📅 {:%a %d %b %Y}"
     },
 
     "clock#time": {
-        "timezone": "Europe/London",
+        // Use timedatectl to ensure system time is correct
         "format": "🕒 {:%H:%M}",
         "tooltip": false
     },
