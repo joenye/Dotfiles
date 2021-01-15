@@ -4,7 +4,7 @@ set $left h
 set $down j
 set $up k
 set $right l
-set $term alacritty
+set $term termite
 set $sleep systemctl suspend
 # NB: Hold shift to execute in terminal
 set $menu dmenu_path | wofi --show drun -i --allow-images --gtk-dark
@@ -191,7 +191,7 @@ exec /usr/lib/xdg-desktop-portal
 exec mako
 exec kanshi
 # Use manual lat/lng because VPN gives inaccurate location
-exec gammastep-indicator -l 45.9432:24.9668
+exec gammastep-indicator -l 51.5074:0.1278
 
 # Low battery pop-up
 for_window [title="Battery Warning"] sticky enable
