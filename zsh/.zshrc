@@ -10,6 +10,7 @@ PATH=$HOME/bin:/usr/local/bin:$HOME/.npm-global/bin:/usr/local/go/bin:$HOME/.yar
 XDG_CURRENT_DESKTOP=sway
 XDG_SESSION_TYPE=wayland
 MOZ_ENABLE_WAYLAND=1
+GDK_BACKEND=wayland
 
 # GOPROXY=chalupa-dns-sinkhole.corp.amazon.com
 ZSH_THEME='robbyrussell'
