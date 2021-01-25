@@ -13,9 +13,10 @@ cwd="$( echo -e "${paths}\n${tmuxpath}" | cut -f2- -d' ' |
   sort | tail -n 1 | tr -d '\n' )"
 
 if [ -d "$cwd" ]; then
-  alacritty --working-directory "$cwd" &
+  # alacritty --working-directory "$cwd" &
+  termite -d "$cwd" &
   disown
 else
-  alacritty &
+  termite &
   disown
 fi
