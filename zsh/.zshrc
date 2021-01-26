@@ -25,7 +25,7 @@ LD_LIBRARY_PATH=/usr/local/lib64/:$LD_LIBRARY_PATH
 LD_LIBRARY_PATH=/usr/local/lib64/x86_64-linux-gnu/:$LD_LIBRARY_PATH
 
 # Lazy load zsh-nvm plugin
-NVM_LAZY_LOAD=true
+# NVM_LAZY_LOAD=true
 
 NVM_LAZY_LOAD_EXTRA_COMMANDS=('nvim')
 plugins=(git docker docker-compose zsh-nvm fzf aws zsh-syntax-highlighting z pyenv)
@@ -60,6 +60,8 @@ alias tail-wf-logs='sls logs -f workflowLoopRunner --stage joenye -t'
 
 alias reboot='shutdown -r now'
 alias shutdown='shutdown now'
+
+alias sudo-vim='sudo -E nvim ~/.vimrc'
 
 # -----------------------------------------------------------------------------
 # Functions
