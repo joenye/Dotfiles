@@ -192,8 +192,11 @@ bar {
     swaybar_command waybar
 }
 
+# Disable Kraken X53 lights (ignore errors, e.g. if command not available)
+exec liquidctl set sync color off || true
+
 # Screen-sharing (WebRTC)
-exec /usr/bin/pipewire
+exec /usr/local/bin/pipewire
 exec /usr/local/libexec/xdg-desktop-portal
 exec /usr/local/libexec/xdg-desktop-portal-wlr
 
