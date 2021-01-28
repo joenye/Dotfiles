@@ -63,7 +63,7 @@
         "return-type": "json",
         "interval": 1,
         "exec": "echo '{\"class\": \"recording\"}'",
-        "exec-if": "swaymsg -t get_tree | grep Sharing >/dev/null"
+        "exec-if": "swaymsg -t get_tree | grep 'Sharing Indicator' >/dev/null || swaymsg -t get_tree | grep 'sharing your screen' >/dev/null"
     },
 
     "custom/wf_recorder": {
