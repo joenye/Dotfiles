@@ -61,7 +61,7 @@ alias tail-wf-logs='sls logs -f workflowLoopRunner --stage joenye -t'
 alias reboot='shutdown -r now'
 alias shutdown='shutdown now'
 
-alias sudo-vim='sudo -E nvim ~/.vimrc'
+alias 'sudo-vim'='f() { sudo -E nvim $1 };f'
 
 # -----------------------------------------------------------------------------
 # Functions

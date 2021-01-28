@@ -5,7 +5,7 @@ set $down j
 set $up k
 set $right l
 set $term termite
-set $sleep systemctl suspend
+set $sleep systemctl hibernate
 set $colourpick grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
 # NB: Hold shift to execute in terminal
 set $menu dmenu_path | wofi --show drun -i --allow-images --gtk-dark
@@ -76,10 +76,6 @@ bindsym $mod+Ctrl+Shift+e exit
 bindsym $mod+q exec $lock
 bindsym --locked $mod+z exec $sleep
 
-bindsym --locked XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+
-bindsym --locked XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%-
-bindsym --locked XF86AudioMute exec amixer -q -D pulse sset Master toggle
-
 bindsym --locked XF86MonBrightnessUp exec light -A 5
 bindsym --locked XF86MonBrightnessDown exec light -U 5
 
@@ -139,14 +135,23 @@ bindsym $mod+minus scratchpad show
 # Resize them with $mod + right mouse button
 floating_modifier $mod normal
 
-# Toggle play/pause on media player
+# Media controls - minimal keyboard
 bindsym $mod+p exec playerctl play-pause
 bindsym $mod+bracketLeft exec playerctl previous  # [
 bindsym $mod+bracketRight exec playerctl next  # ]
+bindsym --locked thorn exec amixer -q -D pulse sset Master 5%-
+bindsym --locked dead_diaeresis exec amixer -q -D pulse sset Master toggle
+bindsym --locked dead_tilde exec amixer -q -D pulse sset Master 5%+
+
+# Media controls - big keyboard
 bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioPrev exec playerctl previous
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioStop exec playerctl stop
+bindsym --locked XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%-
+bindsym --locked XF86AudioMute exec amixer -q -D pulse sset Master toggle
+bindsym --locked XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+
+
 
 # Cycle through border styles
 bindsym $mod+m border toggle
