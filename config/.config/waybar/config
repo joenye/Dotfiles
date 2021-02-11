@@ -20,7 +20,7 @@
         "idle_inhibitor", "custom/separator",
         "pulseaudio", "custom/separator",
         "network", "custom/separator",
-        "custom/cisco", "custom/separator",
+        "custom/openconnect", "custom/separator",
         "cpu", "custom/separator",
         "memory", "custom/separator",
         "disk", "custom/separator",
@@ -123,6 +123,12 @@
           "Connected": "🔒",
           "Disconnected": "🔓"
         }
+    },
+
+    "custom/openconnect": {
+        "interval": 5,
+        "exec": "ifconfig | grep -q tun0 && echo '🔒' || echo '🔓'",
+        "tooltip": "false"
     },
 
     "cpu": {
