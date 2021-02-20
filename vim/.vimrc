@@ -99,6 +99,7 @@ try
   Plug 'lambdalisue/nerdfont.vim'
   Plug 'lambdalisue/glyph-palette.vim'
   Plug 'lambdalisue/fern.vim'
+  Plug 'lambdalisue/fern-hijack.vim'
   Plug 'lambdalisue/fern-renderer-nerdfont.vim'
   Plug 'lambdalisue/fern-mapping-project-top.vim'
   Plug 'LumaKernel/fern-mapping-reload-all.vim'
@@ -348,9 +349,7 @@ nmap <leader>cc :<C-u>Denite coc-command<CR>
 autocmd FileType denite-filter call s:denite_my_filter_settings()
 function! s:denite_my_filter_settings() abort
     " Switch to normal mode
-    imap <silent><buffer> <C-c> <Plug>(denite_filter_quit)
-    imap <silent><buffer> <C-o> <Plug>(denite_filter_quit)
-    imap <silent><buffer> <C-o> <Plug>(denite_filter_quit)
+    imap <silent><buffer> <C-o> <Plug>(denite_filter_update)
 	  imap <silent><buffer> <expr>dd denite#do_map('restart')
 endfunction
 
@@ -381,6 +380,7 @@ function! s:init_fern() abort
   nmap <buffer> r <Plug>(fern-action-reload)
   nmap <buffer> R <Plug>(fern-action-reload:all)
   nmap <buffer> a <Plug>(fern-action-rename)
+  nmap <buffer> t <Plug>(fern-action-project-top:reveal)
   nmap <buffer><expr> <Plug>(fern-my-quit-or-return)
         \ fern#smart#drawer(
         \   ":<C-u>quit<CR>",
@@ -596,20 +596,6 @@ let g:loaded_netrwPlugin = 1
 let g:loaded_netrwSettings = 1
 let g:loaded_netrwFileHandlers = 1
 
-augroup my-fern-hijack
-  autocmd!
-  autocmd BufEnter * ++nested call s:hijack_directory()
-augroup END
-
-function! s:hijack_directory() abort
-  let path = expand('%:p')
-  if !isdirectory(path)
-    return
-  endif
-  bwipeout %
-  execute printf('Fern %s', fnameescape(path))
-endfunction
-
 " === vim-test ===
 let test#strategy = 'neoterm'
 let g:neoterm_size = '15'
@@ -745,24 +731,3 @@ let g:ale_sign_column_always = 1
 let g:ale_linters = {
 \   'cloudformation': ['cloudformation']
 \}
-
-" ============================================================================ "
-" ===                           MISC                                       === "
-" ============================================================================ "
-
-" TODO: Replace when wl-protocols stabilise and are actually used:
-" https://github.com/neovim/neovim/issues/9213
-" let g:clipboard = {
-" \   'name': 'wl-clipboard',
-" \   'copy': {
-" \      '+': 'wl-copy --foreground',
-" \      '*': 'wl-copy --foreground --primary',
-" \    },
-" \   'paste': {
-" \      '+': 'wl-paste --no-newline',
-" \      '*': 'wl-paste --no-newline --primary',
-" \   },
-" \   'cache_enabled': 1,
-" \ }
-
-autocmd FileType python let b:coc_root_patterns = ['.git', '.env']

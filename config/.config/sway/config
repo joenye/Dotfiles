@@ -148,10 +148,10 @@ bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioPrev exec playerctl previous
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioStop exec playerctl stop
-bindsym --locked XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%-
 bindsym --locked XF86AudioMute exec amixer -q -D pulse sset Master toggle
-bindsym --locked XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+
-
+# Use pactl instead of amixer to avoid left-right balance misalignment (https://unix.stackexchange.com/a/527576)
+bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
 
 # Cycle through border styles
 bindsym $mod+m border toggle
