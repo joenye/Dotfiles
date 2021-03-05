@@ -10,7 +10,7 @@ set $colourpick grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,
 # NB: Hold shift to execute in terminal
 set $menu dmenu_path | wofi --show drun -i --allow-images --gtk-dark
 set $dmenu wofi --show=run --gtk-dark
-set $background ~/Pictures/Wallpapers/desktop2.jpg
+set $background ~/Pictures/Wallpapers/desktop12.jpg
 set $screenshot file=~/Pictures/Screenshots/$(date +'%Y-%m-%d-%H%M%S_grim.png') && grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name') $file && swappy -f $file
 set $screenclip file=~/Pictures/Screenshots/$(date +'%Y-%m-%d-%H%M%S_grim.png') && slurp | grim -c -g - $file && swappy -f $file
 set $lock swaylock \
@@ -51,7 +51,7 @@ input "2:14:ETPS/2_Elantech_Touchpad" {
 
 ### Outputs
 
-# output eDP-1 adaptive_sync on
+output DP-2 adaptive_sync on scale 1.4 mode 3840x2160@144Hz
 
 ### Wallpaper
 output * bg $background fill

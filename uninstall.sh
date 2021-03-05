@@ -1,4 +1,5 @@
 #!/bin/bash
+
 for d in `ls -1d */ | grep -v '^\_.*'`; do
-  ( stow -D $d ) 
+  ( stow -D $d )
 done

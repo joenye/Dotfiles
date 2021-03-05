@@ -1,0 +1,227 @@
+{
+    // -------------------------------------------------------------------------
+    // Global configuration
+    // -------------------------------------------------------------------------
+
+    // Dynamic if unspecified
+    // "height": 30,
+
+    "modules-left": [
+        "sway/workspaces",
+        "sway/mode"
+    ],
+    // "modules-center": [
+        // "sway/window"
+        // "custom/playerctl"
+    // ],
+    "modules-right": [
+        "custom/wf_recorder",
+        "custom/screenshare",
+        "idle_inhibitor", "custom/separator",
+        "pulseaudio", "custom/separator",
+        "network", "custom/separator",
+        "custom/openconnect", "custom/separator",
+        "cpu", "custom/separator",
+        "memory", "custom/separator",
+        "disk", "custom/separator",
+        "temperature#cpu", "temperature#gpu", "temperature#ssd", "custom/separator",
+        "clock#date", "custom/separator",
+        "clock#time",
+        "clock#nytime",
+        "tray"
+    ],
+
+    // -------------------------------------------------------------------------
+    // Modules
+    // -------------------------------------------------------------------------
+
+    "sway/workspaces": {
+        "all-outputs": false,
+        "disable-scroll": true,
+        "format": "{}"
+    },
+
+    "sway/mode": {
+        "tooltip": false
+    },
+
+    "sway/window": {
+        "max-length": 80
+    },
+
+    "custom/separator": {
+        "format": "〉",
+        "interval": "once",
+        "tooltip": false
+    },
+
+    "custom/screenshare": {
+        "format": "Sharing Screen",
+        "return-type": "json",
+        "interval": 1,
+        "exec": "echo '{\"class\": \"recording\"}'",
+        "exec-if": "swaymsg -t get_tree | grep 'Sharing Indicator' >/dev/null || swaymsg -t get_tree | grep 'sharing your screen' >/dev/null"
+    },
+
+    "custom/wf_recorder": {
+        "format": "Recording",
+        "return-type": "json",
+        "interval": 1,
+        "exec": "echo '{\"class\": \"recording\"}'",
+        "exec-if": "pgrep wf-recorder"
+    },
+
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "🙉",
+            "deactivated": "🙈"
+        }
+    },
+
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": "🔇",
+        "format-bluetooth": "{icon}  {volume}%",
+        "format-bluetooth-muted": "🔇 ",
+        "format-icons": {
+            "headphone": "🎧",
+            "hands-free": "🎧",
+            "headset": "🎧",
+            "phone": "📱",
+            "portable": "📱",
+            "car": "🚘",
+            "default": ["🔈", "🔉", "🔊"]
+        },
+        "scroll-step": 1,
+        "on-click": "pavucontrol"
+    },
+
+    "network": {
+        "interval": 5,
+        // "interface": "wlp2*", // (Optional) To force the use of this interface
+        // "format-wifi": "📡 {essid} ({signalStrength}%)",
+        "format-wifi": "📡",
+        "format-ethernet": "🔌 {ifname}",
+        "format-linked": "{ifname} (No IP)",
+        "format-disconnected": "🔌 Disconnected",
+        "format-alt": "{ifname}: {ipaddr}/{cidr}",
+        "tooltip-format": "{ifname}: {ipaddr}/{cidr}",
+        "tooltip-format": "{ipaddr}/{cidr}\nDown: {bandwidthDownBits}\nUp: {bandwidthUpBits}",
+        "tooltip-format-disconnected": "Disconnected"
+    },
+
+    "custom/cisco": {
+        "format": "{icon}",
+        "interval": 5,
+        "exec": "STATE=$(/opt/cisco/anyconnect/bin/vpn state | grep state | tail -n 1 | cut -d ' ' -f 5-); echo '{\"alt\": \"'${STATE}'\", \"tooltip\": \"'VPN ${STATE}'\"}\"'",
+        "return-type": "json",
+        "format-icons": {
+          "Connected": "🔒",
+          "Disconnected": "🔓"
+        }
+    },
+
+    "custom/openconnect": {
+        "interval": 5,
+        "exec": "ifconfig | grep -q tun0 && echo '🔒' || echo '🔓'",
+        "tooltip": "false"
+    },
+
+    "cpu": {
+        "interval": 5,
+        "format": "🧠 {usage}% ({load})"
+    },
+
+    "memory": {
+        "interval": 5,
+        "format": "🐏 {avail:0.2f} GiB"
+    },
+
+    "disk": {
+        "interval": 5,
+        "format": "📦 {percentage_free}%",
+        "states": {
+            "warning": 70,
+            "critical": 90
+        }
+    },
+
+    "temperature#cpu": {
+        "interval": 5,
+        "hwmon-path": "/sys/class/hwmon/hwmon3/temp1_input",
+        "critical-threshold": 80,
+        "format": "🌡️ C: {temperatureC}°C"
+    },
+
+    "temperature#gpu": {
+        "interval": 5,
+        "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+        "critical-threshold": 80,
+        "format": "  G: {temperatureC}°C"
+    },
+
+    "temperature#ssd": {
+        "interval": 5,
+        "hwmon-path": "/sys/class/hwmon/hwmon1/temp1_input",
+        "critical-threshold": 80,
+        "format": "  S: {temperatureC}°C"
+    },
+
+    "custom/fans": {
+        "interval": 5,
+        "format": "🌬️ {} RPM",
+        "exec": "sensors | grep fan | tr -s ' ' | awk '{print $2}'"
+    },
+
+    "backlight": {
+        "format": "{icon} {percent}%",
+        "format-icons": ["🌚", "🌓", "☀️"]
+    },
+
+    "battery": {
+        "interval": 5,
+        "tooltip": true,
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "⚡ {capacity}%",
+        "format-discharging": "⚡ {capacity}% ({time})"
+    },
+
+    "clock#date": {
+        // Use timedatectl to ensure system time is correct
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format": "📅 {:%a %d %b %Y}"
+    },
+
+    "clock#time": {
+        // Use timedatectl to ensure system time is correct
+        "format": "🕒 {:%H:%M}",
+        "tooltip": false
+    },
+
+    "clock#nytime": {
+        "timezone": "America/New_York",
+        "format": " | {:%H:%M}",
+        "tooltip": false
+    },
+
+    "tray": {
+        // "icon-size": 21,
+        "spacing": 8
+    },
+
+    "custom/playerctl": {
+        "format": "   {icon}  {}",
+        "return-type": "json",
+        "max-length": 80,
+        "format-icons": {
+            "spotify": "🎵",
+            "default": "🎵"
+        },
+        "escape": true,
+        "exec": "$HOME/.config/waybar/custom_modules/playerctl.py 2> /dev/null"
+    }
+}
