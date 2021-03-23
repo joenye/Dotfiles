@@ -1,6 +1,7 @@
 [user]
 	name = Joe Nye
-	email = prokonye@gmail.com
+	# Use project-specific config (.git/config) to override
+	email = joenye@amazon.co.uk
 	signingkey = 95CC4CA55A79BFD4
 [alias]
         lol = log --graph --decorate --pretty=oneline --abbrev-commit

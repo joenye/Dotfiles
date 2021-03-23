@@ -1,0 +1,3 @@
+#!/bin/bash
+modprobe i2c-dev
+ddcutil --bus 10 setvcp D6 x05

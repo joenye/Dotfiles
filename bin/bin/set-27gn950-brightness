@@ -1,0 +1,40 @@
+#!/bin/bash
+modprobe i2c-dev
+
+N=0
+until [ "$N" -ge 5 ]
+do
+  CURRENT_BRIGHTNESS=$(ddcutil --bus 10 getvcp 10 | grep -o -P '(?<=current value =).*(?=,)' | xargs)
+  if [[ $CURRENT_BRIGHTNESS -ge 0 ]]; then
+    break
+  fi
+  sleep 2
+  N=$((N+1))
+done
+if [[ $N -eq 5 ]]; then
+  echo "Exceeded max retries"
+  exit 1
+fi
+
+
+if [ -z "$1" ]; then
+  echo $CURRENT_BRIGHTNESS
+  exit 0
+fi
+
+echo "Current brightness: $CURRENT_BRIGHTNESS"
+if [[ $1 = "+"* ]] || [[ $1 = "-"* ]]; then
+  INCREMENT=$1
+  TARGET_BRIGHTNESS="$(($CURRENT_BRIGHTNESS + $INCREMENT))"
+  if [[ $TARGET_BRIGHTNESS -gt 100 ]]; then
+    TARGET_BRIGHTNESS=100
+  fi
+  if [[ $TARGET_BRIGHTNESS -lt 0 ]]; then
+    TARGET_BRIGHTNESS=0
+  fi
+else
+  TARGET_BRIGHTNESS=$1
+fi
+
+echo "Setting to $TARGET_BRIGHTNESS"
+ddcutil --bus 10 setvcp 10 $TARGET_BRIGHTNESS

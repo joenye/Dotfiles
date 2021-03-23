@@ -36,3 +36,4 @@ config/.config/*
 !config/.config/alacritty
 !config/.config/kanshi
 !config/.config/wofi
+!config/.config/gammastep

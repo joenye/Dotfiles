@@ -76,9 +76,6 @@ bindsym $mod+Ctrl+Shift+e exit
 bindsym $mod+q exec $lock
 bindsym --locked $mod+z exec $sleep
 
-bindsym --locked XF86MonBrightnessUp exec light -A 5
-bindsym --locked XF86MonBrightnessDown exec light -U 5
-
 bindsym $mod+$left focus left
 bindsym $mod+$down focus down
 bindsym $mod+$up focus up
@@ -142,6 +139,19 @@ bindsym $mod+bracketRight exec playerctl next  # ]
 bindsym --locked thorn exec amixer -q -D pulse sset Master 5%-
 bindsym --locked dead_diaeresis exec amixer -q -D pulse sset Master toggle
 bindsym --locked dead_tilde exec amixer -q -D pulse sset Master 5%+
+
+# LG 27GN950 controls
+bindsym ae exec echo "turnOff\n" | set-27gn950-rgb
+bindsym ssharp exec echo "turnOn\n" | set-27gn950-rgb
+bindsym eth exec echo "set1\n" | set-27gn950-rgb
+bindsym dstroke exec echo "set2\n" | set-27gn950-rgb
+bindsym eng exec echo "set4\n" | set-27gn950-rgb
+bindsym hstroke exec echo "setDynamic\n" | set-27gn950-rgb
+bindsym dead_hook exec echo "setPeaceful\n" | set-27gn950-rgb
+bindsym kra exec echo "1\n" | set-27gn950-rgb
+bindsym lstroke exec echo "12\n" | set-27gn950-rgb
+bindsym dead_acute exec set-27gn950-brightness -20
+bindsym dead_circumflex exec set-27gn950-brightness 20
 
 # Media controls - big keyboard
 bindsym XF86AudioPlay exec playerctl play-pause

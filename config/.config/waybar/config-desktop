@@ -25,6 +25,7 @@
         "memory", "custom/separator",
         "disk", "custom/separator",
         "temperature#cpu", "temperature#gpu", "temperature#ssd", "custom/separator",
+        "custom/backlight", "custom/separator",
         "clock#date", "custom/separator",
         "clock#time",
         "clock#nytime",
@@ -177,6 +178,18 @@
     "backlight": {
         "format": "{icon} {percent}%",
         "format-icons": ["🌚", "🌓", "☀️"]
+    },
+
+    "custom/backlight": {
+        "format": "{icon}",
+        "format-icons": {
+          "Low": "🌚",
+          "Medium": "🌓",
+          "High": "☀️"
+        },
+        "return-type": "json",
+        "interval": 2,
+        "exec": "BRIGHTNESS=$(set-27gn950-brightness); if [ $BRIGHTNESS -gt 66 ]; then echo '{\"alt\": \"High\", \"tooltip\": \"Brightness: '${BRIGHTNESS}'%\"}'; elif [ $BRIGHTNESS -gt 33 ]; then echo '{\"alt\": \"Medium\", \"tooltip\": \"Brightness: '${BRIGHTNESS}'%\"}'; else echo '{\"alt\": \"Low\", \"tooltip\": \"Brightness: '${BRIGHTNESS}'%\"}'; fi"
     },
 
     "battery": {
