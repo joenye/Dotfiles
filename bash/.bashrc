@@ -17,3 +17,5 @@ export NVM_DIR="$HOME/.nvm"
 
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
+
+export PATH=$HOME/.toolbox/bin:$PATH

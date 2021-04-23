@@ -51,7 +51,7 @@ input "2:14:ETPS/2_Elantech_Touchpad" {
 
 ### Outputs
 
-output DP-2 adaptive_sync on scale 1.4 mode 3840x2160@144Hz
+output DP-1 adaptive_sync on scale 1.4 mode 3840x2160@160Hz
 
 ### Wallpaper
 output * bg $background fill
@@ -151,7 +151,7 @@ bindsym dead_hook exec echo "setPeaceful\n" | set-27gn950-rgb
 bindsym kra exec echo "1\n" | set-27gn950-rgb
 bindsym lstroke exec echo "12\n" | set-27gn950-rgb
 bindsym dead_acute exec set-27gn950-brightness -20
-bindsym dead_circumflex exec set-27gn950-brightness 20
+bindsym dead_circumflex exec set-27gn950-brightness +20
 
 # Media controls - big keyboard
 bindsym XF86AudioPlay exec playerctl play-pause
@@ -188,7 +188,7 @@ workspace_auto_back_and_forth yes
 # Swayidle configuration
 exec swayidle \
     timeout 300 'exec $lock' \
-		timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
+		# timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
     timeout 900 'exec $sleep' \
     before-sleep 'exec $lock'
 
@@ -217,8 +217,8 @@ exec /usr/local/libexec/xdg-desktop-portal-wlr
 
 exec mako
 exec_always pkill kanshi; exec kanshi
-# Use manual lat/lng because VPN gives inaccurate location
-exec gammastep-indicator -l 51.5074:0.1278
+# Config read from ~/.config/gammastep/config.ini
+exec gammastep-indicator
 
 # Low battery pop-up
 for_window [title="Battery Warning"] sticky enable

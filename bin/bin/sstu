@@ -1,9 +1,0 @@
-#!/bin/bash
-rm -rf node_modules/
-rm pnpm-lock.yaml
-git submodule foreach --recursive "git checkout master || git checkout mainline || git checkout main"
-git submodule foreach --recursive "git pull --rebase"
-pnpm install --recursive
-pnpx solution-assemble -s joenye
-git add .
-git commit -m "Update to latest HEAD of all submodules"

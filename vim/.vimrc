@@ -31,7 +31,7 @@ try
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
   " Minimal - only for exceptional filetypes - no key mappings or lightline integration
-  Plug 'w0rp/ale'
+  " Plug 'w0rp/ale'
 
   " Trailing whitespace highlighting & automatic fixing
   Plug 'ntpeters/vim-better-whitespace'
@@ -88,6 +88,8 @@ try
   Plug 'sheerun/vim-polyglot'
 
   Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+
+  Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 
   " === UI/Menus === "
 

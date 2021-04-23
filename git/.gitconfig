@@ -25,3 +25,8 @@
 ; 	gpgSign = true
 [diff]
 	submodule = log
+
+[credential]
+	helper = ""
+	helper = !/usr/local/bin/aws codecommit --profile=common credential-helper $@
+	UseHttpPath = true

@@ -1,8 +1,0 @@
-#!/bin/bash
-set -e
-
-SEARCH_STRING="/v1/repos/"
-ORIGIN_URL=$(git remote get-url origin)
-REPO=${ORIGIN_URL#*$SEARCH_STRING}
-URL="https://isengard.amazon.com/federate?account=077802331732&role=CodeCommit&destination=codesuite%2Fcodecommit%2Frepositories%2F${REPO}%2Fpull-requests%3Fregion%3Dus-east-1%26status%3DOPEN"
-firefox $URL

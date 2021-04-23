@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# dawn-time=6:00-7:45
+# dusk-time=18:35-20:15
+
+DUSK_BRIGHTNESS=20
+DAWN_BRIGHTNESS=80
+
+# If dawn and brightness < DAWN_BRIGHTNESS, set to DAWN_BRIGHTNESS
+# If dusk and brightness > DUSK_BRIGHTNESS, set to DUSK_BRIGHTNESS
+
+# TODO: Run at Sway startup, and as a Systemd timer
