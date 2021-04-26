@@ -5,7 +5,7 @@ set $down j
 set $up k
 set $right l
 set $term termite
-set $sleep systemctl suspend
+set $sleep systemctl hibernate
 set $colourpick grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
 # NB: Hold shift to execute in terminal
 set $menu dmenu_path | wofi --show drun -i --allow-images --gtk-dark
