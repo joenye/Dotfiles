@@ -1,5 +1,4 @@
 {
-
   "suggest.echodocSupport": true,
   "suggest.maxCompleteItemCount": 20,
 
@@ -11,14 +10,37 @@
   "prettier.disableSuccessMessage": true,
 
   // coc-eslint
-  "eslint.filetypes": ["javascript", "typescript", "typescriptreact", "javascriptreact"],
+  "eslint.filetypes": [
+    "javascript",
+    "typescript",
+    "typescriptreact",
+    "javascriptreact"
+  ],
 
   // coc-pyright
   "python.pythonPath": "/usr/bin/python3",
   "python.linting.pylintEnabled": true,
   "python.linting.flake8Enabled": true,
   "python.formatting.provider": "autopep8",
-  "python.formatting.autopep8Args": ["--max-line-length", "80", "--experimental"],
+  "python.formatting.autopep8Args": [
+    "--max-line-length",
+    "80",
+    "--experimental"
+  ],
+
+  // coc-diagnostic
+  "diagnostic-languageserver.filetypes": {
+    "sh": "shellcheck"
+  },
+  "diagnostic-languageserver.formatFiletypes": {
+    "sh": "shfmt"
+  },
+  "diagnostic-languageserver.formatters": {
+    "shfmt": {
+      "command": "shfmt",
+      "args": ["-i", "2", "-bn", "-ci", "-sr"]
+    }
+  },
 
   // "diagnostic.virtualText": true,
   // "diagnostic.virtualTextCurrentLineOnly": false,
@@ -116,10 +138,10 @@
     "!Join scalar",
     "!Join mapping",
     "!Join sequence"
- ],
+  ],
   "yaml.schemas": {
     "https://s3.amazonaws.com/cfn-resource-specifications-us-east-1-prod/schemas/2.15.0/all-spec.json": "/*"
-	},
+  },
 
   // coc-cfn-lint
   "cfnlint.lintOnOpen": true,
