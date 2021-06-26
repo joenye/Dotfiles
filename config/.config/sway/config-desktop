@@ -211,7 +211,9 @@ bar {
 exec liquidctl set sync color off || true
 
 # Screen-sharing (WebRTC)
-exec /usr/local/bin/pipewire
+exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
+exec systemctl --user import-environment XDG_SESSION_TYPE XDG_CURRENT_DESKTOP
+exec dbus-update-activation-environment WAYLAND_DISPLAY
 exec /usr/local/libexec/xdg-desktop-portal
 exec /usr/local/libexec/xdg-desktop-portal-wlr
 
