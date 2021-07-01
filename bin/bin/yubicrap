@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+set -e
+
+printf "Enter Midway password: "
+read -rs PASSWORD
+printf "\n"
+
+printf "Enter OTP: "
+read -rs OTP1
+printf "\n"
+printf "\n"
+
+printf "Enter %s password" "$USER"
+printf "\n"
+
+echo "Connecting to VPN"
+echo "${PASSWORD}${OTP1}" | sudo openconnect --authgroup orca-Ubuntu --csd-wrapper ~/bin/csd_wrapper orca.amazon.com --user "$USER" --passwd-on-stdin --background
+sleep 1
+
+printf "Enter OTP again: "
+read -rs OTP2
+printf "\n"
+
+echo "Performing Midway authentication"
+printf "%s\n%s" "$PASSWORD" "$OTP2" | mwinit -o
+
+echo "Baking Midway cookie into Firefox"
+bake-mwinit-cookie
+FIREFOX_PROFILE_DIR=$(find ~/.mozilla/firefox/ -type d -name "*.default-release")
+cp "$FIREFOX_PROFILE_DIR/cookies.sqlite" "$FIREFOX_PROFILE_DIR/sav-cookies.sqlite"
+cp ~/.midway/firefox/cookies.sqlite "$FIREFOX_PROFILE_DIR"
+
+echo "Refreshing AWS/Git credential helpers"
+~/Projects/Saruman/build/GoAmzn-Saruman/GoAmzn-Saruman-1.0/AL2_x86_64/DEV.STD.PTHREAD/build/bin/saruman > /dev/null &

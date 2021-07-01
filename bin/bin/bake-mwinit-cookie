@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+set -e
+# alias ffp='cd ~/Library/Application\ Support/Firefox/Profiles/amazon00.default'
+# sqlite3 foo.sqlite 'SELECT name, host, path, expiry, lastAccessed, creationTime, isSecure, isHttpOnly, substr(value,0,20) FROM moz_cookies;'
+echo 'Creating ~/.midway/firefox/cookies.sqlite  to copy into profile directory before starting your browser'
+echo 'More at https://w.amazon.com/index.php/Joshuf/MwinitCookies'
+echo 'Test at '
+echo 'https://awssslproxy-enforcing.amazon.com/hello'
+
+WDIR=$HOME/.midway
+cd $WDIR
+mkdir -p savbake
+NOWTIME=$(date +%s)
+if [ -f cookie ]; then
+  if [[ $(wc -c <cookie) -le 800 ]]; then
+     echo 'cookie file too small, run mwinit again '
+     exit 1
+  fi
+  mv cookie savbake/savbake.$NOWTIME
+  # keep only midway-auth, destroy cookies saved by curl or other tools
+  head -4 savbake/savbake.$NOWTIME > cookie ; grep -E 'sentry_braveheart|midway-auth' savbake/savbake.$NOWTIME | sort -r >> cookie
+else
+  echo 'no cookie file, run mwinit'
+  exit 1
+fi
+# WARNING Firefox might change the schema without notice! Check with new profile and sqlite3
+# cp cookies.sqlite foo.sqlite ; sqlite3 foo.sqlite ' SELECT sql FROM sqlite_master;' | tr '\n' ';' ; echo
+mkdir -p firefox
+cat > ffcreate.sql <<'EOF'
+CREATE TABLE moz_cookies (id INTEGER PRIMARY KEY, originAttributes TEXT NOT NULL DEFAULT '', name TEXT, value TEXT, host TEXT, path TEXT, expiry INTEGER, lastAccessed INTEGER, creationTime INTEGER, isSecure INTEGER, isHttpOnly INTEGER, inBrowserElement INTEGER DEFAULT 0, sameSite INTEGER DEFAULT 0, rawSameSite INTEGER DEFAULT 0, schemeMap INTEGER DEFAULT 0, CONSTRAINT moz_uniqueid UNIQUE (name, host, path, originAttributes));;
+;
+EOF
+
+FFSQL=$WDIR/firefox/cookies.sqlite
+if [ -f "$FFSQL" ]; then
+  echo "Removing $FFSQL"
+  /bin/rm -f "$FFSQL"
+fi
+sqlite3 "$FFSQL" < ffcreate.sql 
+
+grep -E 'sentry_braveheart|midway-auth' ~/.midway/cookie |\
+while read HHOST TAILMATCH COOKIEPATH ISSECURE EXPIRY NAME VALUE ; do
+  echo $HHOST $TAILMATCH $COOKIEPATH $ISSECURE $EXPIRY $NAME 
+  if (( "$EXPIRY" < "$NOWTIME" )); then
+    echo "cookie is expired, run mwinit EXPIRY $EXPIRY"
+    date -d@$EXPIRY
+    exit 1
+  fi
+  name=$NAME
+  value=$VALUE
+  path=$COOKIEPATH
+  expiry=$EXPIRY
+  creationTime=${NOWTIME}000001
+  lastAccessed=${NOWTIME}212230
+  isSecure=1
+  secure=true
+  if [ x${ISSECURE} == 'xFALSE' ]; then
+    isSecure=0
+    secure=false
+  fi
+  isHttpOnly=0
+  httpOnly=false
+  if [ x${HHOST%%_*} == 'x#HttpOnly' ]; then
+    isHttpOnly=1
+    httpOnly=true
+    HHOST=${HHOST#*_}
+  fi
+  host=$HHOST
+  sqlite3 "$FFSQL" <<EOF
+INSERT INTO moz_cookies ( name, value, host, path, expiry, lastAccessed, creationTime, isSecure, isHttpOnly)
+VALUES ("$name", "$value", "$host", "$path", "$expiry", "$lastAccessed", "$creationTime", "$isSecure", "$isHttpOnly")
+;
+EOF
+done
+
+echo 'Created cookies. To use, close Firefox and copy to your profile directory '
+echo 'cp ~/.midway/firefox/cookies.sqlite "$HOME/Library/Application Support/Firefox/Profiles/amazon00.default" '
