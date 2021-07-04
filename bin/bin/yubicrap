@@ -8,13 +8,12 @@ printf "\n"
 printf "Enter OTP: "
 read -rs OTP1
 printf "\n"
-printf "\n"
 
 printf "Enter %s password" "$USER"
 printf "\n"
 
-echo "Connecting to VPN"
 echo "${PASSWORD}${OTP1}" | sudo openconnect --authgroup orca-Ubuntu --csd-wrapper ~/bin/csd_wrapper orca.amazon.com --user "$USER" --passwd-on-stdin --background
+
 sleep 1
 
 printf "Enter OTP again: "
@@ -24,11 +23,19 @@ printf "\n"
 echo "Performing Midway authentication"
 printf "%s\n%s" "$PASSWORD" "$OTP2" | mwinit -o
 
-echo "Baking Midway cookie into Firefox"
-bake-mwinit-cookie
-FIREFOX_PROFILE_DIR=$(find ~/.mozilla/firefox/ -type d -name "*.default-release")
-cp "$FIREFOX_PROFILE_DIR/cookies.sqlite" "$FIREFOX_PROFILE_DIR/sav-cookies.sqlite"
-cp ~/.midway/firefox/cookies.sqlite "$FIREFOX_PROFILE_DIR"
+# echo "Baking Midway cookie into Firefox"
+# Source: https://w.amazon.com/bin/view/Joshuf/MwinitCookies/ (issue is this doesn't merge with existing cookies)
+# bake-mwinit-cookie
+# FIREFOX_PROFILE_DIR=$(find ~/.mozilla/firefox/ -type d -name "*.default-release")
+# cp "$FIREFOX_PROFILE_DIR/cookies.sqlite" "$FIREFOX_PROFILE_DIR/sav-cookies.sqlite"
+# cp ~/.midway/firefox/cookies.sqlite "$FIREFOX_PROFILE_DIR/cookies.sqlite"
 
 echo "Refreshing AWS/Git credential helpers"
-~/Projects/Saruman/build/GoAmzn-Saruman/GoAmzn-Saruman-1.0/AL2_x86_64/DEV.STD.PTHREAD/build/bin/saruman > /dev/null &
+pkill saruman || true
+~/Projects/Saruman/build/GoAmzn-Saruman/GoAmzn-Saruman-1.0/AL2_x86_64/DEV.STD.PTHREAD/build/bin/saruman > /dev/null 2>&1 &
+
+# Perform Midway authentication in the browser
+echo "Launching Midway-protected site to use in the browser"
+firefox https://isengard.amazon.com/console-access &
+
+printf "\nHave a nice day ☕🤗"
