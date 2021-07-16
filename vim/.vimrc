@@ -165,6 +165,15 @@ if has('nvim')
   nmap <C-l> <C-w>l
 endif
 
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+if has("nvim-0.5.0") || has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
+
 " Delete current visual selection and dump in black hole buffer before pasting
 " Used when you want to paste over something without it getting copied to Vim's default buffer
 vnoremap <leader>p "_dP
@@ -238,10 +247,18 @@ let g:coc_global_extensions = [
   \ 'coc-css',
   \ 'coc-pyright',
   \ 'coc-tsserver',
+  \ 'coc-styled-components',
   \ 'coc-marketplace']
 
 " Use :Prettier to format file
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
+" command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
+" Add `:Format` command to format current buffer
+command! -nargs=0 Format :call CocAction('format')
+" Add `:Fold` command to fold current buffer
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+" Add `:OR` command for organize imports of the current buffer
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
 " Extension-specific fix action on current item and selection
 nmap <silent> <leader>da <Plug>(coc-codeaction)
@@ -254,9 +271,22 @@ nmap <leader>f  <Plug>(coc-format-selected)
 
 " Jump around code
 nmap <silent> <leader>gd <Plug>(coc-definition)
-nmap <silent> <leader>gy <Plug>(coc-type-definition)
+nmap <silent> <leader>gt <Plug>(coc-type-definition)
 nmap <silent> <leader>gi <Plug>(coc-implementation)
 nmap <silent> <leader>gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
 
 " Rename current word
 nmap <leader>dr <Plug>(coc-rename)
@@ -279,7 +309,7 @@ endfunction
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
+      \ eoc#refresh()
 
 augroup CocGroup
 	autocmd!
@@ -444,7 +474,7 @@ autocmd! InsertEnter,InsertLeave * set cul!
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 " Only one line for command line
-set cmdheight=1
+set cmdheight=2
 
 " Enable mouse
 set mouse=a

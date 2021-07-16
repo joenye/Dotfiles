@@ -3,6 +3,7 @@
 # -----------------------------------------------------------------------------
 
 GOPATH=$HOME/go
+PYTHONPATH=~/.local/lib/python3.8
 PATH=$HOME/bin:/usr/local/bin:$HOME/.npm-global/bin:/usr/local/go/bin:$HOME/.yarn/bin:$HOME/.cargo/bin:$HOME/.local/bin:/snap/bin:$GOPATH/bin:$HOME/Projects/ee-productivity-scripts:$PATH
 
 # https://www.reddit.com/r/i3wm/comments/6in8m1/did_you_know_xdg_current_desktop/

@@ -32,10 +32,13 @@ printf "%s\n%s" "$PASSWORD" "$OTP2" | mwinit -o
 
 echo "Refreshing AWS/Git credential helpers"
 pkill saruman || true
-~/Projects/Saruman/build/GoAmzn-Saruman/GoAmzn-Saruman-1.0/AL2_x86_64/DEV.STD.PTHREAD/build/bin/saruman > /dev/null 2>&1 &
+~/Projects/Saruman/build/GoAmzn-Saruman/GoAmzn-Saruman-1.0/AL2_x86_64/DEV.STD.PTHREAD/build/bin/saruman &
 
-# Perform Midway authentication in the browser
-echo "Launching Midway-protected site to use in the browser"
+# echo "Refreshing Kerberos"
+# sudo kdestroy
+# kinit -f
+
+echo "Launching Midway-protected site to refresh browser cookie"
 firefox https://isengard.amazon.com/console-access &
 
 printf "\nHave a nice day ☕🤗"
