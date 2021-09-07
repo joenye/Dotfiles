@@ -254,11 +254,18 @@ let g:coc_global_extensions = [
 " command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 " Add `:Format` command to format current buffer
+function! s:js_format()
+     :CocCommand prettier.formatFile
+     :CocCommand eslint.executeAutofix
+endfunction
+command! -nargs=0 JSFormat :call <SID>js_format()<CR>
 command! -nargs=0 Format :call CocAction('format')
 " Add `:Fold` command to fold current buffer
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 " Add `:OR` command for organize imports of the current buffer
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+nmap <leader>f :JSFormat<CR>
 
 " Extension-specific fix action on current item and selection
 nmap <silent> <leader>da <Plug>(coc-codeaction)
@@ -266,8 +273,8 @@ xmap <leader>ca  <Plug>(coc-codeaction-selected)
 nmap <leader>ca  <Plug>(coc-codeaction-selected)
 
 " Extension-specific format on selection
-vmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+vmap <leader>cf  <Plug>(coc-format-selected)
+nmap <leader>cf  <Plug>(coc-format-selected)
 
 " Jump around code
 nmap <silent> <leader>gd <Plug>(coc-definition)

@@ -4,13 +4,13 @@ set $left h
 set $down j
 set $up k
 set $right l
-set $term termite
-set $sleep systemctl hibernate
+set $term alacritty
+set $sleep systemctl suspend
 set $colourpick grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
 # NB: Hold shift to execute in terminal
 set $menu dmenu_path | wofi --show drun -i --allow-images --gtk-dark
 set $dmenu wofi --show=run --gtk-dark
-set $background ~/Pictures/Wallpapers/desktop12.jpg
+set $background ~/Pictures/Wallpapers/desktop2.png
 set $screenshot file=~/Pictures/Screenshots/$(date +'%Y-%m-%d-%H%M%S_grim.png') && grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name') $file && swappy -f $file
 set $screenclip file=~/Pictures/Screenshots/$(date +'%Y-%m-%d-%H%M%S_grim.png') && slurp | grim -c -g - $file && swappy -f $file
 set $lock swaylock \

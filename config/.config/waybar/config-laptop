@@ -186,6 +186,7 @@
 
     "clock#time": {
         // Use timedatectl to ensure system time is correct
+        "timezone": "Europe/London",
         "format": "🕒 {:%H:%M}",
         "tooltip": false
     },

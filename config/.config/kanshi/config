@@ -4,6 +4,11 @@ profile {
 
 profile {
 	output eDP-1 disable
+	output "Goldstar Company Ltd 27GN950 012NTAB4C616" enable scale 1.5
+}
+
+profile {
+	output eDP-1 disable
 	output HDMI-A-1 enable
 }
 
