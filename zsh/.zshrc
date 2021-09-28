@@ -32,6 +32,7 @@ LD_LIBRARY_PATH=/usr/local/lib64/x86_64-linux-gnu/:$LD_LIBRARY_PATH
 NVM_LAZY_LOAD_EXTRA_COMMANDS=('nvim')
 plugins=(git docker docker-compose zsh-nvm fzf aws zsh-syntax-highlighting z pyenv)
 
+
 # Use vim on SSH, else nvim
 if [[ -n $SSH_CONNECTION ]]; then
   EDITOR='vim'

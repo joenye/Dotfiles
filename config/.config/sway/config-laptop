@@ -7,13 +7,13 @@ set $right l
 set $term alacritty
 set $sleep systemctl suspend
 set $colourpick grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
-# NB: Hold shift to execute in terminal
-set $menu dmenu_path | wofi --show drun -i --allow-images --gtk-dark
+set $menu dmenu_path | wofi --show drun -i --allow-images --show-all --gtk-dark
 set $dmenu wofi --show=run --gtk-dark
 set $background ~/Pictures/Wallpapers/desktop2.png
 set $screenshot file=~/Pictures/Screenshots/$(date +'%Y-%m-%d-%H%M%S_grim.png') && grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name') $file && swappy -f $file
 set $screenclip file=~/Pictures/Screenshots/$(date +'%Y-%m-%d-%H%M%S_grim.png') && slurp | grim -c -g - $file && swappy -f $file
 set $lock swaylock \
+	--show-failed-attempts \
 	--screenshots \
 	--clock \
 	--indicator \
@@ -26,7 +26,6 @@ set $lock swaylock \
 	--line-color 00000000 \
 	--inside-color 00000088 \
 	--separator-color 00000000 \
-	--grace 2 \
 	--fade-in 0.2
 
 ### Font
@@ -57,12 +56,10 @@ output DP-2 adaptive_sync on scale 1.4 mode 3840x2160@144Hz
 output * bg $background fill
 
 ### Key bindings
-bindsym $mod+d exec $dmenu
-bindsym $mod+Shift+d exec $menu
-bindsym $mod+c exec clipman pick --tool wofi --notify
+bindsym $mod+d exec $menu
+bindsym $mod+Shift+d exec $dmenu
 
 bindsym $mod+Return exec $term
-bindsym $mod+Shift+Return exec ~/.config/sway/sway-cwd.sh
 
 bindsym Print exec $screenshot
 bindsym Ctrl+Print exec $screenclip
@@ -143,6 +140,19 @@ bindsym --locked thorn exec amixer -q -D pulse sset Master 5%-
 bindsym --locked dead_diaeresis exec amixer -q -D pulse sset Master toggle
 bindsym --locked dead_tilde exec amixer -q -D pulse sset Master 5%+
 
+# LG 27GN950 controls
+bindsym ae exec echo "turnOff\n" | set-27gn950-rgb
+bindsym ssharp exec echo "turnOn\n" | set-27gn950-rgb
+bindsym eth exec echo "set1\n" | set-27gn950-rgb
+bindsym dstroke exec echo "set2\n" | set-27gn950-rgb
+bindsym eng exec echo "set4\n" | set-27gn950-rgb
+bindsym hstroke exec echo "setDynamic\n" | set-27gn950-rgb
+bindsym dead_hook exec echo "setPeaceful\n" | set-27gn950-rgb
+bindsym kra exec echo "1\n" | set-27gn950-rgb
+bindsym lstroke exec echo "12\n" | set-27gn950-rgb
+bindsym dead_acute exec set-27gn950-brightness -20
+bindsym dead_circumflex exec set-27gn950-brightness +20
+
 # Media controls - big keyboard
 bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioPrev exec playerctl previous
@@ -197,14 +207,10 @@ bar {
     swaybar_command waybar
 }
 
-# Disable Kraken X53 lights (ignore errors, e.g. if command not available)
-exec liquidctl set sync color off || true
-
 # Screen-sharing (WebRTC)
 exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
 exec systemctl --user import-environment XDG_SESSION_TYPE XDG_CURRENT_DESKTOP
 exec dbus-update-activation-environment WAYLAND_DISPLAY
-exec /usr/local/libexec/xdg-desktop-portal
 exec /usr/local/libexec/xdg-desktop-portal-wlr
 
 exec mako
@@ -225,9 +231,6 @@ exec_always {
     # gsettings set $gnome-schema cursor-theme 'Your cursor Theme'
     # gsettings set $gnome-schema font-name 'Your font name'
 }
-
-exec wl-paste -t text --watch clipman store
-exec wl-paste -p -t text --watch clipman store -P --histpath="~/.local/share/clipman-primary.json"
 
 # https://github.com/swaywm/sway/wiki#gtk-applications-take-20-seconds-to-start
 exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK

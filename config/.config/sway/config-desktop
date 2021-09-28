@@ -59,7 +59,6 @@ output * bg $background fill
 ### Key bindings
 bindsym $mod+d exec $dmenu
 bindsym $mod+Shift+d exec $menu
-bindsym $mod+c exec clipman pick --tool wofi --notify
 
 bindsym $mod+Return exec $term
 bindsym $mod+Shift+Return exec ~/.config/sway/sway-cwd.sh
@@ -235,9 +234,6 @@ exec_always {
     # gsettings set $gnome-schema cursor-theme 'Your cursor Theme'
     # gsettings set $gnome-schema font-name 'Your font name'
 }
-
-exec wl-paste -t text --watch clipman store
-exec wl-paste -p -t text --watch clipman store -P --histpath="~/.local/share/clipman-primary.json"
 
 # https://github.com/swaywm/sway/wiki#gtk-applications-take-20-seconds-to-start
 exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK

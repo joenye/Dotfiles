@@ -481,7 +481,7 @@ autocmd! InsertEnter,InsertLeave * set cul!
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 " Only one line for command line
-set cmdheight=2
+set cmdheight=1
 
 " Enable mouse
 set mouse=a
