@@ -18,20 +18,19 @@ GDK_BACKEND=wayland
 ZSH_THEME='robbyrussell'
 COMPLETION_WAITING_DOTS='true'
 
-PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
-PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH
-PKG_CONFIG_PATH=/usr/local/share/pkgconfig:$PKG_CONFIG_PATH
-LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
-LD_LIBRARY_PATH=/usr/local/lib/x86_64-linux-gnu/:$LD_LIBRARY_PATH
-LD_LIBRARY_PATH=/usr/local/lib64/:$LD_LIBRARY_PATH
-LD_LIBRARY_PATH=/usr/local/lib64/x86_64-linux-gnu/:$LD_LIBRARY_PATH
+# PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
+# PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH
+# PKG_CONFIG_PATH=/usr/local/share/pkgconfig:$PKG_CONFIG_PATH
+# LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
+# LD_LIBRARY_PATH=/usr/local/lib/x86_64-linux-gnu/:$LD_LIBRARY_PATH
+# LD_LIBRARY_PATH=/usr/local/lib64/:$LD_LIBRARY_PATH
+# LD_LIBRARY_PATH=/usr/local/lib64/x86_64-linux-gnu/:$LD_LIBRARY_PATH
 
 # Lazy load zsh-nvm plugin
 # NVM_LAZY_LOAD=true
 
 NVM_LAZY_LOAD_EXTRA_COMMANDS=('nvim')
-plugins=(git docker docker-compose zsh-nvm fzf aws zsh-syntax-highlighting z pyenv)
-
+plugins=(git docker docker-compose fzf aws z)
 
 # Use vim on SSH, else nvim
 if [[ -n $SSH_CONNECTION ]]; then
@@ -48,7 +47,9 @@ fi
 # Sourcing
 # -----------------------------------------------------------------------------
 
-source ~/.oh-my-zsh/oh-my-zsh.sh
+source /usr/share/nvm/init-nvm.sh
+source /usr/share/oh-my-zsh/oh-my-zsh.sh
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # -----------------------------------------------------------------------------
 # Aliases
@@ -57,9 +58,6 @@ source ~/.oh-my-zsh/oh-my-zsh.sh
 alias vim='nvim'
 alias python='python3'
 alias pip='pip3'
-
-alias tail-apihandler-logs='sls logs -f workflowLoopRunner --stage joenye -t'
-alias tail-wf-logs='sls logs -f workflowLoopRunner --stage joenye -t'
 
 alias reboot='shutdown -r now'
 alias shutdown='shutdown now'
