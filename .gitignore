@@ -18,6 +18,9 @@ tags
 vim/.vim/*
 aws/.aws/*
 
+nvm/.nvm/*
+!nvm/.nvm/default-packages
+
 newsboat/.newsboat/*
 !newsboat/.newsboat/urls
 !newsboat/.newsboat/config

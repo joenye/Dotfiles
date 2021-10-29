@@ -1,7 +1,7 @@
 [user]
 	name = Joe Nye
 	# Use project-specific config (.git/config) to override
-	email = joenye@amazon.co.uk
+	email = prokonye@gmail.com
 	signingkey = 95CC4CA55A79BFD4
 [alias]
         lol = log --graph --decorate --pretty=oneline --abbrev-commit
@@ -26,7 +26,7 @@
 [diff]
 	submodule = log
 
-[credential]
-	helper = ""
-	helper = !/usr/local/bin/aws codecommit --profile=common credential-helper $@
-	UseHttpPath = true
+; [credential]
+; 	helper = ""
+; 	helper = !/usr/local/bin/aws codecommit --profile=common credential-helper $@
+; 	UseHttpPath = true

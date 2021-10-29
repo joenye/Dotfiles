@@ -20,7 +20,6 @@
         "idle_inhibitor", "custom/separator",
         "pulseaudio", "custom/separator",
         "network", "custom/separator",
-        "custom/openconnect", "custom/separator",
         "cpu", "custom/separator",
         "memory", "custom/separator",
         "disk", "custom/separator",
@@ -186,7 +185,7 @@
 
     "clock#time": {
         // Use timedatectl to ensure system time is correct
-        "timezone": "Europe/London",
+        "timezone": "Europe/Podgorica",
         "format": "🕒 {:%H:%M}",
         "tooltip": false
     },
