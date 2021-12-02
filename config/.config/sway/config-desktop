@@ -8,12 +8,13 @@ set $term alacritty
 set $sleep systemctl suspend
 set $colourpick grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
 # NB: Hold shift to execute in terminal
-set $menu dmenu_path | wofi --show drun -i --allow-images --gtk-dark
+set $menu dmenu_path | wofi --show drun -i --allow-images --show-all --gtk-dark
 set $dmenu wofi --show=run --gtk-dark
-set $background ~/Pictures/Wallpapers/desktop12.jpg
+set $background ~/Pictures/Wallpapers/desktop2.png
 set $screenshot file=~/Pictures/Screenshots/$(date +'%Y-%m-%d-%H%M%S_grim.png') && grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name') $file && swappy -f $file
 set $screenclip file=~/Pictures/Screenshots/$(date +'%Y-%m-%d-%H%M%S_grim.png') && slurp | grim -c -g - $file && swappy -f $file
 set $lock swaylock \
+	--show-failed-attempts \
 	--screenshots \
 	--clock \
 	--indicator \
@@ -42,13 +43,6 @@ input * {
 	 pointer_accel 0
 }
 
-input "2:14:ETPS/2_Elantech_Touchpad" {
-    dwt enabled
-    tap enabled
-    natural_scroll enabled
-		pointer_accel 0.3
-}
-
 ### Outputs
 
 output DP-1 adaptive_sync on scale 1.4 mode 3840x2160@160Hz
@@ -57,8 +51,8 @@ output DP-1 adaptive_sync on scale 1.4 mode 3840x2160@160Hz
 output * bg $background fill
 
 ### Key bindings
-bindsym $mod+d exec $dmenu
-bindsym $mod+Shift+d exec $menu
+bindsym $mod+d exec $menu
+bindsym $mod+Shift+d exec $dmenu
 
 bindsym $mod+Return exec $term
 bindsym $mod+Shift+Return exec ~/.config/sway/sway-cwd.sh
@@ -138,19 +132,6 @@ bindsym $mod+bracketRight exec playerctl next  # ]
 bindsym --locked thorn exec amixer -q -D pulse sset Master 5%-
 bindsym --locked dead_diaeresis exec amixer -q -D pulse sset Master toggle
 bindsym --locked dead_tilde exec amixer -q -D pulse sset Master 5%+
-
-# LG 27GN950 controls
-bindsym ae exec echo "turnOff\n" | set-27gn950-rgb
-bindsym ssharp exec echo "turnOn\n" | set-27gn950-rgb
-bindsym eth exec echo "set1\n" | set-27gn950-rgb
-bindsym dstroke exec echo "set2\n" | set-27gn950-rgb
-bindsym eng exec echo "set4\n" | set-27gn950-rgb
-bindsym hstroke exec echo "setDynamic\n" | set-27gn950-rgb
-bindsym dead_hook exec echo "setPeaceful\n" | set-27gn950-rgb
-bindsym kra exec echo "1\n" | set-27gn950-rgb
-bindsym lstroke exec echo "12\n" | set-27gn950-rgb
-bindsym dead_acute exec set-27gn950-brightness -20
-bindsym dead_circumflex exec set-27gn950-brightness +20
 
 # Media controls - big keyboard
 bindsym XF86AudioPlay exec playerctl play-pause
