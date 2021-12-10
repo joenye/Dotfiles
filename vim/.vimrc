@@ -23,21 +23,15 @@ try
 
   " Legend
   Plug 'tpope/vim-commentary'
-  Plug 'tpope/vim-fugitive'
-  Plug 'tpope/vim-rhubarb'
-  Plug 'tpope/vim-surround'
 
-  " Intellisense (auto-completion, linting, fixing - combines Ale and Deoplete)
+  " Intellisense (auto-completion, linting, fixing)
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-  " Minimal - only for exceptional filetypes - no key mappings or lightline integration
-  " Plug 'w0rp/ale'
 
   " Trailing whitespace highlighting & automatic fixing
   Plug 'ntpeters/vim-better-whitespace'
 
   " Auto-close brackets
-  Plug 'rstacruz/vim-closer'
+  Plug 'jiangmiao/auto-pairs'
 
   " Return to last place in file upon re-opening
   Plug 'farmergreg/vim-lastplace'
@@ -45,57 +39,22 @@ try
   " Test running
   Plug 'vim-test/vim-test'
 
-  " HTML Abbreviations expansion
-  Plug 'mattn/emmet-vim'
-
-  " Switch into tmux easily
-  Plug 'christoomey/vim-tmux-navigator'
-
-  " cxiw and .
-  Plug 'tommcdo/vim-exchange'
-
-  " Highlight matching characters
-  Plug 'RRethy/vim-illuminate'
-
-  " Always highlight XML/HTML tags
-  Plug 'Valloric/MatchTagAlways'
-
   " Nice undo tree
   Plug 'mbbill/undotree'
 
-  " :GV, :GV! git browser
-  Plug 'junegunn/gv.vim'
-
-  " Use 'o' for older, 'O' for newer, 'q' to close,
+  " Use <leader>gm to open; then ''o' for older, 'O' for newer, 'q' to close,
   Plug 'rhysd/git-messenger.vim'
-
-  " Snippets
-  Plug 'SirVer/ultisnips'
-  Plug 'joenye/vim-snippets'
-
-  " Generate JSDoc based on signature
-  Plug 'heavenshell/vim-jsdoc', {
-    \ 'for': ['javascript', 'javascript.jsx', 'typescript'],
-    \ 'do': 'make install'
-  \}
-
-  " Good when sharing screen
-  Plug 'junegunn/goyo.vim'
 
   " === Syntax Highlighting === "
 
-  let g:polyglot_disabled = ['markdown']
-  Plug 'sheerun/vim-polyglot'
-
-  Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
-
-  Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+  Plug 'nvim-lua/plenary.nvim'
 
   " === UI/Menus === "
 
   " Fuzzy-finding, buffer management
-  Plug 'Shougo/denite.nvim'
-  Plug 'neoclide/coc-denite'
+  Plug 'nvim-telescope/telescope.nvim'
+  Plug 'kyazdani42/nvim-web-devicons'
 
   " fern.vim
   Plug 'lambdalisue/nerdfont.vim'
@@ -105,21 +64,16 @@ try
   Plug 'lambdalisue/fern-renderer-nerdfont.vim'
   Plug 'lambdalisue/fern-mapping-project-top.vim'
   Plug 'LumaKernel/fern-mapping-reload-all.vim'
+  Plug 'antoinemadec/FixCursorHold.nvim'
 
   " Theme
-  Plug 'rakr/vim-one'
+  Plug 'ful1e5/onedark.nvim'
 
   " Status bar
   Plug 'itchyny/lightline.vim'
 
   " <C-e>
   Plug 'simeji/winresizer'
-
-  " === Tools === "
-  Plug 'hrj/vim-DrawIt'
-
-  " Remove once NeoVim bug is fixed: https://github.com/neovim/neovim/issues/12587
-  Plug 'antoinemadec/FixCursorHold.nvim'
 
   call plug#end()
 
@@ -134,17 +88,12 @@ endtry
 " Remap leader key to <space>
 map <space> <leader>
 
-" Search
-map <leader>h :%s///<left><left>
-nmap <silent> <leader>/ :nohlsearch<CR>
-" Unsets the 'last search pattern' register by hitting return
-nnoremap <cr> :noh<cr><cr>
+" Unsets the 'last search pattern' upon return
+nnoremap <CR> :noh<CR><CR>
+
 " Always search forward with n and backward with N
 nnoremap <expr> n  'Nn'[v:searchforward]
 nnoremap <expr> N  'nN'[v:searchforward]
-
-" Use :Todo to edit todos
-command! -nargs=0 Todo :e ~/Notes/GTD/TODOs.md
 
 " Reverses default behaviour so that j and k move down/up by display lines, while gj and gk move by real lines
 nnoremap k gk
@@ -152,34 +101,20 @@ nnoremap gk k
 nnoremap j gj
 nnoremap gj j
 
+" Use ctrl-[hjkl] to select the active split!
+nmap <silent> <c-k> :wincmd k<CR>
+nmap <silent> <c-j> :wincmd j<CR>
+nmap <silent> <c-h> :wincmd h<CR>
+nmap <silent> <c-l> :wincmd l<CR>
+
 " Copy current file path
 nnoremap <silent> <leader>c :let @+=expand('%:p')<cr>
 
 " Easy expansion of the active file directory
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 
-if has('nvim')
-  " Escape nvim terminal
-  tmap <c-o> <c-\><c-n>
-  nmap <C-h> <C-w>h
-  nmap <C-l> <C-w>l
-endif
-
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-if has("nvim-0.5.0") || has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
-
-" Delete current visual selection and dump in black hole buffer before pasting
-" Used when you want to paste over something without it getting copied to Vim's default buffer
-vnoremap <leader>p "_dP
-
-" Use w!! to write file as root
-cmap w!! w !sudo tee %
+" Always shown sign column
+set signcolumn=yes
 
 set pastetoggle=<F3>
 
@@ -202,196 +137,13 @@ map <C-a> <esc>ggVG<cr>
 " Better than default 4 seconds for Coc lint updates
 set updatetime=1000
 
-" === undotree ===
-nnoremap <F4> :UndotreeToggle<cr>
+" === telescope.nvim ===
 
-" === vim-fugitive ===
-nnoremap <silent> <leader>gs :Gstatus<cr>
-" Note :Gvdiff forces vertical split, else horizontal is used if the window is not wide enough
-nnoremap <silent> <leader>gd :Gvdiff<cr>
-nnoremap <silent> <leader>gc :Gcommit<cr>
-nnoremap <silent> <leader>gb :Gblame<cr>
-nnoremap <silent> <leader>gl :GV<cr>
-nnoremap <silent> <leader>gp :Git push<cr>
-nnoremap <silent> <leader>gi :Git add -p %<cr>
-nnoremap <silent> <leader>ge :Gedit :0<cr>
-
-" === vim-test ===
-nnoremap <silent> <leader>tn :TestNearest<cr>
-nnoremap <silent> <leader>tv :TestNearest -v<cr>
-nnoremap <silent> <leader>tl :TestLast<cr>
-nnoremap <silent> <leader>tf :TestFile<cr>
-
-" === emmet-vim ===
-nmap <expr> <leader>, emmet#expandAbbrIntelligent('\<space>')
-let g:user_emmet_settings = {
-\   'javascript.jsx' : {
-\       'extends' : 'jsx',
-\    }
-\}
-
-" === vim-better-whitespace === "
-" Remove all trailing witespace
-nmap <silent> <leader>Y :StripWhitespace<CR>
-
-" === coc.nvim ===
-let g:coc_global_extensions = [
-  \ 'coc-eslint',
-  \ 'coc-diagnostic',
-  \ 'coc-cfn-lint',
-  \ 'coc-yank',
-  \ 'coc-html',
-  \ 'coc-json',
-  \ 'coc-yaml',
-  \ 'coc-prettier',
-  \ 'coc-css',
-  \ 'coc-pyright',
-  \ 'coc-tsserver',
-  \ 'coc-styled-components',
-  \ 'coc-marketplace']
-
-" Use :Prettier to format file
-" command! -nargs=0 Prettier :CocCommand prettier.formatFile
-
-" Add `:Format` command to format current buffer
-function! s:js_format()
-     :CocCommand prettier.formatFile
-     :CocCommand eslint.executeAutofix
-endfunction
-command! -nargs=0 JSFormat :call <SID>js_format()<CR>
-command! -nargs=0 Format :call CocAction('format')
-" Add `:Fold` command to fold current buffer
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-" Add `:OR` command for organize imports of the current buffer
-command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
-nmap <leader>f :JSFormat<CR>
-
-" Extension-specific fix action on current item and selection
-nmap <silent> <leader>da <Plug>(coc-codeaction)
-xmap <leader>ca  <Plug>(coc-codeaction-selected)
-nmap <leader>ca  <Plug>(coc-codeaction-selected)
-
-" Extension-specific format on selection
-vmap <leader>cf  <Plug>(coc-format-selected)
-nmap <leader>cf  <Plug>(coc-format-selected)
-
-" Jump around code
-nmap <silent> <leader>gd <Plug>(coc-definition)
-nmap <silent> <leader>gt <Plug>(coc-type-definition)
-nmap <silent> <leader>gi <Plug>(coc-implementation)
-nmap <silent> <leader>gr <Plug>(coc-references)
-
-" Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
-    call CocActionAsync('doHover')
-  else
-    execute '!' . &keywordprg . " " . expand('<cword>')
-  endif
-endfunction
-
-" Rename current word
-nmap <leader>dr <Plug>(coc-rename)
-
-" Jump between diagnostics
-nmap <silent> <leader>j <Plug>(coc-diagnostic-next)
-nmap <silent> <leader>k <Plug>(coc-diagnostic-prev)
-
-" coc-yank
-nnoremap <silent> <leader>y  :<C-u>CocList -A --normal yank<cr>
-
-" === vim-jsdoc ===
-nmap <leader>z :JsDoc<CR>
-
-" Use <tab> for trigger completion and navigate to next complete item
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ eoc#refresh()
-
-augroup CocGroup
-	autocmd!
-  " Force show signature help on placeholder jump
-	autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
-
-" === denite.nvim ===
-
-" Denite 3.0+ removes denite#custom#map overrides and forces you to specify mappings
-" There's 2 modes on filter window: normal mode ("filter mode") and insert mode
-autocmd FileType denite call s:denite_my_settings()
-	function! s:denite_my_settings() abort
-    " Wrap contents locally
-    setlocal wrap
-    " Typically opens the file
-	  nnoremap <silent><buffer><expr> <CR>
-	  \ denite#do_map('do_action')
-	  nnoremap <silent><buffer><expr> d
-	  \ denite#do_map('do_action', 'delete')
-    " Open preview window
-	  nnoremap <silent><buffer><expr> p
-	  \ denite#do_map('do_action', 'preview')
-	  nnoremap <silent><buffer><expr> v
-	  \ denite#do_map('do_action', 'vsplit')
-	  nnoremap <silent><buffer><expr> q
-	  \ denite#do_map('quit')
-    " Switch to insert ("filter") mode
-	  nnoremap <silent><buffer><expr> i
-	  \ denite#do_map('open_filter_buffer')
-	  nnoremap <silent><buffer><expr> +
-	  \ denite#do_map('toggle_select').'j'
-endfunction
-
-" ,         - Browse currently open buffers (not using ; since that repeats f-search); starts in normal mode
-" <leader>r - Browse list of files in current project directory, respecting .gitignore; starts in insert ("filter") mode
-" <leader>t - Browse list of files in current project directory, ignoring .gitignore; starts in insert ("filter") mode
-" <leader>r - Browse list of files in current directory; starts in insert ("filter") mode
-" <leader>a - Browse contents of files in current directory; starts in insert ("filter") mode
-nmap , :<C-u>Denite buffer -default-action=switch<CR>
-nmap <silent> <leader>r :<C-u>DeniteProjectDir -start-filter -resume -buffer-name=file_gitignore file/rec/git<CR>
-nmap <silent> <leader>t :<C-u>DeniteProjectDir -start-filter -resume -buffer-name=file_no_gitignore file/rec<CR>
-nmap <leader>a :<C-u>DeniteProjectDir -start-filter -resume -buffer-name=content_gitignore grep:::!<CR>
-nmap <leader>s :<C-u>Denite -start-filter -resume -buffer-name=content_no_gitignore grep:::!<CR>
-nmap <leader>cd :<C-u>Denite coc-diagnostic<CR>
-nmap <leader>cc :<C-u>Denite coc-command<CR>
-
-" https://github.com/rafi/vim-config/blob/d7cdc594e73dfbca76b4868505f19db94f088a64/config/plugins/all.vim
-" nnoremap <silent><LocalLeader>r :<C-u>Denite -resume -refresh -no-start-filter<CR>
-" nnoremap <silent><LocalLeader>f :<C-u>Denite file/rec<CR>
-" nnoremap <silent><LocalLeader>v :<C-u>Denite neoyank -buffer-name=register<CR>
-" xnoremap <silent><LocalLeader>v :<C-u>Denite neoyank -buffer-name=register -default-action=replace<CR>
-" nnoremap <silent><LocalLeader>l :<C-u>Denite location_list -buffer-name=list<CR>
-" nnoremap <silent><LocalLeader>q :<C-u>Denite quickfix -buffer-name=list<CR>
-" nnoremap <silent><LocalLeader>n :<C-u>Denite dein<CR>
-" nnoremap <silent><LocalLeader>g :<C-u>Denite grep -no-start-filter<CR>
-" nnoremap <silent><LocalLeader>j :<C-u>Denite jump change file/point -buffer-name=jump<CR>
-" nnoremap <silent><LocalLeader>u :<C-u>Denite junkfile:new junkfile<CR>
-" nnoremap <silent><LocalLeader>o :<C-u>Denite outline<CR>
-" nnoremap <silent><LocalLeader>s :<C-u>Denite session -buffer-name=list<CR>
-" nnoremap <silent><LocalLeader>t :<C-u>Denite -buffer-name=tag tag:include<CR>
-" nnoremap <silent><LocalLeader>p :<C-u>Denite jump -buffer-name=jump<CR>
-" nnoremap <silent><LocalLeader>h :<C-u>Denite help<CR>
-" nnoremap <silent><LocalLeader>m :<C-u>Denite file/rec -buffer-name=memo -path=~/docs/books<CR>
-" nnoremap <silent><LocalLeader>z :<C-u>Denite z<CR>
-" nnoremap <silent><LocalLeader>/ :<C-u>Denite line -start-filter<CR>
-" nnoremap <silent><LocalLeader>* :<C-u>DeniteCursorWord line<CR>
-" nnoremap <silent><LocalLeader>; :<C-u>Denite command command_history<CR>
-
-autocmd FileType denite-filter call s:denite_my_filter_settings()
-function! s:denite_my_filter_settings() abort
-    " Switch to normal mode
-    imap <silent><buffer> <C-o> <Plug>(denite_filter_update)
-	  imap <silent><buffer> <expr>dd denite#do_map('restart')
-endfunction
+nnoremap <leader>r <cmd>Telescope find_files<cr>
+nnoremap <leader>a <cmd>Telescope live_grep<cr>
+nnoremap <leader>t <cmd>Telescope git_files<cr>
+nnoremap <leader>z <cmd>Telescope treesitter<cr>
+nnoremap <silent>, <cmd>Telescope buffers<cr>
 
 " === fern.vim ===
 
@@ -457,6 +209,87 @@ function! s:init_fern() abort
 
 endfunction
 
+" === undotree ===
+nnoremap <F4> :UndotreeToggle<cr>
+
+" === vim-test ===
+nnoremap <silent> <leader>tn :TestNearest<cr>
+nnoremap <silent> <leader>tv :TestNearest -v<cr>
+nnoremap <silent> <leader>tl :TestLast<cr>
+nnoremap <silent> <leader>tf :TestFile<cr>
+
+" === vim-better-whitespace === "
+" Remove all trailing witespace
+nmap <silent> <leader>Y :StripWhitespace<CR>
+
+" === coc.nvim ===
+" Add `:Format` command to format current buffer
+function! s:js_format()
+     :CocCommand prettier.formatFile
+     :CocCommand eslint.executeAutofix
+endfunction
+command! -nargs=0 JSFormat :call <SID>js_format()<CR>
+command! -nargs=0 Format :call CocAction('format')
+" Add `:Fold` command to fold current buffer
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+" Add `:OR` command for organize imports of the current buffer
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+nmap <leader>f :JSFormat<CR>
+
+" Extension-specific fix action on current item and selection
+nmap <silent> <leader>da <Plug>(coc-codeaction)
+xmap <leader>ca  <Plug>(coc-codeaction-selected)
+nmap <leader>ca  <Plug>(coc-codeaction-selected)
+
+" Extension-specific format on selection
+vmap <leader>cf  <Plug>(coc-format-selected)
+nmap <leader>cf  <Plug>(coc-format-selected)
+
+" Jump around code
+nmap <silent> <leader>gd <Plug>(coc-definition)
+nmap <silent> <leader>gt <Plug>(coc-type-definition)
+nmap <silent> <leader>gi <Plug>(coc-implementation)
+nmap <silent> <leader>gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent>K :call <SID>show_documentation()<CR>
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+" Rename current word
+nmap <leader>dr <Plug>(coc-rename)
+
+" Jump between diagnostics
+nmap <silent> <leader>j <Plug>(coc-diagnostic-next)
+nmap <silent> <leader>k <Plug>(coc-diagnostic-prev)
+
+" coc-yank list
+nnoremap <silent> <leader>y  :<C-u>CocList -A --normal yank<cr>
+
+" Use <tab> for trigger completion and navigate to next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ eoc#refresh()
+
+augroup CocGroup
+	autocmd!
+  " Force show signature help on placeholder jump
+	autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+
 " ============================================================================ "
 " ===                           EDITING OPTIONS                            === "
 " ============================================================================ "
@@ -509,12 +342,8 @@ set inccommand=nosplit
 " ============================================================================ "
 
 " Enable true color support
-if has('nvim')
-  set termguicolors
-endif
-if !exists('g:syntax_on')
-	syntax enable
-endif
+set termguicolors
+syntax enable
 
 " Add custom highlights in method that is executed every time a colorscheme is sourced
 " See https://gist.github.com/romainl/379904f91fa40533175dfaec4c833f2f
@@ -538,12 +367,13 @@ augroup MyColors
   autocmd ColorScheme * call MyHighlights()
 augroup END
 
-try
-  let g:one_allow_italics = 1
-  colorscheme one
-catch
-  colorscheme slate
-endtry
+" Theme
+let g:onedark_comment_style = "italic"
+let g:onedark_keyword_style = "NONE"
+let g:onedark_function_style = "NONE"
+let g:onedark_variable_style = "NONE"
+let g:onedark_transparent = 1
+colorscheme onedark
 
 " Don't give completion messages like 'match 1 of 2' or 'The only match'
 set shortmess+=c
@@ -554,16 +384,10 @@ set splitbelow
 " Don't display mode in command line (lightline already shows)
 set noshowmode
 
-" Always display sign column
-set signcolumn=yes
-
 " coc.nvim color changes
 hi! link CocErrorSign WarningMsg
 hi! link CocWarningSign Number
 hi! link CocInfoSign Type
-
-" https://github.com/mxw/vim-jsx/issues/124
-hi link xmlEndTag xmlTag
 
 " Call method on window enter
 augroup WindowManagement
@@ -593,36 +417,42 @@ highlight iCursor guifg=default guibg=default
 " ===                           PLUGIN OPTIONS                             === "
 " ============================================================================ "
 
-" == markdown-preview ===
+" === nvim-treesitter ===
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  sync_install = false, -- install languages synchronously (only applied to `ensure_installed`)
+  ignore_install = {}, -- List of parsers to ignore installing
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+    disable = {},  -- list of language that will be disabled
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
+EOF
+
+" === coc.nvim ===
+let g:coc_global_extensions = [
+  \ 'coc-eslint',
+  \ 'coc-prettier',
+  \ 'coc-diagnostic',
+  \ 'coc-yank',
+  \ 'coc-html',
+  \ 'coc-json',
+  \ 'coc-yaml',
+  \ 'coc-css',
+  \ 'coc-pyright',
+  \ 'coc-tsserver']
+
+" === git-messenger ===
+let g:git_messenger_always_into_popup = 1
+
+" === markdown-preview ===
 let g:mkdp_browser = 'firefox'
-
-" == vim-markdown ===
-let g:markdown_enable_spell_checking = 0
-let g:markdown_enable_mappings = 0
-
-" === vim-jsx === "
-" Highlight jsx syntax even in non .jsx files
-let g:jsx_ext_required = 0
-
-" === vim-jsdoc === "
-let g:jsdoc_allow_input_prompt = 1
-let g:jsdoc_enable_es6 = 1
-let g:jsdoc_underscore_private = 1
-
-" === ultisnips ===
-let g:UltiSnipsExpandTrigger="<C-j>"
-let g:UltiSnipsJumpForwardTrigger="<C-j>"
-let g:UltiSnipsJumpBackwardTrigger="<C-k>"
-
-" === MatchTagAlways ===
-let g:mta_filetypes = {}
-" let g:mta_filetypes = {
-" \ 'html' : 1,
-" \ 'xhtml' : 1,
-" \ 'xml' : 1,
-" \ 'jinja' : 1,
-" \ 'javascript.jsx' : 0,
-" \}
 
 " === fern.vim ===
 let g:fern#renderer = "nerdfont"
@@ -630,30 +460,38 @@ let g:fern#default_hidden = 1
 let g:fern#drawer_keep = 1
 let g:fern#scheme#file#show_absolute_path_on_root_label = 1
 
-" Disable netrw
-let g:loaded_netrw = 1
-let g:loaded_netrwPlugin = 1
-let g:loaded_netrwSettings = 1
-let g:loaded_netrwFileHandlers = 1
-
-" === vim-test ===
-let test#strategy = 'neoterm'
-let g:neoterm_size = '15'
-let g:neoterm_autoscroll = 1
-let g:neoterm_autoinsert = 1
-let g:neoterm_default_mod = ':botright'
-let g:test#preserve_screen = 1
-
-" === goyo.vim ===
-" https://github.com/junegunn/goyo.vim/issues/160
-autocmd! User GoyoLeave silent! ctermbg=NONE guibg=NONE
-
-" === lightline ===
+" === lightline.vim ===
 let g:lightline_symbol_map = {
   \ 'error': '💩',
   \ 'warning': '⚠️',
   \ 'info': '🔧',
   \ 'hint': '🔧'
+  \ }
+let g:lightline = {
+  \ 'colorscheme': 'one',
+  \ 'active': {
+  \   'left': [ [ 'mode', 'paste' ], [ 'gitbranch', 'readonly', 'filename', 'modified' ], [ 'coc_error', 'coc_warning', 'coc_hint', 'coc_info' ] ],
+  \   'right': [ [ 'lineinfo' ], [ 'percent' ], [ 'filetype', 'fileencoding', 'fileformat' ] ]
+  \ },
+  \ 'component_expand': {
+  \ 'coc_error': 'LightlineCocErrors',
+  \ 'coc_warning': 'LightlineCocWarnings',
+  \ 'coc_info': 'LightlineCocInfo',
+  \ 'coc_hint': 'LightlineCocHints',
+  \ 'coc_fix': 'LightlineCocFixes'
+  \ },
+  \ 'component_type': {
+  \   'coc_error': 'error',
+  \   'coc_warning': 'warning',
+  \   'coc_info': 'middle',
+  \   'coc_hint': 'middle',
+  \   'coc_fix': 'middle',
+  \ },
+  \ 'component_function': {
+  \   'gitbranch': 'fugitive#head',
+  \ },
+  \ 'separator': { 'left': '', 'right': '' },
+  \ 'subseparator': { 'left': '', 'right': '' }
   \ }
 
 function! s:lightline_coc_diagnostic(kind, sign) abort
@@ -682,92 +520,3 @@ function! LightlineCocHints() abort
 endfunction
 
 autocmd User CocDiagnosticChange call lightline#update()
-
-let g:lightline = {
-      \ 'colorscheme': 'one',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ], [ 'gitbranch', 'readonly', 'filename', 'modified' ], [ 'coc_error', 'coc_warning', 'coc_hint', 'coc_info' ] ],
-      \   'right': [ [ 'lineinfo' ], [ 'percent' ], [ 'filetype', 'fileencoding', 'fileformat' ] ]
-      \ },
-      \ 'component_expand': {
-      \ 'coc_error': 'LightlineCocErrors',
-      \ 'coc_warning': 'LightlineCocWarnings',
-      \ 'coc_info': 'LightlineCocInfo',
-      \ 'coc_hint': 'LightlineCocHints',
-      \ 'coc_fix': 'LightlineCocFixes'
-      \ },
-      \ 'component_type': {
-      \   'coc_error': 'error',
-      \   'coc_warning': 'warning',
-      \   'coc_info': 'middle',
-      \   'coc_hint': 'middle',
-      \   'coc_fix': 'middle',
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'fugitive#head',
-      \ },
-      \ 'separator': { 'left': '', 'right': '' },
-      \ 'subseparator': { 'left': '', 'right': '' }
-      \ }
-
-" === denite.nvim ===
-try
-  " Interface
-  call denite#custom#option('_', {
-    \ 'auto_resize': 0,
-    \ 'prompt': '❯',
-    \ 'max_dynamic_update_candidates': 50000,
-    \ 'statusline': 0,
-    \ 'split': 'floating',
-    \ })
-
-  " Ripgrep for searching filenames, including those in .gitignore`
-  call denite#custom#var('file/rec', 'command',
-	\ ['rg', '--files', '--glob', '--hidden', '!.git', '--color', 'never'])
-
-  " Git for searching filenames, excluding those in .gitignore`
-  call denite#custom#alias('source', 'file/rec/git', 'file/rec')
-	call denite#custom#var('file/rec/git', 'command',
-	      \ ['git', 'ls-files', '--recurse-submodules', '--cached', '--exclude-standard'])
-
-  " Ripgrep for searching file content
-  call denite#custom#var('grep', {
-		\ 'command': ['rg'],
-		\ 'default_opts': ['-i', '--vimgrep', '--no-heading', '--hidden'],
-		\ 'recursive_opts': [],
-		\ 'pattern_opt': ['--regexp'],
-		\ 'separator': ['--'],
-		\ 'final_opts': [],
-		\ })
-
-  " Remove date from buffer list
-  call denite#custom#var('buffer', 'date_format', '')
-
-  " Remove current buffer from buffers list
-  call denite#custom#source('buffer', 'matchers',
-      \ ['matcher/fuzzy', 'matcher/ignore_current_buffer'])
-
-  " Sort buffer list by most recently accessed
-  call denite#custom#source('buffer', 'sorters', ['sorter/oldfiles'])
-
-  " Show relative paths in buffer list
-  call denite#custom#source('buffer', 'converters', ['converter/relative_word'])
-
-  " call denite#custom#source('coc-diagnostic', 'converters', ['converter/basename_to_top'])
-  " call denite#custom#var('coc-diagnostic', 'abbr', '')
-
-
-catch
-  echo 'denite.nvim not installed. Run :PlugInstall'
-endtry
-
-" === ale ===
-let g:ale_lint_on_enter = 1
-let g:ale_lint_on_text_changed = 1
-let g:ale_lint_delay = 500
-let g:ale_sign_error = '>>'
-let g:ale_sign_warning = '--'
-let g:ale_sign_column_always = 1
-let g:ale_linters = {
-\   'cloudformation': ['cloudformation']
-\}

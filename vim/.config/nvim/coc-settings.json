@@ -4,18 +4,10 @@
 
   // coc-tsserver
   "javascript.suggestionActions.enabled": false, // https://github.com/Microsoft/vscode/issues/47299
-  "tsserver.maxTsServerMemory": 8000, // 8GB
+  "tsserver.maxTsServerMemory": 16000, // 16GB
 
   // coc-prettier
   "prettier.disableSuccessMessage": true,
-
-  // coc-eslint
-  "eslint.filetypes": [
-    "javascript",
-    "typescript",
-    "typescriptreact",
-    "javascriptreact"
-  ],
 
   // coc-pyright
   "python.pythonPath": "/usr/bin/python3",
@@ -41,15 +33,11 @@
       "args": ["-i", "2", "-bn", "-ci", "-sr"]
     }
   },
-
-  // "diagnostic.virtualText": true,
-  // "diagnostic.virtualTextCurrentLineOnly": false,
   "diagnostic.infoSign": "ღ",
   "diagnostic.hintSign": "ஐ",
   "diagnostic.warningSign": "⚠",
   "diagnostic.errorSign": "✖",
   "diagnostic.enable": true,
-  "diagnostic.signOffset": 9999999,
   "diagnostic.highlightOffset": 9999999,
   "diagnostic.refreshOnInsertMode": true,
   "suggest.completionItemKindLabels": {
@@ -80,75 +68,7 @@
     "default": "\uf29c"
   },
 
-  // coc-json
-  "json.enable": false,
-  "json.format.enable": false,
-  "json.trace.server": "verbose",
-
   // coc-yaml
   "yaml.validate": false, // Disable as CloudFormation will still complain: https://github.com/redhat-developer/vscode-yaml/issues/177
-  "yaml.format.enable": true,
-  "yaml.trace.server": "verbose",
-  "yaml.customTags": [
-    "!And scalar",
-    "!And mapping",
-    "!And sequence",
-    "!If scalar",
-    "!If mapping",
-    "!If sequence",
-    "!Not scalar",
-    "!Not mapping",
-    "!Not sequence",
-    "!Equals scalar",
-    "!Equals mapping",
-    "!Equals sequence",
-    "!Or scalar",
-    "!Or mapping",
-    "!Or sequence",
-    "!FindInMap scalar",
-    "!FindInMap mappping",
-    "!FindInMap sequence",
-    "!Base64 scalar",
-    "!Base64 mapping",
-    "!Base64 sequence",
-    "!Cidr scalar",
-    "!Cidr mapping",
-    "!Cidr sequence",
-    "!Ref scalar",
-    "!Ref mapping",
-    "!Ref sequence",
-    "!Sub scalar",
-    "!Sub mapping",
-    "!Sub sequence",
-    "!GetAtt scalar",
-    "!GetAtt mapping",
-    "!GetAtt sequence",
-    "!GetAZs scalar",
-    "!GetAZs mapping",
-    "!GetAZs sequence",
-    "!ImportValue scalar",
-    "!ImportValue mapping",
-    "!ImportValue sequence",
-    "!Select scalar",
-    "!Select mapping",
-    "!Select sequence",
-    "!Split scalar",
-    "!Split mapping",
-    "!Split sequence",
-    "!Join scalar",
-    "!Join mapping",
-    "!Join sequence"
-  ],
-  "yaml.schemas": {
-    "https://s3.amazonaws.com/cfn-resource-specifications-us-east-1-prod/schemas/2.15.0/all-spec.json": "/*"
-  },
-
-  // coc-cfn-lint
-  "cfnlint.lintOnOpen": true,
-  "cfnlint.lintOnSave": true,
-  "cfnlint.detectCfnRegExps": ["AWS::", "\\n?\"Resources\"?\\s*:"],
-  "cfnlint.ignoreRulesRegExps": [],
-  "cfnlint.awsRegions": ["eu-west-2"],
-  "cfnlint.includeRules": ["I"],
-  "cfnlint.includeExperimentalRules": true
+  "yaml.format.enable": true
 }
