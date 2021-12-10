@@ -143,19 +143,18 @@ floating_modifier $mod normal
 bindsym $mod+p exec playerctl play-pause
 bindsym $mod+bracketLeft exec playerctl previous  # [
 bindsym $mod+bracketRight exec playerctl next  # ]
-bindsym --locked thorn exec amixer -q -D pulse sset Master 5%-
-bindsym --locked dead_diaeresis exec amixer -q -D pulse sset Master toggle
-bindsym --locked dead_tilde exec amixer -q -D pulse sset Master 5%+
+bindsym --locked thorn exec pulsemixer --change-volume -5 --max-volume 100
+bindsym --locked dead_diaeresis exec pulsemixer --toggle-mute
+bindsym --locked dead_tilde exec pulsemixer --change-volume +5 --max-volume 100
 
 # Media controls - big keyboard
 bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioPrev exec playerctl previous
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioStop exec playerctl stop
-bindsym --locked XF86AudioMute exec amixer -q -D pulse sset Master toggle
-# Use pactl instead of amixer to avoid left-right balance misalignment (https://unix.stackexchange.com/a/527576)
-bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
-bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym --locked XF86AudioMute exec pulsemixer --toggle-mute
+bindsym --locked XF86AudioLowerVolume exec pulsemixer --change-volume -5 --max-volume 100
+bindsym --locked XF86AudioRaiseVolume exec pulsemixer --change-volume +5 --max-volume 100
 
 # Cycle through border styles
 bindsym $mod+m border toggle
