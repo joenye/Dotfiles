@@ -75,6 +75,7 @@ try
   " <C-e>
   Plug 'simeji/winresizer'
 
+  Plug 'luukvbaal/stabilize.nvim'
   call plug#end()
 
 catch
@@ -135,7 +136,7 @@ inoremap <right> <nop>
 map <C-a> <esc>ggVG<cr>
 
 " Better than default 4 seconds for Coc lint updates
-set updatetime=1000
+set updatetime=300
 
 " === telescope.nvim ===
 
@@ -282,6 +283,10 @@ inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ eoc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+" Use <c-space> to trigger completion
+inoremap <silent><expr> <c-space> coc#refresh()
 
 augroup CocGroup
 	autocmd!
@@ -434,6 +439,9 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 EOF
+
+" === stabilize.nvim ===
+lua require("stabilize").setup()
 
 " === coc.nvim ===
 let g:coc_global_extensions = [
