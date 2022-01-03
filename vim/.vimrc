@@ -30,9 +30,6 @@ try
   " Trailing whitespace highlighting & automatic fixing
   Plug 'ntpeters/vim-better-whitespace'
 
-  " Auto-close brackets
-  Plug 'jiangmiao/auto-pairs'
-
   " Return to last place in file upon re-opening
   Plug 'farmergreg/vim-lastplace'
 
@@ -271,9 +268,6 @@ nmap <leader>dr <Plug>(coc-rename)
 nmap <silent> <leader>j <Plug>(coc-diagnostic-next)
 nmap <silent> <leader>k <Plug>(coc-diagnostic-prev)
 
-" coc-yank list
-nnoremap <silent> <leader>y  :<C-u>CocList -A --normal yank<cr>
-
 " Use <tab> for trigger completion and navigate to next complete item
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -414,10 +408,6 @@ augroup CursorLine
   au WinLeave * setlocal nocursorline
 augroup END
 
-" Consistent highlighting (even if opening for example coc-yank window)
-highlight Cursor guifg=default guibg=default
-highlight iCursor guifg=default guibg=default
-
 " ============================================================================ "
 " ===                           PLUGIN OPTIONS                             === "
 " ============================================================================ "
@@ -448,7 +438,6 @@ let g:coc_global_extensions = [
   \ 'coc-eslint',
   \ 'coc-prettier',
   \ 'coc-diagnostic',
-  \ 'coc-yank',
   \ 'coc-html',
   \ 'coc-json',
   \ 'coc-yaml',

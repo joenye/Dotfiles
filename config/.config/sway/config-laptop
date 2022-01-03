@@ -78,7 +78,7 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Ctrl+Shift+e exit
 
 bindsym $mod+q exec $lock
-bindsym --locked $mod+z exec $sleep
+bindsym --locked $mod+Shift+z exec $sleep
 
 bindsym --locked XF86MonBrightnessUp exec light -A 5
 bindsym --locked XF86MonBrightnessDown exec light -U 5
