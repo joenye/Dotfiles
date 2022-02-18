@@ -1,0 +1,815 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=670"> 
+        <style>
+
+  /* 40K stylesheet */
+  
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,700;1,400&family=Oswald:wght@700&display=swap');
+  
+  @media only print
+  {
+  	div.battlescribe { columns: 200px 2; }
+  	li.rootselection > h4 { font-size: 12px; }
+  	div.battlescribe { font-size: 10px; }
+  	div.battlescribe p { font-size: 10px; }
+  	div.battlescribe table { font-size: 10px; }
+  	div.battlescribe h4 { font-size: 13px; }
+  	div.battlescribe li.force { margin: 0px 10px 6px 0px; }
+  	div.battlescribe h1 { font-size: 24px; }
+  	div.battlescribe h2 { font-size: 20px; }
+  	
+  	div.battlescribe div.summary
+  	{
+  		page-break-before: avoid;
+  		page-break-inside: avoid;
+  		margin-right: 10px;
+  		float: left;
+  	}
+  	
+  	th { padding: 4px; }
+  	td { padding: 4px; }
+  }
+  
+  @media only screen
+  {
+  	div.battlescribe div.summary
+  	{
+  		width: 100%;
+  		max-width: 650px;
+  		margin-left: auto;
+  		margin-right: auto;
+  	}
+  	
+  	div.battlescribe li.force
+  	{
+  		margin-right: auto;
+  		margin-left: auto;
+  		width: 100%;
+  		max-width: 650px;
+  	}
+  	
+  	div.battlescribe { font-size: 12px; }
+  	div.battlescribe h1 { font-size: 28px; }
+  	div.battlescribe p { font-size: 12px; }
+  	div.battlescribe table { font-size: 12px; }
+  	div.battlescribe h4 { font-size: 16px; }
+  	div.battlescribe li.rootselection { margin-bottom: 0px; }
+  	div.battlescribe h2 { font-size: 25px; }
+  	
+  	div.battlescribe h1
+  	{
+  		width: 100%;
+  		max-width: 650px;
+  		margin-left: auto;
+  		margin-right: auto;
+  	}
+  	
+  	th { padding: 4px; }
+  	td { padding: 4px; }
+  	th:first-of-type { padding-left: 16px; }
+  	th:last-of-type { padding-right: 16px; }
+  	td:first-of-type { padding-left: 16px; }
+  	td:last-of-type { padding-right: 16px; }
+  }
+  
+li.force > p.rule-names { 
+  margin-bottom: 10px;
+  margin-left: 16px;
+  margin-top: -12px;
+  font-variant: small-caps;
+  font-size: 16px;
+}
+  
+  body.battlescribe
+  {
+  	margin: 0px;
+  	padding: 0px;
+  	border-width: 0px;
+  }
+  
+  div.battlescribe
+  {
+  	margin-top: 0px;
+  	margin-bottom: 0px;
+  	margin-left: auto;
+  	margin-right: auto;
+  	padding: 8px;
+  	border-width: 0px;
+  	font-family: 'Crimson Pro', 'Book Antiqua', Palatino, serif;
+  	color: #444444;
+  	text-align: left;
+  }
+  
+  div.battlescribe h2, div.battlescribe h3, div.battlescribe h4
+  {
+  	margin: 0px;
+  	padding: 0px;
+  	border-width: 0px;
+  	line-height: 1em;
+  }
+  
+  div.battlescribe h1
+  {
+  	margin-top: 8px;
+  	font-family: 'Oswald', sans-serif;
+  	color: #222E33;
+  	text-align: left;
+  	text-transform: uppercase;
+  	line-height: 1.1em;
+  }
+  
+  div.battlescribe h2
+  {
+  	font-family: 'Oswald', sans-serif;
+  	color: #222E33;
+  	text-transform: uppercase;
+  	margin-left: auto;
+  	margin-right: auto;
+  	margin-bottom: 20px;
+  	padding-top: 10px;
+  	margin-top: 30px;
+  	border-top: 3px #E1ECF0 solid;
+  	line-height: 1.1em;
+  }
+  
+  div.battlescribe h3
+  {
+  	font-size: 20px;
+  	font-family: 'Oswald', sans-serif;
+  	color: #222E33;
+  	text-transform: uppercase;
+  	text-align: left;
+  	margin-bottom: 5px;
+  }
+  
+  li.rootselection > h4
+  {
+  	font-family: 'Oswald', sans-serif;
+  	font-size: 16px;
+  	padding-bottom: 5px;
+  	padding-left: 5px;
+  	color: #222E33;
+  	text-transform: uppercase;
+  }
+  
+  div.battlescribe h1 + p, .battlescribe > p:first-of-type
+  {
+  	width: 50%;
+  	max-width: 400px;
+  	min-width: 200px;
+  	margin-right: auto;
+  	margin-left: auto;
+  	margin-bottom: 20px;
+  	font-style: italic;
+  	border-width: 1px;
+  	border-style: solid;
+  	padding: 10px;
+  	border-color: #E3510E;
+  }
+  
+  div.battlescribe h1 + p::before, .battlescribe > p:first-of-type::before
+  {
+  	content: "Roster notes: ";
+  	font-weight: bold;
+  	font-style: normal;
+  }
+  
+  div.summary h2
+  {
+  	margin-top: 20px;
+  	margin-bottom: 10px;
+  	padding: 0px;
+  	border-width: 0px;
+  	font-family: 'Oswald', sans-serif;
+  	font-size: 20px;
+  	text-align: left;
+  	padding-top: 10px;
+  	border-top: 3px #E1ECF0 solid;
+  }
+  
+  li.rootselection > ul > li > h4
+  {
+  	font-variant: small-caps;
+  	padding-left: 5px;
+  }
+  
+  div.battlescribe div.summary
+  {
+  	page-break-before: avoid;
+  	page-break-inside: avoid;
+  }
+  
+  div.battlescribe div.summary p
+  {
+  	padding: 10px;
+  	border: 1px #222E33 solid;
+  	margin-left: 0px;
+  }
+  
+  div.battlescribe ul
+  {
+  	margin: 0px 0px -5px 0px;
+  	padding: 0px;
+  	border-width: 0px;
+  	list-style-image: none;
+  	list-style-position: outside;
+  	list-style-type: none;
+  }
+  
+  div.battlescribe li
+  {
+  	margin: 8px 0px 0px 0px;
+  	padding: 0px;
+  	border-width: 0px;
+  }
+  
+  div.battlescribe li.force
+  {
+  	margin-bottom: 16px;
+  	padding: 0px;
+  	border-width: 0px;
+  }
+  
+  div.battlescribe li.category
+  {
+  	margin: 0px 0px 16px 0px;
+  	padding: 0px;
+  	border-width: 0px;
+  	break-before: page;
+  }
+  
+  div.battlescribe li.rootselection
+  {
+  	padding-top: 5px;
+  	border-width: 1px;
+  	border-style: solid;
+  	border-color: #222E33;
+  	page-break-inside: avoid;
+  	line-height: 1.1em;
+  }
+  
+  div.battlescribe p
+  {
+  	margin: 4px 0px 0px 16px;
+  	padding: 0px;
+  	border-width: 0px;
+  }
+  
+  div.battlescribe p.category-names { margin-bottom: 5px; margin-right: 2px; }
+  div.battlescribe p.rule-names { }
+  div.battlescribe p.profile-names { display: none; }
+  div.battlescribe span.bold { } 
+  
+  div.battlescribe table:first-of-type { margin-top: -10px; }
+  li.category > ul > li.rootselection > ul, li.rootselection > p.rule-names { margin-bottom: 4px; }
+  
+  div.battlescribe table
+  {
+  	margin-bottom: 0px;
+  	margin-right: auto;
+  	margin-left: auto;
+  	padding: 0px;
+  	border-collapse: collapse;
+  	width: 100%;
+  	color: #444444;
+  	page-break-inside: avoid;
+  }
+  
+  div.battlescribe tr
+  {
+  	border-width: 0px;
+  	border-style: solid;
+  	border-color: #222E33;
+  }
+  
+  tr:nth-child(even) { background-color: #E1ECF0; }
+  tr:nth-child(odd) { background: #FFF; }
+  
+  div.battlescribe th
+  {
+  	margin: 0px;
+  	border-width: 0px;
+  	color: white;
+  	font-weight: bold;
+  	text-align: left;
+  	background-color: #222E33;
+  }
+  
+  div.battlescribe td
+  {
+  	margin: 0px;
+  	border-width: 0px;
+  	text-align: left;
+  	line-height: 1.1em;
+  	vertical-align: top;
+  }
+  
+  div.battlescribe td.profile-name { font-weight: bold; }
+  div.battlescribe td.statistic-name { font-weight: bold; }
+  div.battlescribe table.statistics { }
+  div.battlescribe table.statistics tr.subtotal { font-weight: bold; }
+  
+  div.battlescribe table.statistics tr.total
+  {
+  	font-size: 13px;
+  	font-weight: bold;
+  }
+  
+  div.battlescribe table.statistics th
+  {
+  	border-width: 1px;
+  	border-style: solid;
+  	border-color: #BBBBBB;
+  	font-size: 13px;
+  	text-align: right;
+  }
+  
+  div.battlescribe table.statistics th.center { text-align: center; }
+  
+  div.battlescribe table.statistics td
+  {
+  	border-width: 4px;
+  	border-style: solid;
+  	border-color: #BBBBBB;
+  	text-align: right;
+  }
+  
+  div.battlescribe span.bold { font-weight: bold; }
+  div.battlescribe span.italic { font-style: italic; }
+  
+  div.battlescribe span.caps
+  {
+  	font-variant: small-caps;
+  	font-weight: bold;
+  }
+  
+  br + p { display: none; }
+
+</style>
+
+    </head>
+    <body class="battlescribe">
+        <div class="battlescribe">
+            <h1>Black Templars - Command Edition (Warhammer 40,000 9th Edition) [16 PL, 3CP, 355pts]</h1>
+            <ul>
+            <li class="force">
+                <h2>Patrol Detachment 0CP (Imperium - Adeptus Astartes - Black Templars) [16 PL, 3CP, 355pts]</h2>
+                <p class="rule-names">
+                    <span class="bold">Rules:</span> <span class="italic">And They Shall Know No Fear, Angels of Death, Bolter Discipline, Combat Doctrines, Righteous Zeal, Shock Assault, Vows</span>
+                </p>
+                <ul>
+                    <li class="category">
+                        <h3>Configuration [3CP]</h3>
+                        <ul>
+                            <li class="rootselection">
+                                <h4>Battle Size [3CP]</h4>
+                                <p>
+                                    <span class="bold">Selections:</span> 1. Combat Patrol (0-50 Total PL / 0-500 Points)  [3CP]
+                                </p>
+                                <p class="category-names">
+                                    <span class="bold">Categories:</span> <span class="caps">Configuration</span>
+                                </p>
+
+                            </li>
+                            <li class="rootselection">
+                                <h4>Chapter Selection: Black Templars</h4>
+                                <p class="category-names">
+                                    <span class="bold">Categories:</span> <span class="caps">Configuration, PC: BT</span>
+                                </p>
+
+                            </li>
+                            <li class="rootselection">
+                                <h4>Detachment Command Cost</h4>
+                                <p class="category-names">
+                                    <span class="bold">Categories:</span> <span class="caps">Configuration</span>
+                                </p>
+
+                            </li>
+                            <li class="rootselection">
+                                <h4>Gametype</h4>
+                                <p>
+                                    <span class="bold">Selections:</span> Open
+                                </p>
+                                <p class="category-names">
+                                    <span class="bold">Categories:</span> <span class="caps">Configuration</span>
+                                </p>
+
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="category">
+                        <h3>HQ [5 PL, 105pts]</h3>
+                        <ul>
+                            <li class="rootselection">
+                                <h4>Primaris Captain [5 PL, 105pts]</h4>
+                                <p>
+                                    <span class="bold">Selections:</span> Frag &amp; Krak grenades, Paragon of Fury, The Aurillian Shroud, Warlord
+                                </p>
+                                <p class="category-names">
+                                    <span class="bold">Categories:</span> <span class="caps">Faction: Adeptus Astartes, Captain, Character, Faction: Imperium, Infantry, Primaris, HQ, Warlord</span>
+                                </p>
+                                <p class="rule-names">
+                                    <span class="bold">Rules:</span> <span class="italic">Angels of Death</span>
+                                </p>
+                                <p class="profile-names">
+                                    <span class="bold">Abilities:</span> <span class="italic">Iron Halo, Paragon of Fury, Rites of Battle, The Aurillian Shroud</span>, <span class="bold">Unit:</span> <span class="italic">Primaris Captain</span>, <span class="bold">Weapon:</span> <span class="italic">Frag grenades, Krak grenades</span>
+                                </p>
+                                <ul>
+                                    <li>
+                                        <h4>Heavy bolt pistol, Master-crafted power sword and Relic shield [15pts]</h4>
+                                        <p>
+                                            <span class="bold">Selections:</span> Heavy Bolt Pistol, Master-crafted power sword [5pts], Relic Shield [10pts]
+                                        </p>
+                                        <p class="profile-names">
+                                            <span class="bold">Abilities:</span> <span class="italic">Relic Shield</span>, <span class="bold">Weapon:</span> <span class="italic">Heavy Bolt Pistol, Master-crafted power sword</span>
+                                        </p>
+
+                                    </li>
+                                </ul>
+                                    <br>
+                                    <table cellspacing="-1">
+                                        <tr>
+                                            <th>Abilities</th>
+                                            <th>Description</th>
+                                            <th>Ref</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">Iron Halo</td>
+                                            <td>This model has a 4+ invulnerable save.</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">Paragon of Fury</td>
+                                            <td>&#8226; Add 1 to this Warlord's Strength characteristic<br/>
+                                            &#8226; After this Warlord finishes a Charge move, roll one D6 for each enemy model that is within Engagement range of it; on a 5+ that model's unit suffers 1 mortal wound</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">Relic Shield</td>
+                                            <td>Each time the bearer suffers a mortal wound, roll a D6; on a 4+, that mortal wound is ignored. Add 1 to armour saving throws made for the bearer.</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">Rites of Battle</td>
+                                            <td>While a friendly &lt;CHAPTER&gt; CORE unit is within 6" of this model, each time a model in that unit makes an attack, re-roll a hit roll of 1</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">The Aurillian Shroud</td>
+                                            <td>Once per battle, at the start of either player's Command phase,  the bearer can unveil the Aurillian Shroud. If if does, until the start of your next Command phase, the bearer has the following ability: <br/>
+                                            &#8216;Aurillian Shroud (Aura): While a friendly BLACK TEMPLARS CORE INFANTRY unit is within 3" of this model, models in that unit have a 4+ invulnerable save.'</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table cellspacing="-1">
+                                        <tr>
+                                            <th>Unit</th>
+                                            <th>M</th><th>WS</th><th>BS</th><th>S</th><th>T</th><th>W</th><th>A</th><th>Ld</th><th>Save</th>
+                                            <th>Ref</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">Primaris Captain</td>
+                                            <td>6"</td><td>2+</td><td>2+</td><td>4</td><td>4</td><td>6</td><td>5</td><td>9</td><td>3+</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table cellspacing="-1">
+                                        <tr>
+                                            <th>Weapon</th>
+                                            <th>Range</th><th>Type</th><th>S</th><th>AP</th><th>D</th><th>Abilities</th>
+                                            <th>Ref</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">Frag grenades</td>
+                                            <td>6"</td><td>Grenade D6</td><td>3</td><td>0</td><td>1</td><td>Blast.</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">Heavy Bolt Pistol</td>
+                                            <td>18"</td><td>Pistol 1</td><td>4</td><td>-1</td><td>1</td><td>-</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">Krak grenades</td>
+                                            <td>6"</td><td>Grenade 1</td><td>6</td><td>-1</td><td>D3</td><td>-</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">Master-crafted power sword</td>
+                                            <td>Melee</td><td>Melee</td><td>+1</td><td>-3</td><td>2</td><td>-</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="category">
+                        <h3>Troops [5 PL, 100pts]</h3>
+                        <ul>
+                            <li class="rootselection">
+                                <h4>Assault Intercessor Squad [5 PL, 100pts]</h4>
+                                <p class="category-names">
+                                    <span class="bold">Categories:</span> <span class="caps">Faction: Imperium, Faction: Adeptus Astartes, Primaris, Infantry, Assault Intercessor Squad, Core, Intercessors, Troops</span>
+                                </p>
+                                <p class="rule-names">
+                                    <span class="bold">Rules:</span> <span class="italic">Angels of Death, Combat Squads</span>
+                                </p>
+                                <ul>
+                                    <li>
+                                        <h4>4x Assault Intercessor [76pts]</h4>
+                                        <p>
+                                            <span class="bold">Selections:</span> 4x Astartes Chainsword, 4x Frag &amp; Krak grenades, 4x Heavy Bolt Pistol
+                                        </p>
+                                        <p class="profile-names">
+                                            <span class="bold">Unit:</span> <span class="italic">Assault Intercessor</span>, <span class="bold">Weapon:</span> <span class="italic">Astartes Chainsword, Frag grenades, Heavy Bolt Pistol, Krak grenades</span>
+                                        </p>
+
+                                    </li>
+                                    <li>
+                                        <h4>Assault Intercessor Sgt [24pts]</h4>
+                                        <p>
+                                            <span class="bold">Selections:</span> Astartes Chainsword, Frag &amp; Krak grenades, Plasma pistol [5pts]
+                                        </p>
+                                        <p class="profile-names">
+                                            <span class="bold">Unit:</span> <span class="italic">Assault Intercessor Sgt</span>, <span class="bold">Weapon:</span> <span class="italic">Astartes Chainsword, Frag grenades, Krak grenades, Plasma pistol, Standard, Plasma pistol, Supercharge</span>
+                                        </p>
+
+                                    </li>
+                                </ul>
+                                    <br>
+                                    <table cellspacing="-1">
+                                        <tr>
+                                            <th>Unit</th>
+                                            <th>M</th><th>WS</th><th>BS</th><th>S</th><th>T</th><th>W</th><th>A</th><th>Ld</th><th>Save</th>
+                                            <th>Ref</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">Assault Intercessor</td>
+                                            <td>6"</td><td>3+</td><td>3+</td><td>4</td><td>4</td><td>2</td><td>2</td><td>7</td><td>3+</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">Assault Intercessor Sgt</td>
+                                            <td>6"</td><td>3+</td><td>3+</td><td>4</td><td>4</td><td>2</td><td>3</td><td>8</td><td>3+</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table cellspacing="-1">
+                                        <tr>
+                                            <th>Weapon</th>
+                                            <th>Range</th><th>Type</th><th>S</th><th>AP</th><th>D</th><th>Abilities</th>
+                                            <th>Ref</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">Astartes Chainsword</td>
+                                            <td>Melee</td><td>Melee</td><td>User</td><td>-1</td><td>1</td><td>When the bearer fights, it makes 1 additional attack with this weapon. </td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">Frag grenades</td>
+                                            <td>6"</td><td>Grenade D6</td><td>3</td><td>0</td><td>1</td><td>Blast.</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">Heavy Bolt Pistol</td>
+                                            <td>18"</td><td>Pistol 1</td><td>4</td><td>-1</td><td>1</td><td>-</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">Krak grenades</td>
+                                            <td>6"</td><td>Grenade 1</td><td>6</td><td>-1</td><td>D3</td><td>-</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">Plasma pistol, Standard</td>
+                                            <td>12"</td><td>Pistol 1</td><td>7</td><td>-3</td><td>1</td><td>-</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">Plasma pistol, Supercharge</td>
+                                            <td>12"</td><td>Pistol 1</td><td>8</td><td>-3</td><td>2</td><td>If any unmodified hit rolls of 1 are made for attacks with this weapon profile, the bearer is destroyed after shooting with this weapon.</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="category">
+                        <h3>Fast Attack [6 PL, 150pts]</h3>
+                        <ul>
+                            <li class="rootselection">
+                                <h4>Outrider Squad [6 PL, 150pts]</h4>
+                                <p class="category-names">
+                                    <span class="bold">Categories:</span> <span class="caps">Faction: Imperium, Faction: Adeptus Astartes, Biker, Primaris, Outrider Squad, Core, Fast Attack</span>
+                                </p>
+                                <p class="rule-names">
+                                    <span class="bold">Rules:</span> <span class="italic">Angels of Death</span>
+                                </p>
+                                <p class="profile-names">
+                                    <span class="bold">Abilities:</span> <span class="italic">Devastating Charge, Turbo-boost</span>
+                                </p>
+                                <ul>
+                                    <li>
+                                        <h4>2x Outrider [100pts]</h4>
+                                        <p>
+                                            <span class="bold">Selections:</span> 2x Astartes Chainsword, 2x Frag &amp; Krak grenades, 2x Heavy Bolt Pistol, 2x Twin Bolt rifle
+                                        </p>
+                                        <p class="profile-names">
+                                            <span class="bold">Unit:</span> <span class="italic">Outrider</span>, <span class="bold">Weapon:</span> <span class="italic">Astartes Chainsword, Frag grenades, Heavy Bolt Pistol, Krak grenades, Twin Bolt rifle</span>
+                                        </p>
+
+                                    </li>
+                                    <li>
+                                        <h4>Outrider Sgt [50pts]</h4>
+                                        <p>
+                                            <span class="bold">Selections:</span> Astartes Chainsword, Frag &amp; Krak grenades, Heavy Bolt Pistol, Twin Bolt rifle
+                                        </p>
+                                        <p class="profile-names">
+                                            <span class="bold">Unit:</span> <span class="italic">Outrider Sgt</span>, <span class="bold">Weapon:</span> <span class="italic">Astartes Chainsword, Frag grenades, Heavy Bolt Pistol, Krak grenades, Twin Bolt rifle</span>
+                                        </p>
+
+                                    </li>
+                                </ul>
+                                    <br>
+                                    <table cellspacing="-1">
+                                        <tr>
+                                            <th>Abilities</th>
+                                            <th>Description</th>
+                                            <th>Ref</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">Devastating Charge</td>
+                                            <td>Each time this unit fights, if it made a charge move this turn, then until that fight is resolved, add 2 to the Attacks characteristic of models in this unit</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">Turbo-boost</td>
+                                            <td>When this model Advances, add 6" to its Move characteristic for that Movement phase instead of rolling a dice.</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table cellspacing="-1">
+                                        <tr>
+                                            <th>Unit</th>
+                                            <th>M</th><th>WS</th><th>BS</th><th>S</th><th>T</th><th>W</th><th>A</th><th>Ld</th><th>Save</th>
+                                            <th>Ref</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">Outrider</td>
+                                            <td>14"</td><td>3+</td><td>3+</td><td>4</td><td>5</td><td>4</td><td>2</td><td>7</td><td>3+</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">Outrider Sgt</td>
+                                            <td>14"</td><td>3+</td><td>3+</td><td>4</td><td>5</td><td>4</td><td>3</td><td>8</td><td>3+</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table cellspacing="-1">
+                                        <tr>
+                                            <th>Weapon</th>
+                                            <th>Range</th><th>Type</th><th>S</th><th>AP</th><th>D</th><th>Abilities</th>
+                                            <th>Ref</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">Astartes Chainsword</td>
+                                            <td>Melee</td><td>Melee</td><td>User</td><td>-1</td><td>1</td><td>When the bearer fights, it makes 1 additional attack with this weapon. </td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">Frag grenades</td>
+                                            <td>6"</td><td>Grenade D6</td><td>3</td><td>0</td><td>1</td><td>Blast.</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">Heavy Bolt Pistol</td>
+                                            <td>18"</td><td>Pistol 1</td><td>4</td><td>-1</td><td>1</td><td>-</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">Krak grenades</td>
+                                            <td>6"</td><td>Grenade 1</td><td>6</td><td>-1</td><td>D3</td><td>-</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="profile-name">Twin Bolt rifle</td>
+                                            <td>30"</td><td>Rapid Fire 2</td><td>4</td><td>-1</td><td>1</td><td></td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </li>
+
+            </ul>
+
+
+
+            <div class="summary">
+                <h2>Force Rules</h2>
+                <p>
+                    <span class="bold">And They Shall Know No Fear:</span>
+                     Each time a Combat Attrition test is taken for this unit, ignore any or all modifiers
+                     ()
+                </p>
+                <p>
+                    <span class="bold">Angels of Death:</span>
+                     This unit has the following abilities: And They Shall Know No Fear, Bolter Discipline, Shock Assault and Combat Doctrines.
+                     ()
+                </p>
+                <p>
+                    <span class="bold">Bolter Discipline:</span>
+                     Instead of following the normal rules for Rapid Fire weapons, models in this unit shooting Rapid Fire bolt weapons make double the number of attacks if any of the following apply<br/>
+                    <br/>
+                    - The shooting model's target is within half the weapon's range<br/>
+                    - The shooting model is Infantry (excluding Centurion models) and it's unit Remained Stationary in your previous Movement Phase.<br/>
+                    - The shooting model is a Terminator or Biker<br/>
+                    <br/>
+                    For the purposes of this ability, a Rapid Fire bolt weapon is any bolt weapon (see page 195) with the Rapid Fire type. 
+                     ()
+                </p>
+                <p>
+                    <span class="bold">Combat Doctrines:</span>
+                     (See page 125 of Codex Space Marines)
+                     ()
+                </p>
+                <p>
+                    <span class="bold">Righteous Zeal:</span>
+                     - You can re-roll Advance rolls and charge rolls made for units with this tactic. <br/>
+                    - Each time a model with this tactic would lose a wound as a result of a mortal wound, roll one D6; on a 5+, that wound is not lost
+                     ()
+                </p>
+                <p>
+                    <span class="bold">Shock Assault:</span>
+                     Each time this unit fights if it made a charge move, was charged or performed a Heroic Intervention this turn, then until that fight is resolved, add 1 to the Attacks characteristic of models in this unit. 
+                     ()
+                </p>
+                <p>
+                    <span class="bold">Vows:</span>
+                     If every unit in your army (excluding UNALIGNED units) has the BLACK TEMPLARS keyword, then every unit that has the Combat Doctrines ability (see Codex: Space Marines) and is in a BLACK TEMPLARS Detachment gains the Templar Vows ability, below:<br/>
+                    <br/>
+                    <br/>
+                    TEMPLAR VOWS<br/>
+                    At the end of the Read Mission Briefing step, you can select one of the following Templar Vows<br/>
+                    <br/>
+                    &#8226; Suffer Not the Unclean to Live<br/>
+                    &#8226; Uphold the Honour of the Emperor<br/>
+                    &#8226; Abhor the Witch, Destroy the Witch<br/>
+                    &#8226; Accept any Challenge, No Matter the Odds<br/>
+                    <br/>
+                    Until the end of the battle, all units from your army with the Templar Vows ability gain the effects of the selected vow. The effects of each vow can be found on pages 44-45. Each vow provides a series of abilities as well as a passion. Each passion is a drawback that affects Black Templars units while they are under the effects of that vow. 
+                     ()
+                </p>
+            </div>
+            <div class="summary">
+                <h2>Selection Rules</h2>
+                <p>
+                    <span class="bold">Angels of Death:</span>
+                     This unit has the following abilities: And They Shall Know No Fear, Bolter Discipline, Shock Assault and Combat Doctrines.
+                     ()
+                </p>
+                <p>
+                    <span class="bold">Combat Squads:</span>
+                     Before any models are deployed at the start of the game, this unit when containing its maximum number of models, may be split into two units each containing an equal number of models.
+                     ()
+                </p>
+            </div>
+            <br>
+            <p>Created with <a href="https://www.battlescribe.net">BattleScribe</a></p>
+        </div>
+    </body>
+</html>

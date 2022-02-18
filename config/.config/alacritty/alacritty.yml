@@ -332,7 +332,7 @@ font:
 window:
   opacity: 0.9
 
-background_opacity: 0.9
+# background_opacity: 0.9
 
 #selection:
   # This string contains all characters that are used as separators for

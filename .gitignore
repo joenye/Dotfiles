@@ -40,3 +40,4 @@ config/.config/*
 !config/.config/kanshi
 !config/.config/wofi
 !config/.config/gammastep
+!config/.config/battlescribe
