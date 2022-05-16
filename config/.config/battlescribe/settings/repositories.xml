@@ -3,7 +3,7 @@
   <repositorySources>
     <repositorySource name="BattleScribe Data" description="Community created data repositories for BattleScribe" repositorySourceUrl="https://battlescribedata.appspot.com/repos" websiteUrl="https://battlescribedata.appspot.com" feedUrl="https://battlescribedata.appspot.com/repos/feeds/all.atom" twitterUrl="https://twitter.com/BSData" facebookUrl="https://facebook.com/BattleScribeData">
       <repositories>
-        <repository name="wh40k" description="Warhammer 40,000" version="v9.2.25" lastUpdated="2022-01-21T11:16:57.000+0000" lastUpdateDescription="There&apos;s a new warzone on the horizon..." indexUrl="https://battlescribedata.appspot.com/repos/wh40k/index.bsi" repositoryUrl="https://battlescribedata.appspot.com/repos/wh40k" feedUrl="https://battlescribedata.appspot.com/repos/feeds/wh40k.atom" bugTrackerUrl="https://github.com/BSData/wh40k/issues" reportBugUrl="https://battlescribedata.appspot.com/#/repo/wh40k" archived="false"/>
+        <repository name="wh40k" description="Warhammer 40,000" version="v9.3.6" lastUpdated="2022-03-06T23:33:06.000+0000" lastUpdateDescription="With thanks to the Aeldari Warhammer 40000 Discord channel, the new Aeldari data is here!!" indexUrl="https://battlescribedata.appspot.com/repos/wh40k/index.bsi" repositoryUrl="https://battlescribedata.appspot.com/repos/wh40k" feedUrl="https://battlescribedata.appspot.com/repos/feeds/wh40k.atom" bugTrackerUrl="https://github.com/BSData/wh40k/issues" reportBugUrl="https://battlescribedata.appspot.com/#/repo/wh40k" archived="false"/>
       </repositories>
     </repositorySource>
   </repositorySources>

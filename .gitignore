@@ -40,7 +40,6 @@ config/.config/*
 !config/.config/kanshi
 !config/.config/wofi
 !config/.config/gammastep
-!config/.config/battlescribe
 
 !config/.config/fish
 config/.config/fish/completions
@@ -50,3 +49,7 @@ config/.config/fish/functions
 
 config/.config/nvim/plugin
 !config/.config/nvim
+
+config/.config/battlescribe
+!config/.config/battlescribe/rosters
+!config/.config/battlescribe/settings
