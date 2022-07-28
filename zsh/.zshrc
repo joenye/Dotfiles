@@ -116,3 +116,5 @@ add-zsh-hook preexec prompt_preexec
 add-zsh-hook precmd prompt_precmd
 
 RPS1='%F{cyan}${prompt_elapsed_time}%F{none}'
+
+export PATH=$PATH:$HOME/.toolbox/bin

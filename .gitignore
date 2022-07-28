@@ -48,6 +48,8 @@ config/.config/fish/fish_variables
 config/.config/fish/functions
 
 config/.config/nvim/plugin
+config/.config/nvim/undo
+config/.config/nvim/swap
 !config/.config/nvim
 
 config/.config/battlescribe
