@@ -394,27 +394,27 @@ require('nvim-lsp-installer').setup({
 })
 
 -- lua-language-server (https://github.com/sumneko/lua-language-server).
-require 'lspconfig'.sumneko_lua.setup {
-  on_attach = on_attach,
-  settings = {
-    Lua = {
-      diagnostics = {
-        globals = { 'vim' }
-      },
-      format = {
-        -- Override via project .editorconfig.
-        -- TODO: https://github.com/sumneko/lua-language-server/issues/1068 must resolve to work.
-        defaultConfig = {
-          indent_style = 'space',
-          indent_size = '2',
-        }
-      },
-      telemetry = {
-        enable = false,
-      }
-    }
-  }
-}
+-- require 'lspconfig'.sumneko_lua.setup {
+--   on_attach = on_attach,
+--   settings = {
+--     Lua = {
+--       diagnostics = {
+--         globals = { 'vim' }
+--       },
+--       format = {
+--         -- Override via project .editorconfig.
+--         -- TODO: https://github.com/sumneko/lua-language-server/issues/1068 must resolve to work.
+--         defaultConfig = {
+--           indent_style = 'space',
+--           indent_size = '2',
+--         }
+--       },
+--       telemetry = {
+--         enable = false,
+--       }
+--     }
+--   }
+-- }
 
 -- tsserver (https://github.com/Microsoft/TypeScript/wiki/Standalone-Server-%28tsserver%29).
 require 'lspconfig'.tsserver.setup {
