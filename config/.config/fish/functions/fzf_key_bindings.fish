@@ -1,1 +1,0 @@
-/home/ANT.AMAZON.COM/joenye/.fzf/shell/key-bindings.fish
